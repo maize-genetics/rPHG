@@ -1,0 +1,58 @@
+Package: rPHG
+Version: 0.0.1
+Date: 2019-06-03
+Title: R front-end for the practical haplotype graph
+Authors@R: c(
+    person(
+        given = "Brandon",
+        family = "Monier",
+        email = "brandon.monier@gmail.com",
+        role = c("aut")
+    ),
+    person(
+        given = "Peter",
+        family = "Bradbury",
+        role = c("aut")
+    ),
+    person(
+        given = "Terry",
+        family = "Casstevens"
+        role = c("aut")
+    ),
+    person(
+        given = "Ed",
+        family = "Buckler",
+        email = "esb33@cornell.edu",
+        role = c("aut", "cre")
+    ))
+Description:
+    The aim of rPHG is to develop an R API for the practical haplotype
+    graph (PHG). The PHG is a trellis graph based representation of genic and 
+    intergenic regions (called reference ranges or reference intervals) which 
+    represent diversity across and between taxa. It can be used to: create 
+    custom genomes for alignment, call rare alleles, impute genotypes, and 
+    efficiently store genomic data from many lines (i.e. reference, assemblies, 
+    and other lines). Skim sequences generated for a given taxon are aligned 
+    to consensus sequences in the PHG to identify the haplotype node at a 
+    given anchor. All the anchors for a given taxon are processed through a 
+    Hidden Markov Model (HMM) to identify the most likely path through the 
+    graph. Path information is used to identify the variants (SNPs). Low cost 
+    sequencing technologies, coupled with the PHG, facilitate the genotyping 
+    of large number of samples to increase the size of training populations 
+    for genomic selection models. This can in turn increase predictive accuracy 
+    and selection intensity in a breeding program.
+License: GPL-3 | file LICENSE
+URL:
+    https://bitbucket.org/bucklerlab/rtassel/src/master/
+Imports:
+    rJava,
+    rlang
+Suggests:
+    BiocStyle
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder:
+    knitr
+RoxygenNote: 6.1.1
+biocViews:
+    GenomeWideAssociation
