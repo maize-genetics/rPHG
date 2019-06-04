@@ -16,7 +16,7 @@ Authors@R: c(
     ),
     person(
         given = "Terry",
-        family = "Casstevens"
+        family = "Casstevens",
         role = c("aut")
     ),
     person(
@@ -51,8 +51,6 @@ Suggests:
     BiocStyle
 Encoding: UTF-8
 LazyData: true
-VignetteBuilder:
-    knitr
 RoxygenNote: 6.1.1
 biocViews:
     GenomeWideAssociation
