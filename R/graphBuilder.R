@@ -2,6 +2,8 @@
 #'
 #' @description R wrapper to build a PHG graph object for downstream use.
 #'
+#' @author Brandon Monier
+#'
 #' @param configFile Configuration file for DB.
 #' @param myMethods Pairs of method calls - passed as string.
 #' @param myChrom List of chromosomes to include in graph. If NULL, defaults
@@ -15,9 +17,28 @@
 graphBuilder <- function(configFile,
                          myMethods,
                          myChrom = NULL,
-                         myIncludeSequence = TRUE,
+                         myIncludeSequence = FALSE,
                          myIncludeVariant = FALSE) {
 
-    ## Remove later
-    print("A temporary placeholder")
+    ## Create PHG plugin object
+    phgPlugin <- rJava::new(
+        rJava::J("net.maizegenetics.pangenome.api.HaplotypeGraphBuilderPlugin"),
+        rJava::.jnull(),
+        FALSE
+    )
+
+    ## Set parameters
+    phgPlugin$setParameter("configFile", configFile)
+    phgPlugin$setParameter("methods", myMethods)
+    phgPlugin$setParameter("includeSequences", toString(myIncludeSequence))
+    phgPlugin$setParameter("includeVariantContexts", toString(myIncludeVariant))
+    phgPlugin$setParameter("chromosomes", myChrom)
+
+    ## Build the PHG...
+    message("Building the graph...")
+    phgPlugin$build()
+
+    ## Return PHG object
+    message("Finished!")
+    return(phgPlugin)
 }

@@ -5,7 +5,7 @@
 \title{Test PHG builder function}
 \usage{
 graphBuilder(configFile, myMethods, myChrom = NULL,
-  myIncludeSequence = TRUE, myIncludeVariant = FALSE)
+  myIncludeSequence = FALSE, myIncludeVariant = FALSE)
 }
 \arguments{
 \item{configFile}{Configuration file for DB.}
@@ -23,4 +23,7 @@ nodes. (ADVANCED)}
 }
 \description{
 R wrapper to build a PHG graph object for downstream use.
+}
+\author{
+Brandon Monier
 }

@@ -6,7 +6,7 @@
 
 .onAttach <- function(libname, pkgname) {
     msg <- paste0(
-        "Welcome to rPHG (version: ", utils::packageVersion("rPHG"), ")", "\n"
+        "Welcome to rPHG (version ", utils::packageVersion("rPHG"), ")", "\n"
     )
     packageStartupMessage(msg)
 }
