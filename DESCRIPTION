@@ -46,7 +46,8 @@ URL:
     https://bitbucket.org/bucklerlab/rtassel/src/master/
 Imports:
     rJava,
-    rlang
+    rlang,
+    tibble
 Suggests:
     BiocStyle
 Encoding: UTF-8

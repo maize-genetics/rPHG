@@ -8,7 +8,7 @@ graphBuilder(configFile, myMethods, myChrom = NULL,
   myIncludeSequence = FALSE, myIncludeVariant = FALSE)
 }
 \arguments{
-\item{configFile}{Configuration file for DB.}
+\item{configFile}{Configuration file for graph database.}
 
 \item{myMethods}{Pairs of method calls - passed as string.}
 
@@ -26,4 +26,6 @@ R wrapper to build a PHG graph object for downstream use.
 }
 \author{
 Brandon Monier
+
+Peter Bradbury
 }

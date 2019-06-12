@@ -3,8 +3,9 @@
 #' @description R wrapper to build a PHG graph object for downstream use.
 #'
 #' @author Brandon Monier
+#' @author Peter Bradbury
 #'
-#' @param configFile Configuration file for DB.
+#' @param configFile Configuration file for graph database.
 #' @param myMethods Pairs of method calls - passed as string.
 #' @param myChrom List of chromosomes to include in graph. If NULL, defaults
 #'   to all.
@@ -12,6 +13,10 @@
 #'   (ADVANCED)
 #' @param myIncludeVariant Whether to include variant contexts in haplotype
 #'   nodes. (ADVANCED)
+#'
+#' @importFrom rJava .jnull
+#' @importFrom rJava J
+#' @importFrom rJava new
 #'
 #' @export
 graphBuilder <- function(configFile,
