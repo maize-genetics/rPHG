@@ -6,7 +6,7 @@
 #' @author Brandon Monier
 #' @author Peter Bradbury
 #'
-#' @param configFile Configuration file for graph database.
+#' @param configFile Path to a configuration file for your graph database.
 #'
 #' @importFrom rJava .jcast
 #' @importFrom rJava .jnull
@@ -16,6 +16,8 @@
 #'
 #' @export
 showPHGMethods <- function(configFile) {
+
+    ## Get table report plugin and pull data from DB
     plugin <- rJava::new(
         rJava::J("net/maizegenetics/pangenome/api/MethodTableReportPlugin")
     )
