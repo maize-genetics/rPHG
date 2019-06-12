@@ -4,21 +4,21 @@
 \alias{graphBuilder}
 \title{Test PHG builder function}
 \usage{
-graphBuilder(configFile, myMethods, myChrom = NULL,
-  myIncludeSequence = FALSE, myIncludeVariant = FALSE)
+graphBuilder(configFile, methods, chrom = NULL,
+  includeSequence = FALSE, includeVariant = FALSE)
 }
 \arguments{
-\item{configFile}{Configuration file for graph database.}
+\item{configFile}{Path to a configuration file for your graph database.}
 
-\item{myMethods}{Pairs of method calls - passed as string.}
+\item{methods}{Pairs of method calls - passed as string.}
 
-\item{myChrom}{List of chromosomes to include in graph. If NULL, defaults
+\item{chrom}{List of chromosomes to include in graph. If NULL, defaults
 to all.}
 
-\item{myIncludeSequence}{Whether to include sequences in haplotype nodes.
+\item{includeSequence}{Whether to include sequences in haplotype nodes.
 (ADVANCED)}
 
-\item{myIncludeVariant}{Whether to include variant contexts in haplotype
+\item{includeVariant}{Whether to include variant contexts in haplotype
 nodes. (ADVANCED)}
 }
 \description{

@@ -7,7 +7,7 @@
 showPHGMethods(configFile)
 }
 \arguments{
-\item{configFile}{Configuration file for graph database.}
+\item{configFile}{Path to a configuration file for your graph database.}
 }
 \description{
 Gets all available PHG methods from the graph database
