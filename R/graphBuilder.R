@@ -1,3 +1,5 @@
+# TODO create an S4 object for graph (rPHG) object (Brandon)
+
 #' @title Test PHG builder function
 #'
 #' @description R wrapper to build a PHG graph object for downstream use.
@@ -36,11 +38,8 @@ graphBuilder <- function(configFile,
     phgPlugin$configFile(configFile)
     phgPlugin$methods(toString(methods))
     phgPlugin$chromosomes(chrom)
-    # phgPlugin$includeSequences(toString(includeSequence))
-    # phgPlugin$includeVariantContexts(toString(includeVariant))
     phgPlugin$setParameter("includeSequences", toString(includeSequence))
     phgPlugin$setParameter("includeVariantContexts", toString(includeVariant))
-    # phgPlugin$setParameter("chromosomes", myChrom)
 
     ## Build the PHG...
     message("Building the graph...")
