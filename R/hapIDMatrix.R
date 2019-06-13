@@ -14,7 +14,6 @@
 hapIDMatrix <- function(phgObject) {
 
     ## Pull hap ID matrix from phg object
-    # J("net.maizegenetics.pangenome.api/RMethods", "hapidTableAsMatrix", phgObject)
     hapids <- rJava::J(
         "net.maizegenetics.pangenome.api/RMethods",
         "hapidTableAsMatrix",
