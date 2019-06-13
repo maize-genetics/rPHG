@@ -2,7 +2,7 @@
 % Please edit documentation in R/pathMatrix.R
 \name{pathMatrix}
 \alias{pathMatrix}
-\title{Generate a best path matrix}
+\title{Generate a path matrix}
 \usage{
 pathMatrix(configFile, pathDir)
 }
@@ -12,7 +12,8 @@ pathMatrix(configFile, pathDir)
 \item{pathDir}{A directory to path files.}
 }
 \description{
-Generates a matrix of best paths from a PHG object.
+Generates a matrix of paths from a directory path of
+  \code{path.txt} files
 }
 \author{
 Brandon Monier
