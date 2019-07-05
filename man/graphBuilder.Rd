@@ -12,8 +12,9 @@ graphBuilder(configFile, methods, chrom = NULL,
 
 \item{methods}{Pairs of method calls - passed as string.}
 
-\item{chrom}{List of chromosomes to include in graph. If NULL, defaults
-to all.}
+\item{chrom}{A vector of chromosomes to include in graph. If NULL, defaults
+to all. To specify multiple chromosome, pass as a vector of strings (i.e.
+\code{c("1", "2", "3")}).}
 
 \item{includeSequence}{Whether to include sequences in haplotype nodes.
 (ADVANCED)}
