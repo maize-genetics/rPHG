@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.0.2
+Version: 0.1.1
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -7,7 +7,7 @@ Authors@R: c(
         given = "Brandon",
         family = "Monier",
         email = "brandon.monier@gmail.com",
-        role = c("aut")
+        role = c("aut", "cre")
     ),
     person(
         given = "Peter",
@@ -23,7 +23,7 @@ Authors@R: c(
         given = "Ed",
         family = "Buckler",
         email = "esb33@cornell.edu",
-        role = c("aut", "cre")
+        role = c("aut")
     ))
 Description:
     The aim of rPHG is to develop an R API for the practical haplotype
