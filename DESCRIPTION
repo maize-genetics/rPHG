@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.2
+Version: 0.1.4
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -17,6 +17,11 @@ Authors@R: c(
     person(
         given = "Terry",
         family = "Casstevens",
+        role = c("aut")
+    ),
+    person(
+        given = "Jean-Luc",
+        family = "Jannink",
         role = c("aut")
     ),
     person(
@@ -45,6 +50,8 @@ License: GPL-3 | file LICENSE
 URL:
     https://bitbucket.org/bucklerlab/rtassel/src/master/
 Imports:
+    corrplot,
+    magrittr,
     rJava,
     rlang,
     tibble
