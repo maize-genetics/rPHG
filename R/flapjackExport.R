@@ -29,4 +29,5 @@ flapjackExport <- function(phgObject, outputName = NULL) {
         phgObject,
         outputName
     )
+    message("Flapjack files exported")
 }
