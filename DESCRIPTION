@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.4
+Version: 0.1.5
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -51,9 +51,14 @@ URL:
     https://bitbucket.org/bucklerlab/rtassel/src/master/
 Imports:
     corrplot,
+    GenomicRanges,
+    IRanges,
     magrittr,
+    methods,
     rJava,
     rlang,
+    S4Vectors,
+    SummarizedExperiment,
     tibble
 Suggests:
     BiocStyle
