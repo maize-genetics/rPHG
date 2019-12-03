@@ -1,0 +1,7 @@
+host=localHost
+user=sqlite
+password=sqlite
+DB=/home/bm646/Projects/rphg/inst/extdata/phgSmallSeq.db
+DBtype=sqlite
+minTaxa=1
+minSites=5
