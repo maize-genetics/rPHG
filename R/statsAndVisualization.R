@@ -11,25 +11,47 @@
 #' @param end End position of chromosome. Defaults to \code{NULL}. If
 #'   \code{NULL}, the whole chromosome will be analyzed.
 #'
+#' @importFrom SummarizedExperiment as.data.frame
+#' @importFrom SummarizedExperiment assays
+#' @importFrom SummarizedExperiment ranges
+#' @importFrom SummarizedExperiment rowRanges
+#' @importFrom SummarizedExperiment seqnames
+#'
 #' @export
 numHaploPerRange <- function(phgObject, chr = NULL, start = 0, end = NULL){
-  # Get information about the reference ranges
-    phgRefRange <- refRangeTable(phgObject=phgObject)
-    if (is.null(end)) end <- max(phgRefRange$end)
-    allChr <- unique(phgRefRange$chr)
+    # Get information about the reference ranges
+    phgRefRange <- SummarizedExperiment::rowRanges(phgObject)
+
+    rr <- SummarizedExperiment::ranges(phgRefRange)
+
+    # Logic
+    if (is.null(end)) {
+        end <- max(end(rr))
+    }
+
+    allChr <- unique(SummarizedExperiment::seqnames(phgRefRange))
+    allChr <- as.vector(allChr)
     if (is.null(chr)){
         chr <- allChr
     } else{
         if (!(chr %in% allChr)) stop("Chromosome is not in the PHG")
     }
-    # Which reference rangeson the chromosome within start and end positions
-    keepRanges <- which(phgRefRange$chr %in% chr & start <= phgRefRange$start & phgRefRange$end <= end)
-    if (length(keepRanges)==0) stop("There are no ranges with requested start and end")
+
+    # Which reference ranges on the chromosome within start and end positions
+    tmp <- as.numeric(SummarizedExperiment::seqnames(phgRefRange))
+    keepRanges <- which(tmp %in% chr & start <= start(rr) & end(rr) <= end)
+
+    if (length(keepRanges) == 0) {
+        stop("There are no ranges with requested start and end")
+    }
+
     # How many haplotypes are in those reference ranges
-    phgHapIDMat <- hapIDMatrix(phgObject=phgObject)
+    phgHapIDMat <- t(SummarizedExperiment::assays(phgObject)$hapID)
     nHaplo <- apply(phgHapIDMat[, keepRanges], 2, function(vec) length(setdiff(unique(vec), -1)))
+
     # Return the numerical information
-    return(cbind(phgRefRange[keepRanges,], numHaplotypes=nHaplo))
+    rr <- SummarizedExperiment::as.data.frame(rr)
+    return(cbind(rr[keepRanges, ], numHaplotypes = nHaplo))
 }
 
 
@@ -43,23 +65,23 @@ numHaploPerRange <- function(phgObject, chr = NULL, start = 0, end = NULL){
 #'
 #' @export
 plotNumHaplo <- function(refRanges){
-  nRanges <- nrow(refRanges)
-  # Prepare the plotting coordinates
-  # Two possibilities: ranges are contiguous or not
-  # If the former lines join all ranges. If the latter,
-  # lines make bars starting from 1.  Pretty arbitrary.
-  xcoord <- strtEnd <- c(t(refRanges[ ,c("start", "end")]))
-  ycoord <- rep(refRanges$numHaplotypes, each=2)
-  rangeDiff <- diff(xcoord)[1:nRanges*2]
-  if (sum(rangeDiff == 1, na.rm=T) <= nRanges / 2){ # Ranges are not contiguous
-    xcoord <- rep(xcoord, each=2)
-    ycoord <- rep(ycoord, each=2)
-    ycoord[c(1:nRanges * 4, 1:nRanges * 4 - 3)] <- 1
-  }
-  ylim <- c(0, max(ycoord))
-  plot(xcoord, ycoord, type="l", xlab="Physical Position", ylab="Number of Haplotypes", ylim=ylim)
-  # Small red vertical lines show the limits of each reference range
-  lines(x=strtEnd, y=rep(1, 2*nRanges), type="h", col="red")
+    nRanges <- nrow(refRanges)
+    # Prepare the plotting coordinates
+    # Two possibilities: ranges are contiguous or not
+    # If the former lines join all ranges. If the latter,
+    # lines make bars starting from 1.  Pretty arbitrary.
+    xcoord <- strtEnd <- c(t(refRanges[ ,c("start", "end")]))
+    ycoord <- rep(refRanges$numHaplotypes, each=2)
+    rangeDiff <- diff(xcoord)[1:nRanges*2]
+    if (sum(rangeDiff == 1, na.rm=T) <= nRanges / 2){ # Ranges are not contiguous
+      xcoord <- rep(xcoord, each=2)
+      ycoord <- rep(ycoord, each=2)
+      ycoord[c(1:nRanges * 4, 1:nRanges * 4 - 3)] <- 1
+    }
+    ylim <- c(0, max(ycoord))
+    plot(xcoord, ycoord, type="l", xlab="Physical Position", ylab="Number of Haplotypes", ylim=ylim)
+    # Small red vertical lines show the limits of each reference range
+    lines(x=strtEnd, y=rep(1, 2*nRanges), type="h", col="red")
 }
 
 
