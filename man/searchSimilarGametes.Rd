@@ -4,22 +4,27 @@
 \alias{searchSimilarGametes}
 \title{Search for similar gamets}
 \usage{
-searchSimilarGametes(gameteName, phgHapIDMat = NULL, phgObject = NULL,
-  refRanges, fractionDiff = 0)
+searchSimilarGametes(
+  phgObject = NULL,
+  refRanges,
+  gameteName,
+  fractionDiff = 0,
+  phgHapIDMat = NULL
+)
 }
 \arguments{
-\item{gameteName}{A specified gamete name}
-
-\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function. If
-\code{NULL}, A hap ID matrix will be generated (if you have supplied a
-PHG object).}
-
 \item{phgObject}{A PHG object.}
 
 \item{refRanges}{Specifed reference ranges.}
 
+\item{gameteName}{A specified gamete name}
+
 \item{fractionDiff}{The difference between haplotypes (either 0 or 1). See
 description for further details.}
+
+\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function. If
+\code{NULL}, A hap ID matrix will be generated (if you have supplied a
+PHG object).}
 }
 \description{
 Search for inbred lines (gametes) that are similar to a

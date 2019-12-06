@@ -4,8 +4,13 @@
 \alias{graphBuilder}
 \title{Test PHG builder function}
 \usage{
-graphBuilder(configFile, methods, chrom = NULL,
-  includeSequence = FALSE, includeVariant = FALSE)
+graphBuilder(
+  configFile,
+  methods,
+  chrom = NULL,
+  includeSequence = FALSE,
+  includeVariant = FALSE
+)
 }
 \arguments{
 \item{configFile}{Path to a configuration file for your graph database.}

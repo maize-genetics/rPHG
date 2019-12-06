@@ -4,10 +4,10 @@
 \alias{plotNumHaplo}
 \title{Plot the number of haplotypes}
 \usage{
-plotNumHaplo(refRanges)
+plotNumHaplo(haploData)
 }
 \arguments{
-\item{refRanges}{The output of \code{numHaploPerRange()}}
+\item{haploData}{The output of \code{numHaploPerRange()}}
 }
 \description{
 This function will plot the number of haplotypes. Its input

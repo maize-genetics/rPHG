@@ -9,8 +9,6 @@
 #'
 #' @importFrom rJava is.jnull
 #' @importFrom rJava J
-#'
-#' @export
 hapIDMatrix <- function(phgObject) {
 
     ## Pull hap ID matrix from phg object

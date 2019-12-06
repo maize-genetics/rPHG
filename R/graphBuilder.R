@@ -1,5 +1,3 @@
-# TODO create an S4 object for graph (rPHG) object (Brandon)
-
 #' @title Test PHG builder function
 #'
 #' @description R wrapper to build a PHG graph object for downstream use.
@@ -17,6 +15,7 @@
 #' @param includeVariant Whether to include variant contexts in haplotype
 #'   nodes. (ADVANCED)
 #'
+#' @importFrom methods new
 #' @importFrom rJava .jnew
 #' @importFrom rJava .jnull
 #' @importFrom rJava J
@@ -57,8 +56,39 @@ graphBuilder <- function(configFile,
     ## Build the PHG...
     message("Building the graph...")
     phgObj <- phgPlugin$build()
+    phgObj <- sumExpBuilder(phgObj = phgObj)
+    phgObj <- methods::new(Class = "PHGDataSet", phgObj)
 
     ## Return PHG object
     message("Finished!")
     return(phgObj)
 }
+
+
+#' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges
+#' @importFrom S4Vectors metadata
+#' @importFrom SummarizedExperiment SummarizedExperiment
+sumExpBuilder <- function(phgObj) {
+    hapIDMat <- hapIDMatrix(phgObject = phgObj)
+    phgRefRange <- refRangeTable(phgObject = phgObj)
+
+    rr <- GenomicRanges::GRanges(
+        seqnames = phgRefRange$chr,
+        ranges = IRanges::IRanges(
+            start = phgRefRange$start,
+            end = phgRefRange$end
+        ),
+        refRange_id = phgRefRange$id
+    )
+
+    phgSE <- SummarizedExperiment::SummarizedExperiment(
+        assays = list(hapID = t(hapIDMat)),
+        rowRanges = rr
+    )
+    S4Vectors::metadata(phgSE)$jObj <- phgObj
+
+    return(phgSE)
+}
+
+
