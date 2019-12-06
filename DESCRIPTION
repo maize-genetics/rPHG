@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.5
+Version: 0.1.6
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -48,11 +48,13 @@ Description:
     and selection intensity in a breeding program.
 License: GPL-3 | file LICENSE
 URL:
-    https://bitbucket.org/bucklerlab/rtassel/src/master/
+    https://bitbucket.org/bucklerlab/rphg/src/master/
 Imports:
     corrplot,
     GenomicRanges,
+    ggplot2,
     IRanges,
+    knitr,
     magrittr,
     methods,
     rJava,
@@ -64,6 +66,8 @@ Suggests:
     BiocStyle
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+VignetteBuilder:
+    knitr
+RoxygenNote: 7.0.2
 biocViews:
     GenomeWideAssociation
