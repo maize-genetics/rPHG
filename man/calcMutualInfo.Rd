@@ -4,18 +4,22 @@
 \alias{calcMutualInfo}
 \title{Calculate the mutual information between a set of reference ranges}
 \usage{
-calcMutualInfo(phgHapIDMat = NULL, phgObject = NULL,
-  gameteNames = NULL, refRanges)
+calcMutualInfo(
+  phgObject = NULL,
+  refRanges,
+  gameteNames = NULL,
+  phgHapIDMat = NULL
+)
 }
 \arguments{
-\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function.}
-
 \item{phgObject}{A PHG object.}
+
+\item{refRanges}{What reference ranges you wan to specify?}
 
 \item{gameteNames}{Specified gamete names. If \code{NULL}, gamete names will
 default to taxa IDs (haplottype ID matrix row names).}
 
-\item{refRanges}{What reference ranges you wan to specify?}
+\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function.}
 }
 \description{
 Mutual information quantifies the "amount of information"

@@ -4,21 +4,26 @@
 \alias{searchRecombination}
 \title{Search for recombination}
 \usage{
-searchRecombination(gameteName, phgHapIDMat = NULL, phgObject = NULL,
-  refRangeSame, refRangeDiff)
+searchRecombination(
+  phgObject = NULL,
+  gameteName,
+  refRangeSame,
+  refRangeDiff,
+  phgHapIDMat = NULL
+)
 }
 \arguments{
-\item{gameteName}{A specified gamete name}
-
-\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function. If
-\code{NULL}, A hap ID matrix will be generated (if you have supplied a
-PHG object).}
-
 \item{phgObject}{A PHG object.}
+
+\item{gameteName}{A specified gamete name}
 
 \item{refRangeSame}{See description for further details.}
 
 \item{refRangeDiff}{See description for further details.}
+
+\item{phgHapIDMat}{The output of the \code{hapIDMatrix()} function. If
+\code{NULL}, A hap ID matrix will be generated (if you have supplied a
+PHG object).}
 }
 \description{
 Search for inbred lines (gametes) that are the same in one
