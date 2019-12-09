@@ -56,16 +56,9 @@ https://bitbucket.org/bucklerlab/practicalhaplotypegraph/wiki/Home
 
 ## Motivation
 The main goal of developing this package is to construct an R-based front-end
-to connect to a variety of highly used PHG methods and analytical tools.
-By using R as a front-end, we aim to utilize a *unified* scripting workflow that
-exploits the analytical prowess of PHG in conjunction with R's popular
-data handling and parsing capabilities without ever having the user to switch
-between these two environments.
-
-## Disclaimer
-Due to the *experimental* nature of this package's life cycle, end
-functionalities are prone to change after end-user input is obtained in the
-near future.
+to build and interact with the PHG API that implements commonly used 
+Biocondcutor classes, data structures, and accessor methods for downstream 
+analysis and integration with other packages.
 
 
 
