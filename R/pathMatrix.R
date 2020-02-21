@@ -34,3 +34,89 @@ pathMatrix <- function(configFile, pathDir) {
     }
     return(pathMatrix)
 }
+
+
+
+#' @title Generate a matrix for all the paths for \code{pathMethod}
+#'
+#' @description Returns a \code{matrix} object of haplotype ids with taxa name
+#'   for row names and reference range id for the column name.
+#'
+#' @author Brandon Monier
+#' @author Peter Bradbury
+#'
+#' @param configFile Path to a configuration file for your graph database.
+#' @param pathMethod The name of the path method in the PHG DB
+#'
+#' @importFrom rJava J
+#'
+#' @export
+pathsForMethod <- function(configFile, pathMethod) {
+
+    # Retrieve Java matrix object
+    pathObj <- rJava::J(
+        "net.maizegenetics.pangenome.api/RMethods",
+        "pathsForMethod",
+        configFile,
+        pathMethod
+    )
+
+    # Configure for R
+    pathMat <- pathObj$matrix
+    rownames(pathMat) <- pathObj$rowNames
+    colnames(pathMat) <- pathObj$columnNames
+
+    # Return
+    return(pathMat)
+}
+
+
+
+#' @title Retrieve read mapping information from PHG database.
+#'
+#' @description Return a \code{data.frame} object of read mapping information
+#'   for a given line (i.e. taxon).
+#'
+#' @author Brandon Monier
+#' @author Peter Bradbury
+#'
+#' @param configFile Path to a configuration file for your graph database.
+#' @param lineName The name of the line (taxon) for which the read mapping
+#'   information is to be retrieved. If there are multiple read mappings with
+#'   different \code{file_group_names}, they will be combined.
+#' @param readMappingMethodName The method name for the read mappings
+#'   (only takes a single method).
+#' @param haplotypeMethodName The haplotype method name.
+#'
+#' @importFrom rJava J
+#' @importFrom S4Vectors DataFrame
+#'
+#' @export
+readMappingsForLineName <- function(configFile,
+                                    lineName,
+                                    readMappingMethodName,
+                                    haplotypeMethodName) {
+
+    # Retrieve Java data vector object(s)
+    rmObj <- rJava::J(
+        "net.maizegenetics.pangenome.api/RMethods",
+        "readMappingsForLineName",
+        configFile,
+        lineName,
+        readMappingMethodName,
+        haplotypeMethodName
+    )
+
+    # Configure for R
+    colNum <- rmObj$dataVectors$size()
+    rmDF <- lapply(seq_len(colNum), function(i) {
+        rmObj$dataVectors$get(as.integer(i - 1))
+    })
+    rmDF <- data.frame(rmDF)
+    colnames(rmDF) <- rmObj$columnNames
+
+    # Return
+    return(S4Vectors::DataFrame(rmDF))
+}
+
+
