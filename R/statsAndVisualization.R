@@ -97,13 +97,14 @@ plotNumHaplo <- function(haploData) {
   tmp[seq(1, nrow(tmp), by = 2),]$color <- "#3e619b"
 
   # Get limit data
-  xend <- tmp$end[nrow(tmp)]
+  xbeg <- min(tmp$start)
+  xend <- max(tmp$end)
   yend <- max(tmp$numHaplotypes)
 
   # Visualize
   hapPlot <- ggplot(data = tmp) +
     ylim(-(yend * yfrac), yend) +
-    scale_x_continuous(limits = c(1, xend)) +
+    scale_x_continuous(limits = c(xbeg, xend)) +
     geom_rect(
       mapping = aes(
         xmin = .data$start,
