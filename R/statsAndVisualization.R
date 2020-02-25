@@ -25,7 +25,7 @@ numHaploPerRange <- function(phgObject,
                              end = NULL) {
 
   # Get information about the reference ranges
-  rr <- SummarizedExperiment::ranges(phgObject)
+  rr <- SummarizedExperiment::rowRanges(phgObject)
 
   # Logic
   if (is.null(end)) {
@@ -65,7 +65,7 @@ numHaploPerRange <- function(phgObject,
   # Return the numerical information
   rr <- SummarizedExperiment::as.data.frame(rr)
   rr <- cbind(rr[keepRanges,], numHaplotypes = nHaplo)
-  rr <- rr[, c(4, 1, 2, 3, 5)]
+  rr <- rr[, c(6, 1, 2, 3, 4, 7)]
   return(S4Vectors::DataFrame(rr))
 }
 
