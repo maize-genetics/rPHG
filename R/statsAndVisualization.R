@@ -37,8 +37,9 @@ numHaploPerRange <- function(phgObject,
   if (is.null(chr)) {
     chr <- allChr
   } else{
-    if (!(chr %in% allChr))
-      stop("Chromosome is not in the PHG")
+    if (!all(chr %in% allChr)) {
+      warning(paste(c("The following chromosomes are not found:", setdiff(chr, allChr)), collapse=" "))
+    }
   }
 
   # Which reference ranges on the chromosome within start and end positions
