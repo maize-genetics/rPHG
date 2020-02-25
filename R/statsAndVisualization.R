@@ -116,7 +116,7 @@ plotNumHaplo <- function(haploData) {
     geom_path(aes(x = .data$med, y = .data$numHaplotypes)) +
     geom_point(aes(x = .data$med, y = .data$numHaplotypes), size = 1) +
     facet_grid(seqnames ~ .) +
-    xlab("Physical Position") +
+    xlab("Physical Position (bp)") +
     ylab("Number of Haplotypes")
 
   return(hapPlot)
