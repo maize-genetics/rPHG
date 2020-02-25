@@ -92,7 +92,7 @@ plotNumHaplo <- function(haploData) {
   xfrac <- 0.001
 
   # Add shape data
-  tmp$med <- apply(tmp[, 2:3], 1, stats::median)
+  tmp$med <- apply(tmp[, 3:4], 1, stats::median)
   tmp$color <- "#91baff"
   tmp[seq(1, nrow(tmp), by = 2),]$color <- "#3e619b"
 
