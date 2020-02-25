@@ -25,16 +25,14 @@ numHaploPerRange <- function(phgObject,
                              end = NULL) {
 
   # Get information about the reference ranges
-  phgRefRange <- SummarizedExperiment::rowRanges(phgObject)
-
-  rr <- SummarizedExperiment::ranges(phgRefRange)
+  rr <- SummarizedExperiment::ranges(phgObject)
 
   # Logic
   if (is.null(end)) {
     end <- max(end(rr))
   }
 
-  allChr <- unique(SummarizedExperiment::seqnames(phgRefRange))
+  allChr <- unique(SummarizedExperiment::seqnames(phgObject))
   allChr <- as.vector(allChr)
   if (is.null(chr)) {
     chr <- allChr
@@ -44,9 +42,8 @@ numHaploPerRange <- function(phgObject,
   }
 
   # Which reference ranges on the chromosome within start and end positions
-  tmp <- as.numeric(SummarizedExperiment::seqnames(phgRefRange))
-  keepRanges <-
-    which(tmp %in% chr & start <= start(rr) & end(rr) <= end)
+  tmp <- as.vector(SummarizedExperiment::seqnames(phgObject))
+  keepRanges <- which(tmp %in% chr & start <= start(rr) & end(rr) <= end)
 
   if (length(keepRanges) == 0) {
     stop("There are no ranges with requested start and end")
@@ -54,8 +51,15 @@ numHaploPerRange <- function(phgObject,
 
   # How many haplotypes are in those reference ranges
   phgHapIDMat <- t(SummarizedExperiment::assays(phgObject)$hapID)
-  nHaplo <- apply(phgHapIDMat[, keepRanges], 2, function(vec) {
-    length(setdiff(unique(vec),-1))
+  
+  if (dim(phgObject)[2] == 1) {
+    phgFilt <- phgHapIDMat[, keepRanges]
+    phgFilt <- t(as.matrix(phgFilt))
+  } else {
+    phgFilt <- phgHapIDMat[, keepRanges]
+  }
+  nHaplo <- apply(phgFilt, 2, function(vec) {
+    length(unique(vec))
   })
 
   # Return the numerical information
