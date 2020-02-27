@@ -6,26 +6,31 @@
 #'
 #' @param configFile Path to a configuration file for your graph database.
 configCatcher <- function(configFile) {
-    
-    if (!file.exists(configPath)) {
+
+    if (!file.exists(configFile)) {
         stop ("Path to config file does not exist.")
     }
-    
-    tmpLines <- readLines(configPath)
-    dbParam <- tmpLines[grepl("DB=", tmp)]
-    
+
+    tmpLines <- readLines(configFile)
+    dbParam <- tmpLines[grepl("DB=", tmpLines)]
+    credParam <- tmpLines[grepl("user=|password=", tmpLines)]
+
+    if (length(credParam) != 2) {
+        stop("Missing credentials (user= and/or password=) in config file.")
+    }
+
     if (length(dbParam) == 0) {
-        stop("DB parameter does not exist.")
+        stop("Database parameter (DB=) in config file does not exist.")
     }
-    
+
     if (length(dbParam) > 1) {
-        stop("Config file contains more than one DB path.")
+        stop("Config file contains more than one database path parameter (DB=).")
     }
-    
+
     dbParam <- gsub("DB=", "", dbParam)
-    
+
     if (!file.exists(dbParam)) {
-        stop("Path to database does not exist.")
+        stop("Path to database (DB=) in config file does not exist.")
     }
 }
 
