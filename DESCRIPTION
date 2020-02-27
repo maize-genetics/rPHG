@@ -60,8 +60,9 @@ Imports:
     rJava,
     rlang,
     S4Vectors,
-    SummarizedExperiment,
     tibble
+Depends:
+    SummarizedExperiemtn
 Suggests:
     BiocStyle
 Encoding: UTF-8
