@@ -46,3 +46,51 @@ startLogger <- function(fullPath = NULL, fileName = NULL, ...) {
 
     message("PHG logging file created at: ", rtlog)
 }
+
+
+
+#' @title Create PHG config file (WIP)
+#'
+#' @description This function will create a config file on the fly for basic
+#'    PHG databases built via SQLite. This is a \strong{work in progress.}
+#'    \strong{FOR ADVANCED USE ONLY.}
+#'
+#' @param dbName Database name (\code{*.db}).
+#' @param dbType What type of database is this?
+#' @param fileName Configuration file name (\code{*.txt}).
+#' @param exportPath Specify a specific export path.
+#' @param user Username for database.
+#' @param password Password for database.
+configFileMaker <- function(dbName,
+                            dbType = c("sqlite", "postgresql"),
+                            fileName = NULL,
+                            exportPath = NULL,
+                            user = NULL,
+                            password = NULL) {
+    # Logic (1)
+    if(missing(dbType) || !dbType %in% dbType) {
+        stop("Please specify correct DB type: 'sqlite' or 'postgresql'")
+    }
+
+    # Logic (2)
+    if (is.null(fileName)) fileName <- "configFilePHG.txt"
+    if (is.null(exportPath)) exportPath <- getwd()
+    if (is.null(user)) user <- dbType
+    if (is.null(password)) password <- dbType
+
+    # Write to file
+    fileConn <- file(paste0(exportPath, "/", fileName))
+    writeLines(
+        text = c(
+            "host=localHost",
+            paste0("user=", user),
+            paste0("password=", password),
+            paste0("DB=", exportPath, "/", dbName),
+            paste0("DBtype=", dbType)
+        ),
+        con = fileConn
+    )
+    close(fileConn)
+}
+
+
