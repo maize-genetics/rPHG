@@ -16,6 +16,8 @@
 #'
 #' @export
 showPHGMethods <- function(configFile) {
+    
+    configCatcher(configFile)
 
     ## Get table report plugin and pull data from DB
     plugin <- rJava::new(
