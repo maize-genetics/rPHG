@@ -27,6 +27,8 @@ graphBuilder <- function(configFile,
                          chrom = NULL,
                          includeSequence = FALSE,
                          includeVariant = FALSE) {
+    
+    configCatcher(configFile)
 
     ## Create PHG plugin object
     phgPlugin <- rJava::new(

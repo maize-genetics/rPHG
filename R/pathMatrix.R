@@ -15,6 +15,8 @@
 #'
 #' @export
 pathMatrix <- function(configFile, pathDir) {
+    
+    configCatcher(configFile)
 
     pathFiles <- list.files(pathDir, full.names = TRUE)
 
@@ -52,6 +54,8 @@ pathMatrix <- function(configFile, pathDir) {
 #'
 #' @export
 pathsForMethod <- function(configFile, pathMethod) {
+    
+    configCatcher(configFile)
 
     # Retrieve Java matrix object
     pathObj <- rJava::J(
@@ -96,6 +100,8 @@ readMappingsForLineName <- function(configFile,
                                     lineName,
                                     readMappingMethodName,
                                     haplotypeMethodName) {
+    
+    configCatcher(configFile)
 
     # Retrieve Java data vector object(s)
     rmObj <- rJava::J(
