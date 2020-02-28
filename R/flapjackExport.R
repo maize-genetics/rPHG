@@ -15,8 +15,8 @@
 flapjackExport <- function(phgObject, outputName = NULL) {
 
     ## Logic
-    if (missing(phgObject)) {
-        stop("Function needs a PHG object variable to work.")
+    if (class(phgObject) != "PHGDataSet") {
+        stop("Function needs a object of class 'PHGDataSet' to work.")
     }
     if (is.null(outputName)) {
         outputName <- "phg_output"
@@ -26,7 +26,7 @@ flapjackExport <- function(phgObject, outputName = NULL) {
     rJava::J(
         "net.maizegenetics.pangenome.api/RMethods",
         "exportPHGToFlapjack",
-        phgObject,
+        S4Vectors::metadata(phgObject)$jObj,
         outputName
     )
     message("Flapjack files exported")
