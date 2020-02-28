@@ -90,7 +90,7 @@ configFileMaker <- function(dbName,
         ),
         con = fileConn
     )
-    close(fileConn)
+    on.exit(close(fileConn))
 }
 
 
