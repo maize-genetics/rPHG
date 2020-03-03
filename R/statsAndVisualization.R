@@ -24,50 +24,50 @@ numHaploPerRange <- function(phgObject,
                              start = 0,
                              end = NULL) {
 
-  # Get information about the reference ranges
-  rr <- SummarizedExperiment::rowRanges(phgObject)
+    # Get information about the reference ranges
+    rr <- SummarizedExperiment::rowRanges(phgObject)
 
-  # Logic
-  if (is.null(end)) {
-    end <- max(end(rr))
-  }
-
-  allChr <- unique(SummarizedExperiment::seqnames(phgObject))
-  allChr <- as.vector(allChr)
-  if (is.null(chr)) {
-    chr <- allChr
-  } else{
-    if (!all(chr %in% allChr)) {
-      warning(paste(c("The following chromosomes are not found:", setdiff(chr, allChr)), collapse=" "))
+    # Logic
+    if (is.null(end)) {
+        end <- max(end(rr))
     }
-  }
 
-  # Which reference ranges on the chromosome within start and end positions
-  tmp <- as.vector(SummarizedExperiment::seqnames(phgObject))
-  keepRanges <- which(tmp %in% chr & start <= start(rr) & end(rr) <= end)
+    allChr <- unique(SummarizedExperiment::seqnames(phgObject))
+    allChr <- as.vector(allChr)
+    if (is.null(chr)) {
+        chr <- allChr
+    } else{
+        if (!all(chr %in% allChr)) {
+            warning(paste(c("The following chromosomes are not found:", setdiff(chr, allChr)), collapse=" "))
+        }
+    }
 
-  if (length(keepRanges) == 0) {
-    stop("There are no ranges with requested start and end")
-  }
+    # Which reference ranges on the chromosome within start and end positions
+    tmp <- as.vector(SummarizedExperiment::seqnames(phgObject))
+    keepRanges <- which(tmp %in% chr & start <= start(rr) & end(rr) <= end)
 
-  # How many haplotypes are in those reference ranges
-  phgHapIDMat <- t(SummarizedExperiment::assays(phgObject)$hapID)
-  
-  if (dim(phgObject)[2] == 1) {
-    phgFilt <- phgHapIDMat[, keepRanges]
-    phgFilt <- t(as.matrix(phgFilt))
-  } else {
-    phgFilt <- phgHapIDMat[, keepRanges]
-  }
-  nHaplo <- apply(phgFilt, 2, function(vec) {
-    length(unique(vec))
-  })
+    if (length(keepRanges) == 0) {
+        stop("There are no ranges with requested start and end")
+    }
 
-  # Return the numerical information
-  rr <- SummarizedExperiment::as.data.frame(rr)
-  rr <- cbind(rr[keepRanges,], numHaplotypes = nHaplo)
-  rr <- rr[, c(6, 1, 2, 3, 4, 7)]
-  return(S4Vectors::DataFrame(rr))
+    # How many haplotypes are in those reference ranges
+    phgHapIDMat <- t(SummarizedExperiment::assays(phgObject)$hapID)
+
+    if (dim(phgObject)[2] == 1) {
+        phgFilt <- phgHapIDMat[, keepRanges]
+        phgFilt <- t(as.matrix(phgFilt))
+    } else {
+        phgFilt <- phgHapIDMat[, keepRanges]
+    }
+    nHaplo <- apply(phgFilt, 2, function(vec) {
+        length(unique(vec))
+    })
+
+    # Return the numerical information
+    rr <- SummarizedExperiment::as.data.frame(rr)
+    rr <- cbind(rr[keepRanges,], numHaplotypes = nHaplo)
+    rr <- rr[, c(6, 1, 2, 3, 4, 7)]
+    return(S4Vectors::DataFrame(rr))
 }
 
 
@@ -85,43 +85,43 @@ numHaploPerRange <- function(phgObject,
 #'
 #' @export
 plotNumHaplo <- function(haploData) {
-  # Coerce to data frame for ggplot2
-  tmp <- as.data.frame(haploData)
+    # Coerce to data frame for ggplot2
+    tmp <- as.data.frame(haploData)
 
-  # Shape proportions
-  yfrac <- 0.1
-  xfrac <- 0.001
+    # Shape proportions
+    yfrac <- 0.1
+    xfrac <- 0.001
 
-  # Add shape data
-  tmp$med <- apply(tmp[, 3:4], 1, stats::median)
-  tmp$color <- "#91baff"
-  tmp[seq(1, nrow(tmp), by = 2),]$color <- "#3e619b"
+    # Add shape data
+    tmp$med <- apply(tmp[, 3:4], 1, stats::median)
+    tmp$color <- "#91baff"
+    tmp[seq(1, nrow(tmp), by = 2),]$color <- "#3e619b"
 
-  # Get limit data
-  xbeg <- min(tmp$start)
-  xend <- max(tmp$end)
-  yend <- max(tmp$numHaplotypes)
+    # Get limit data
+    xbeg <- min(tmp$start)
+    xend <- max(tmp$end)
+    yend <- max(tmp$numHaplotypes)
 
-  # Visualize
-  hapPlot <- ggplot(data = tmp) +
-    ylim(-(yend * yfrac), yend) +
-    scale_x_continuous(limits = c(xbeg, xend)) +
-    geom_rect(
-      mapping = aes(
-        xmin = .data$start,
-        xmax = .data$end,
-        ymin = 0,
-        ymax = -(yend * yfrac)
-      ),
-      fill = tmp$color
-    ) +
-    geom_path(aes(x = .data$med, y = .data$numHaplotypes)) +
-    geom_point(aes(x = .data$med, y = .data$numHaplotypes), size = 1) +
-    facet_grid(seqnames ~ .) +
-    xlab("Physical Position (bp)") +
-    ylab("Number of Haplotypes")
+    # Visualize
+    hapPlot <- ggplot(data = tmp) +
+        ylim(-(yend * yfrac), yend) +
+        scale_x_continuous(limits = c(xbeg, xend)) +
+        geom_rect(
+            mapping = aes(
+                xmin = .data$start,
+                xmax = .data$end,
+                ymin = 0,
+                ymax = -(yend * yfrac)
+            ),
+            fill = tmp$color
+        ) +
+        geom_path(aes(x = .data$med, y = .data$numHaplotypes)) +
+        geom_point(aes(x = .data$med, y = .data$numHaplotypes), size = 1) +
+        facet_grid(seqnames ~ .) +
+        xlab("Physical Position (bp)") +
+        ylab("Number of Haplotypes")
 
-  return(hapPlot)
+    return(hapPlot)
 }
 
 
@@ -145,59 +145,57 @@ calcMutualInfo <- function(phgObject = NULL,
                            refRanges,
                            gameteNames = NULL,
                            phgHapIDMat = NULL) {
-  if (is.null(phgHapIDMat)) {
-    if (is.null(phgObject)) {
-      stop("Must supply phgHapIDMat or phgObject")
+    if (is.null(phgHapIDMat)) {
+        if (is.null(phgObject)) {
+            stop("Must supply phgHapIDMat or phgObject")
+        }
+        phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
     }
-    phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
-  }
 
-  if (is.null(gameteNames)) {
-    gameteNames <- rownames(phgHapIDMat)
-  }
-
-  phgHapIDMat <- phgHapIDMat[gameteNames, refRanges, drop = FALSE]
-  # you can't do this with single gametes or ranges
-  if (any(dim(phgHapIDMat) < 2)) {
-    return(NULL)
-  }
-
-  # Calculate the mutual information across a pair of ranges
-  # I(X;Y) = Sum p(x, y)log{p(x, y) / [p(x)p(y)]}
-  mutualInfoPair <- function(phgHapIDMat, twoRanges) {
-    hapID <- phgHapIDMat[, twoRanges]
-
-    # Remove any rows that have missing data
-    hapID <- hapID[!apply(hapID, 1, function(v) any(v == -1)), ]
-
-    # Check if any columns have only one haplotype
-    test1haplo <- apply(hapID, 2, function(v) length(unique(v)) == 1)
-    if (any(test1haplo)) {
-      return(0)
+    if (is.null(gameteNames)) {
+        gameteNames <- rownames(phgHapIDMat)
     }
-    hapID <- apply(hapID, 2, as.character)
-    nHap1 <- length(unique(hapID[, 1]))
-    nHap2 <- length(unique(hapID[, 2]))
-    mm1 <- model.matrix( ~ -1 + hapID[, 1]) %>% colMeans
-    mm2 <- model.matrix( ~ -1 + hapID[, 2]) %>% colMeans
-    mmm <- tcrossprod(mm1, mm2)
-    mmi <-
-      model.matrix( ~ -1 + hapID[, 1]:hapID[, 2]) %>% colMeans %>% matrix(nHap1, nHap2)
-    mi <-
-      mmi * log2(mmi / mmm) # Some of these will be NaN, removed by na.rm=T
-    return(sum(mi, na.rm = T))
-  }
-  # Calculate the mutual information across all pairs of ranges
-  nRanges <- length(refRanges)
-  miMat <- matrix(NA, nrow = nRanges, ncol = nRanges)
-  rownames(miMat) <- colnames(miMat) <- refRanges
-  for (range1 in 1:(nRanges - 1)) {
-    for (range2 in (range1 + 1):nRanges) {
-      miMat[range1, range2] <-
-        mutualInfoPair(phgHapIDMat, c(refRanges[range1], refRanges[range2]))
+
+    phgHapIDMat <- phgHapIDMat[gameteNames, refRanges, drop = FALSE]
+    # you can't do this with single gametes or ranges
+    if (any(dim(phgHapIDMat) < 2)) {
+        return(NULL)
     }
-  }
-  return(miMat)
+
+    # Calculate the mutual information across a pair of ranges
+    # I(X;Y) = Sum p(x, y)log{p(x, y) / [p(x)p(y)]}
+    mutualInfoPair <- function(phgHapIDMat, twoRanges) {
+        hapID <- phgHapIDMat[, twoRanges]
+
+        # Remove any rows that have missing data
+        hapID <- hapID[!apply(hapID, 1, function(v) any(v == -1)), ]
+
+        # Check if any columns have only one haplotype
+        test1haplo <- apply(hapID, 2, function(v) length(unique(v)) == 1)
+        if (any(test1haplo)) {
+            return(0)
+        }
+        hapID <- apply(hapID, 2, as.character)
+        nHap1 <- length(unique(hapID[, 1]))
+        nHap2 <- length(unique(hapID[, 2]))
+        mm1 <- model.matrix( ~ -1 + hapID[, 1]) %>% colMeans
+        mm2 <- model.matrix( ~ -1 + hapID[, 2]) %>% colMeans
+        mmm <- tcrossprod(mm1, mm2)
+        mmi <- model.matrix( ~ -1 + hapID[, 1]:hapID[, 2]) %>% colMeans %>% matrix(nHap1, nHap2)
+        mi <- mmi * log2(mmi / mmm) # Some of these will be NaN, removed by na.rm=T
+        return(sum(mi, na.rm = T))
+    }
+    # Calculate the mutual information across all pairs of ranges
+    nRanges <- length(refRanges)
+    miMat <- matrix(NA, nrow = nRanges, ncol = nRanges)
+    rownames(miMat) <- colnames(miMat) <- refRanges
+    for (range1 in 1:(nRanges - 1)) {
+        for (range2 in (range1 + 1):nRanges) {
+            miMat[range1, range2] <-
+                mutualInfoPair(phgHapIDMat, c(refRanges[range1], refRanges[range2]))
+        }
+    }
+    return(miMat)
 }
 
 
@@ -221,15 +219,15 @@ plotMutualInfo <- function(phgObject = NULL,
                            refRanges,
                            gameteNames = NULL,
                            phgHapIDMat = NULL) {
-  mi <- calcMutualInfo(
-    phgObject = phgObject,
-    refRanges = refRanges,
-    gameteNames = NULL,
-    phgHapIDMat
-  )
-  mi[is.na(mi)] <- 0
-  corrplot::corrplot(mi, type = "upper", is.corr = F)
-  # return(mi)
+    mi <- calcMutualInfo(
+        phgObject = phgObject,
+        refRanges = refRanges,
+        gameteNames = NULL,
+        phgHapIDMat
+    )
+    mi[is.na(mi)] <- 0
+    corrplot::corrplot(mi, type = "upper", is.corr = F)
+    # return(mi)
 }
 
 
@@ -277,29 +275,29 @@ searchSimilarGametes <- function(phgObject = NULL,
                                  gameteName,
                                  fractionDiff = 0,
                                  phgHapIDMat = NULL) {
-  if (is.null(phgHapIDMat)) {
-    if (is.null(phgObject)) {
-      stop("Must supply phgHapIDMat or phgObject")
+    if (is.null(phgHapIDMat)) {
+        if (is.null(phgObject)) {
+            stop("Must supply phgHapIDMat or phgObject")
+        }
+        phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
     }
-    phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
-  }
 
-  # The row the target gamete is in
-  gameteRow <- which(rownames(phgHapIDMat) == gameteName)
-  if (length(gameteRow) == 0) {
-    stop(paste0("Gamete ", gameteName, " not in the PHG"))
-  }
+    # The row the target gamete is in
+    gameteRow <- which(rownames(phgHapIDMat) == gameteName)
+    if (length(gameteRow) == 0) {
+        stop(paste0("Gamete ", gameteName, " not in the PHG"))
+    }
 
-  # Only deal with specified reference ranges
-  phgHapIDMat <- phgHapIDMat[, refRanges, drop = FALSE]
-  targetHapIDs <- phgHapIDMat[gameteRow, , drop = FALSE]
+    # Only deal with specified reference ranges
+    phgHapIDMat <- phgHapIDMat[, refRanges, drop = FALSE]
+    targetHapIDs <- phgHapIDMat[gameteRow, , drop = FALSE]
 
-  # Calculate differences across all gametes in the table
-  fracDiffs <- apply(phgHapIDMat, 1, calcDiff, targetHapIDs = targetHapIDs)
-  areSimilar <- which(fracDiffs <= fractionDiff) %>% setdiff(gameteRow)
+    # Calculate differences across all gametes in the table
+    fracDiffs <- apply(phgHapIDMat, 1, calcDiff, targetHapIDs = targetHapIDs)
+    areSimilar <- which(fracDiffs <= fractionDiff) %>% setdiff(gameteRow)
 
-  # Return names of gametes that are similar to the target
-  return(rownames(phgHapIDMat)[areSimilar])
+    # Return names of gametes that are similar to the target
+    return(rownames(phgHapIDMat)[areSimilar])
 }
 
 
@@ -328,27 +326,27 @@ searchRecombination <- function(phgObject = NULL,
                                 refRangeSame,
                                 refRangeDiff,
                                 phgHapIDMat = NULL) {
-  if (is.null(phgHapIDMat)) {
-    if (is.null(phgObject)) {
-      stop("Must supply phgHapIDMat or phgObject")
+    if (is.null(phgHapIDMat)) {
+        if (is.null(phgObject)) {
+            stop("Must supply phgHapIDMat or phgObject")
+        }
+        phgHapIDMat <- hapIDMatrix(phgObject = phgObject)
     }
-    phgHapIDMat <- hapIDMatrix(phgObject = phgObject)
-  }
 
-  gametesSame <- searchSimilarGametes(
-    gameteName,
-    phgHapIDMat,
-    refRanges = refRangeSame
-  ) %>%
-    setdiff(gameteName)
+    gametesSame <- searchSimilarGametes(
+        gameteName,
+        phgHapIDMat,
+        refRanges = refRangeSame
+    ) %>%
+        setdiff(gameteName)
 
-  targetDiff <- phgHapIDMat[gameteName, refRangeDiff]
+    targetDiff <- phgHapIDMat[gameteName, refRangeDiff]
 
-  gametesDiff <- sapply(
-    phgHapIDMat[gametesSame, refRangeDiff],
-    calcDiff,
-    targetHapIDs = targetDiff
-  )
+    gametesDiff <- sapply(
+        phgHapIDMat[gametesSame, refRangeDiff],
+        calcDiff,
+        targetHapIDs = targetDiff
+    )
 
-  return(gametesSame[gametesDiff == 1])
+    return(gametesSame[gametesDiff == 1])
 }
