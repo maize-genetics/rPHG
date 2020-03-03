@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.10
+Version: 0.1.11
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
