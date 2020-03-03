@@ -8,7 +8,8 @@ readMappingsForLineName(
   configFile,
   lineName,
   readMappingMethodName,
-  haplotypeMethodName
+  haplotypeMethodName,
+  fileGroup = NULL
 )
 }
 \arguments{
@@ -22,10 +23,14 @@ different \code{file_group_names}, they will be combined.}
 (only takes a single method).}
 
 \item{haplotypeMethodName}{The haplotype method name.}
+
+\item{fileGroup}{the name of the file group for the line from the database.
+This parameter is only necessary if the line (taxon) has more than one
+file group and only the reads for a specific file group are wanted.}
 }
 \description{
-Return a \code{data.frame} object of read mapping information
-  for a given line (i.e. taxon).
+Returns an \code{S4Vectors} \code{DataFrame} object of read
+  mapping information for a given line (i.e. taxon).
 }
 \author{
 Brandon Monier

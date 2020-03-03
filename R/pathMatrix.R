@@ -15,7 +15,7 @@
 #'
 #' @export
 pathMatrix <- function(configFile, pathDir) {
-    
+
     configCatcher(configFile)
 
     pathFiles <- list.files(pathDir, full.names = TRUE)
@@ -54,7 +54,7 @@ pathMatrix <- function(configFile, pathDir) {
 #'
 #' @export
 pathsForMethod <- function(configFile, pathMethod) {
-    
+
     configCatcher(configFile)
 
     # Retrieve Java matrix object
@@ -78,8 +78,8 @@ pathsForMethod <- function(configFile, pathMethod) {
 
 #' @title Retrieve read mapping information from PHG database.
 #'
-#' @description Return a \code{data.frame} object of read mapping information
-#'   for a given line (i.e. taxon).
+#' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
+#'   mapping information for a given line (i.e. taxon).
 #'
 #' @author Brandon Monier
 #' @author Peter Bradbury
@@ -91,6 +91,9 @@ pathsForMethod <- function(configFile, pathMethod) {
 #' @param readMappingMethodName The method name for the read mappings
 #'   (only takes a single method).
 #' @param haplotypeMethodName The haplotype method name.
+#' @param fileGroup the name of the file group for the line from the database.
+#'   This parameter is only necessary if the line (taxon) has more than one
+#'   file group and only the reads for a specific file group are wanted.
 #'
 #' @importFrom rJava J
 #' @importFrom S4Vectors DataFrame
@@ -99,8 +102,9 @@ pathsForMethod <- function(configFile, pathMethod) {
 readMappingsForLineName <- function(configFile,
                                     lineName,
                                     readMappingMethodName,
-                                    haplotypeMethodName) {
-    
+                                    haplotypeMethodName,
+                                    fileGroup = NULL) {
+
     configCatcher(configFile)
 
     # Retrieve Java data vector object(s)
@@ -110,7 +114,48 @@ readMappingsForLineName <- function(configFile,
         configFile,
         lineName,
         readMappingMethodName,
-        haplotypeMethodName
+        haplotypeMethodName,
+        fileGroup
+    )
+
+    # Configure for R
+    colNum <- rmObj$dataVectors$size()
+    rmDF <- lapply(seq_len(colNum), function(i) {
+        rmObj$dataVectors$get(as.integer(i - 1))
+    })
+    rmDF <- data.frame(rmDF)
+    colnames(rmDF) <- rmObj$columnNames
+
+    # Return
+    return(S4Vectors::DataFrame(rmDF))
+}
+
+
+
+#' @title Retrieve read mapping records from PHG database.
+#'
+#' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
+#'   mapping record information without \code{read_mapping} data.
+#'
+#' @author Brandon Monier
+#' @author Peter Bradbury
+#'
+#' @param configFile Path to a configuration file for your graph database.
+#'
+#' @importFrom rJava J
+#' @importFrom S4Vectors DataFrame
+#'
+#' @export
+readMappingTableInfo <- function(configFile) {
+
+    # Catch potential errors
+    configCatcher(configFile)
+
+    # Retrieve Java data vector object(s)
+    rmObj <- rJava::J(
+        "net.maizegenetics.pangenome.api/RMethods",
+        "readMappingTableInfo",
+        configFile
     )
 
     # Configure for R
