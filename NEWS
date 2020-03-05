@@ -1,0 +1,5 @@
+## CHANGES IN VERSION 0.1.11
+* Added NEWS file for tracking version updates.
+* Added error checks for catching C stack usage errors for configuration file
+  checks in functions that require configuration file path parameters.
+* Fixed edge cases in `plotNumHaplo()` and `plotMutualInfo()`.
