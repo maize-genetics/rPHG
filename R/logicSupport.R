@@ -14,6 +14,11 @@ configCatcher <- function(configFile) {
     tmpLines <- readLines(configFile)
     dbParam <- tmpLines[grepl("DB=", tmpLines)]
     credParam <- tmpLines[grepl("user=|password=", tmpLines)]
+    dbType <- tmpLines[grepl("DBtype=", tmpLines)]
+
+    if (!grepl("=postgres$|=sqlite$", dbType)) {
+        stop("Only postgres or SQLite database types are allowed.")
+    }
 
     if (length(credParam) != 2) {
         stop("Missing credentials (user= and/or password=) in config file.")
@@ -29,7 +34,7 @@ configCatcher <- function(configFile) {
 
     dbParam <- gsub("DB=", "", dbParam)
 
-    if (!file.exists(dbParam)) {
+    if (!file.exists(dbParam) && grepl("sqlite", dbType)) {
         stop("Path to database (DB=) in config file does not exist.")
     }
 }
