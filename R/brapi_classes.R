@@ -2,6 +2,8 @@
 #'
 #' @description Checks if \code{BrapiCon} class objects are valid.
 #'
+#' @param object A \code{BrapiCon} object.
+#'
 #' @importFrom curl has_internet
 validBrapiCon <- function(object) {
 
