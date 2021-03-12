@@ -1,22 +1,59 @@
-# === BrAPI getters and setters =====================================
+#' @title The URL of a \code{BrapiCon} object
+#'
+#' @description get or set the Uniform Resource Locator (URL) of a
+#'   \code{BrapiCon} object.
+#'
+#' @param x a \linkS4class{BrapiCon}.
+#' @param value a URL string of class \code{character}.
+#'
+#' @rdname brapiURL
+#'
+#' @aliases
+#' brapiURL
+#' brapiURL<-
+#'
+#' @export
+setGeneric("brapiURL<-", function(x, value) standardGeneric("brapiURL<-"))
 
-## Generics ----
+#' @aliases brapiURL
+#' @rdname brapiURL
+#' @export
+setGeneric("brapiURL", function(x) standardGeneric("brapiURL"))
+
+#' @aliases brapiURL
+#' @rdname brapiURL
+#' @export
+setMethod("brapiURL", signature = c(x = "BrapiCon"), function(x) return(x@url))
+
+#' @aliases brapiURL
+#' @rdname brapiURL
+#' @export
+setMethod(
+    f = "brapiURL<-",
+    signature = "BrapiCon",
+    definition = function(x, value) {
+        if (length(value) != 1){
+            stop("URL must be a single character string", call. = FALSE)
+        }
+        x@url <- value
+        return(x)
+    }
+)
+
+
+
 setGeneric("host", function(x) standardGeneric("host"))
 setGeneric("port", function(x) standardGeneric("port"))
 setGeneric("protocol", function(x) standardGeneric("protocol"))
 setGeneric("version", function(x) standardGeneric("version"))
 setGeneric("token", function(x) standardGeneric("token"))
 
-#' @rdname brapiURL
-#' @export
-setGeneric("brapiURL", function(x) standardGeneric("brapiURL"))
 
 # setGeneric("host<-", function(x) standardGeneric("host<-"))
 # setGeneric("port<-", function(x) standardGeneric("port<-"))
 # setGeneric("protocol<-", function(x) standardGeneric("protocol<-"))
 # setGeneric("version<-", function(x) standardGeneric("version<-"))
 # setGeneric("token<-", function(x) standardGeneric("token<-"))
-# setGeneric("url<-", function(x) standardGeneric("url<-"))
 
 
 
@@ -26,8 +63,6 @@ setMethod("port", signature = "BrapiCon", function(x) x@port)
 setMethod("protocol", signature = "BrapiCon", function(x) x@protocol)
 setMethod("version", signature = "BrapiCon", function(x) x@version)
 setMethod("token", signature = "BrapiCon", function(x) x@token)
-#' @export
-setMethod("brapiURL", signature = "BrapiCon", function(x) x@url)
 
 
 
