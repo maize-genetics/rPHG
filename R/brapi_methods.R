@@ -18,17 +18,76 @@ setMethod(
 
 
 ## Get samples ----
-#' @export
-setGeneric("samples", function(object) standardGeneric("samples"))
-
+#' @title Retrieve samples from BrAPI connection
+#'
+#' @description Retrieves data from the \code{samples} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname samples
+#'
+#' @seealso [calls()] for samples, [callsets()] for callsets
+#'
 #' @export
 setMethod(
     f = "samples",
     signature = "BrapiCon",
     definition = function(object) {
-        surl <- paste0(brapiURL(object), "/samples")
-        res <- jsonlite::fromJSON(httr::content(httr::GET(surl), "text"))
-        return(tibble::as_tibble(res))
+        json2tibble(object, "samples")
     }
 )
+
+
+## Get calls ----
+#' @title Retrieve calls from BrAPI connection
+#'
+#' @description Retrieves data from the \code{calls} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname calls
+#'
+#' @seealso [samples()] for samples, [callsets()] for callsets
+#'
+#' @export
+setGeneric("calls", function(object) standardGeneric("calls"))
+
+#' @rdname calls
+#' @export
+setMethod(
+    f = "calls",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "calls")
+    }
+)
+
+
+## Get callsets ----
+#' @title Retrieve callsets from BrAPI connection
+#'
+#' @description Retrieves data from the \code{calls} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname callsets
+#'
+#' @seealso [samples()], [calls()]
+#'
+#' @export
+setGeneric("callsets", function(object) standardGeneric("callsets"))
+
+#' @rdname calls
+#' @export
+setMethod(
+    f = "callsets",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "callsets")
+    }
+)
+
 
