@@ -6,6 +6,9 @@
 \usage{
 validBrapiCon(object)
 }
+\arguments{
+\item{object}{A \code{BrapiCon} object.}
+}
 \description{
 Checks if \code{BrapiCon} class objects are valid.
 }
