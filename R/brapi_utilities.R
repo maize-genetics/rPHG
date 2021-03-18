@@ -21,3 +21,13 @@ json2tibble <- function(object, ep) {
 }
 
 
+#' @title Parse graph data
+#'
+#' @description Parses graph information from JSON structures
+#'
+#' @param object A \code{BrapiCon} object.
+#' @param dbID A PHG method.
+#'
+#' @importFrom httr content
+
+
