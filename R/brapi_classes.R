@@ -98,13 +98,14 @@ BrapiCon <- function(host,
                      version = c("v2", "v1")) {
 
     if (missing(host)) stop("A URL host is needed to make this class.")
-    if (port %% 1 != 0) stop("Invalid port number. Must be a whole number.")
 
     version <- match.arg(version)
     protocol <- match.arg(protocol)
 
     if (is.null(port) && protocol == "http") port <- 80
     if (is.null(port) && protocol == "https") port <- 443
+
+    if (port %% 1 != 0) stop("Invalid port number. Must be a whole number.")
 
     url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
 
