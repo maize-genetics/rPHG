@@ -80,13 +80,38 @@ setMethod(
 #' @export
 setGeneric("callsets", function(object) standardGeneric("callsets"))
 
-#' @rdname calls
+#' @rdname callsets
 #' @export
 setMethod(
     f = "callsets",
     signature = "BrapiCon",
     definition = function(object) {
         json2tibble(object, "callsets")
+    }
+)
+
+
+## Get graphs ----
+#' @title Retrieve graph data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{graphs} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#' @param dbID A PHG method.
+#'
+#' @rdname callsets
+#'
+#' @export
+setGeneric("phGraph", function(object, dbID) standardGeneric("phGraph"))
+
+#' @rdname phGraph
+#' @export
+setMethod(
+    f = "phGraph",
+    signature = "BrapiCon",
+    definition = function(object, dbID) {
+        json2igraph(object, dbID)
     }
 )
 

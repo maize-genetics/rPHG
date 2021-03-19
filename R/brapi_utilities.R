@@ -17,7 +17,7 @@
 json2tibble <- function(object, ep) {
     endPoint <- paste0(brapiURL(object), "/", ep)
     res <- jsonlite::fromJSON(httr::content(httr::GET(endPoint), "text"))
-    return(tibble::as_tibble(res))
+    return(tibble::as_tibble(res$result$data))
 }
 
 
@@ -29,5 +29,29 @@ json2tibble <- function(object, ep) {
 #' @param dbID A PHG method.
 #'
 #' @importFrom httr content
+json2igraph <- function(object, dbID = NULL) {
 
+    if (missing(dbID)) stop("PHG method required", call. = FALSE)
+    endPoint <- paste0(brapiURL(object), "/graphs/", dbID)
+    res <- jsonlite::fromJSON(httr::content(httr::GET(endPoint), "text"))
+
+    nodes <- res$result$nodes
+    edges <- res$result$edges
+    edges <- data.frame(
+        from = edges$leftNodeDbId,
+        to = edges$rightNodeDbId,
+        weight = edges$weight
+    )
+    nodes <- data.frame(
+        id = nodes$nodeDbId,
+        label = nodes$additionalInfo$taxaList %>%
+            lapply(paste, collapse = "; ") %>%
+            unlist()
+    )
+    igraph::graph_from_data_frame(
+        d = edges,
+        vertices = nodes,
+        directed = TRUE
+    )
+}
 

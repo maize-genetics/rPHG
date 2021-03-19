@@ -2,15 +2,26 @@
 % Please edit documentation in R/brapi_methods.R
 \name{callsets}
 \alias{callsets}
+\alias{callsets,BrapiCon-method}
+\alias{phGraph}
 \title{Retrieve callsets from BrAPI connection}
 \usage{
 callsets(object)
+
+\S4method{callsets}{BrapiCon}(object)
+
+phGraph(object, dbID)
 }
 \arguments{
 \item{object}{A \code{BrapiCon} object.}
+
+\item{dbID}{A PHG method.}
 }
 \description{
 Retrieves data from the \code{calls} endpoint of a BrAPI
+  server.
+
+Retrieves data from the \code{graphs} endpoint of a BrAPI
   server.
 }
 \seealso{

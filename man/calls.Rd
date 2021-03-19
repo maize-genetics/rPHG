@@ -3,14 +3,11 @@
 \name{calls}
 \alias{calls}
 \alias{calls,BrapiCon-method}
-\alias{callsets,BrapiCon-method}
 \title{Retrieve calls from BrAPI connection}
 \usage{
 calls(object)
 
 \S4method{calls}{BrapiCon}(object)
-
-\S4method{callsets}{BrapiCon}(object)
 }
 \arguments{
 \item{object}{A \code{BrapiCon} object.}
