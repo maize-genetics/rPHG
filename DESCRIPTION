@@ -55,6 +55,7 @@ Imports:
     GenomicRanges,
     ggplot2,
     httr,
+    igraph,
     IRanges,
     jsonlite,
     knitr,
