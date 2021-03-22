@@ -4,7 +4,7 @@
 \alias{json2igraph}
 \title{Parse graph data}
 \usage{
-json2igraph(object, dbID = NULL)
+json2igraph(object, dbID)
 }
 \arguments{
 \item{object}{A \code{BrapiCon} object.}

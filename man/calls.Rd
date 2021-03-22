@@ -10,12 +10,9 @@ calls(object)
 \S4method{calls}{BrapiCon}(object)
 }
 \arguments{
-\item{object}{A \code{BrapiCon} object.}
+\item{object}{a \linkS4class{BrapiCon} object.}
 }
 \description{
 Retrieves data from the \code{calls} endpoint of a BrAPI
   server.
-}
-\seealso{
-[samples()] for samples, [callsets()] for callsets
 }
