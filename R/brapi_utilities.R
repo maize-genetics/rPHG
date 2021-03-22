@@ -1,5 +1,39 @@
 # === BrAPI utility and house-keeping methods =======================
 
+#' @title URL checker
+#'
+#' @description Checks and parses URL inputs to list data from JSON text.
+#'
+#' @param url A BrAPI URL endpoint.
+#' @param verbose Do you want messages shown?
+#'
+#' @importFrom httr GET
+#' @importFrom httr content
+#' @importFrom jsonlite fromJSON
+parseJSON <- function(url, verbose = FALSE) {
+    res <- tryCatch(
+        expr = {
+            if (verbose) message("Attempting to read endpoint...")
+            x <- httr::GET(url)
+            x <- httr::content(x, as = "text", encoding = "ISO-8859-1")
+            x <- jsonlite::fromJSON(x)
+            return(x)
+        },
+        error = function(cond) {
+            if (verbose) message("URL could not be processed; see below: ")
+            if (verbose) message(cond, "\n")
+            return(NULL)
+        }
+    )
+
+    if (is.null(res)) {
+        stop("BrAPI endpoint could not be parsed.", call. = FALSE)
+    } else {
+        return(res)
+    }
+}
+
+
 #' @title JSON to tibble converter
 #'
 #' @description Converts a requested JSON object to a \code{tibble}-based
@@ -10,14 +44,16 @@
 #'
 #' @return A \code{tibble} object.
 #'
-#' @importFrom httr content
-#' @importFrom httr GET
-#' @importFrom jsonlite fromJSON
 #' @importFrom tibble as_tibble
 json2tibble <- function(object, ep) {
     endPoint <- paste0(brapiURL(object), "/", ep)
-    res <- jsonlite::fromJSON(httr::content(httr::GET(endPoint), "text"))
-    return(tibble::as_tibble(res$result$data))
+    endPoint <- parseJSON(endPoint)
+
+    if (is.null(endPoint[["result"]][["data"]])) {
+        return(tibble::as_tibble(endPoint))
+    } else {
+        return(tibble::as_tibble(endPoint[["result"]][["data"]]))
+    }
 }
 
 
@@ -29,14 +65,17 @@ json2tibble <- function(object, ep) {
 #' @param dbID A PHG method.
 #'
 #' @importFrom httr content
-json2igraph <- function(object, dbID = NULL) {
-
+json2igraph <- function(object, dbID) {
     if (missing(dbID)) stop("PHG method required", call. = FALSE)
+
     endPoint <- paste0(brapiURL(object), "/graphs/", dbID)
-    res <- jsonlite::fromJSON(httr::content(httr::GET(endPoint), "text"))
+    res <- parseJSON(endPoint)
 
     nodes <- res$result$nodes
     edges <- res$result$edges
+    taxaList <- nodes$additionalInfo$taxaList
+    taxaList <- unlist(lapply(taxaList, paste, collapse = "; "))
+
     edges <- data.frame(
         from = edges$leftNodeDbId,
         to = edges$rightNodeDbId,
@@ -44,14 +83,14 @@ json2igraph <- function(object, dbID = NULL) {
     )
     nodes <- data.frame(
         id = nodes$nodeDbId,
-        label = nodes$additionalInfo$taxaList %>%
-            lapply(paste, collapse = "; ") %>%
-            unlist()
+        label = taxaList
     )
+
     igraph::graph_from_data_frame(
         d = edges,
         vertices = nodes,
         directed = TRUE
     )
 }
+
 
