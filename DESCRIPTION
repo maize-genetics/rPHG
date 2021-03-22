@@ -68,7 +68,8 @@ Imports:
 Depends:
     SummarizedExperiment
 Suggests:
-    BiocStyle
+    BiocStyle,
+    testthat
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder:
