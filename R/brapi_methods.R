@@ -17,18 +17,20 @@ setMethod(
 )
 
 
-## Get samples ----
+## Get taxa ----
 #' @title Retrieve samples from BrAPI connection
 #'
 #' @description Retrieves data from the \code{samples} endpoint of a BrAPI
 #'   server.
 #'
-#' @param object A \code{BrapiCon} object.
+#' @param object a \code{\linkS4class{BrapiCon}} object.
 #'
 #' @rdname samples
 #'
-#' @seealso [calls()] for samples, [callsets()] for callsets
-#'
+#' @export
+setGeneric("samples", function(object) standardGeneric("samples"))
+
+#' @rdname samples
 #' @export
 setMethod(
     f = "samples",
@@ -45,11 +47,9 @@ setMethod(
 #' @description Retrieves data from the \code{calls} endpoint of a BrAPI
 #'   server.
 #'
-#' @param object A \code{BrapiCon} object.
+#' @param object a \linkS4class{BrapiCon} object.
 #'
 #' @rdname calls
-#'
-#' @seealso [samples()] for samples, [callsets()] for callsets
 #'
 #' @export
 setGeneric("calls", function(object) standardGeneric("calls"))
@@ -75,8 +75,6 @@ setMethod(
 #'
 #' @rdname callsets
 #'
-#' @seealso [samples()], [calls()]
-#'
 #' @export
 setGeneric("callsets", function(object) standardGeneric("callsets"))
 
@@ -100,7 +98,7 @@ setMethod(
 #' @param object A \code{BrapiCon} object.
 #' @param dbID A PHG method.
 #'
-#' @rdname callsets
+#' @rdname phGraph
 #'
 #' @export
 setGeneric("phGraph", function(object, dbID) standardGeneric("phGraph"))
