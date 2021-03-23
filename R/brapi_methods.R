@@ -1,12 +1,34 @@
 # === BrAPI general methods =========================================
 
 ## Display message ----
+#' @title Show method for BrapiCon objects
+#'
+#' @description Prints out the information from the BrAPI connection object
+#'   including server status codes. See this
+#'   \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{Wikipedia link}
+#'   for further details about what these codes mean.
+#'
+#' @param object a \code{\linkS4class{BrapiCon}} object.
+#'
+#' @docType methods
+#' @name show
+#' @rdname show
+#' @aliases show show,BrapiCon-method
+#'
+#' @export
 setMethod(
     f = "show",
     signature = "BrapiCon",
     definition = function(object) {
 
-        status <- httr::GET(brapiURL(object))$status
+        status <- tryCatch(
+            expr = {
+                httr::GET(brapiURL(object))$status
+            },
+            error = {
+                return("ERROR")
+            }
+        )
 
         cat("A BrAPI connection object\n")
         cat("  Server...........:", host(object), "\n")
