@@ -69,6 +69,6 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder:
     knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 biocViews:
     GenomeWideAssociation
