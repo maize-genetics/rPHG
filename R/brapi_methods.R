@@ -25,9 +25,7 @@ setMethod(
             expr = {
                 httr::GET(brapiURL(object))$status
             },
-            error = {
-                return("ERROR")
-            }
+            error = function(cond) "ERROR"
         )
 
         cat("A BrAPI connection object\n")
