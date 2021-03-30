@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.11
+Version: 0.1.12
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -69,6 +69,6 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder:
     knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 biocViews:
     GenomeWideAssociation
