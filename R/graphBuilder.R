@@ -9,11 +9,13 @@
 #' @param methods Pairs of method calls - passed as string.
 #' @param chrom A vector of chromosomes to include in graph. If NULL, defaults
 #'   to all. To specify multiple chromosome, pass as a vector of strings (i.e.
-#'   \code{c("1", "2", "3")}).
+#'   \code{c("1", "2", "3")}). Is currently only used for haplotypes.
+#' @param buildType How do you want to build the graph? Options are by
+#'   \code{haplotype} or by \code{path}.
 #' @param includeSequence Whether to include sequences in haplotype nodes.
-#'   (ADVANCED)
+#'   Is currently only used for haplotypes. (ADVANCED)
 #' @param includeVariant Whether to include variant contexts in haplotype
-#'   nodes. (ADVANCED)
+#'   nodes. Is currently only used for haplotypes. (ADVANCED)
 #'
 #' @importFrom methods new
 #' @importFrom rJava .jnew
@@ -25,38 +27,50 @@
 graphBuilder <- function(configFile,
                          methods,
                          chrom = NULL,
+                         buildType = c("haplotype", "path"),
                          includeSequence = FALSE,
                          includeVariant = FALSE) {
-    
+
     configCatcher(configFile)
 
+    buildType <- match.arg(buildType)
+
     ## Create PHG plugin object
-    phgPlugin <- rJava::new(
-        rJava::J("net/maizegenetics/pangenome/api/HaplotypeGraphBuilderPlugin"),
-        rJava::.jnull("java/awt/Frame"),
-        FALSE
-    )
+    if (buildType == "haplotype") {
+        phgPlugin <- rJava::new(
+            rJava::J("net/maizegenetics/pangenome/api/HaplotypeGraphBuilderPlugin"),
+            rJava::.jnull("java/awt/Frame"),
+            FALSE
+        )
+        phgPlugin$configFile(toString(configFile))
+        phgPlugin$methods(toString(methods))
+        msg <- "Building the graph from haplotypes..."
 
-    ## Set parameters
-    phgPlugin$configFile(configFile)
-    phgPlugin$methods(toString(methods))
+        ### Add chromosome as vector
+        if (!is.null(chrom)) {
+            rv <- rJava::.jnew("java/util/Vector")
+            for (i in seq(chrom)) rv$add(chrom[i])
+            phgPlugin$chromosomes(rv)
+        } else {
+            phgPlugin$chromosomes(chrom)
+        }
 
-    ### Add chromosome as vector
-    if (!is.null(chrom)) {
-        rv <- rJava::.jnew("java/util/Vector")
-        for (i in seq(chrom)) rv$add(chrom[i])
-        phgPlugin$chromosomes(rv)
-    } else {
-        phgPlugin$chromosomes(chrom)
+        ### ADVANCED
+        phgPlugin$setParameter("includeSequences", toString(includeSequence))
+        phgPlugin$setParameter("includeVariantContexts", toString(includeVariant))
+    } else if (buildType == "path") {
+        phgPlugin <- rJava::new(
+            rJava::J("net/maizegenetics/pangenome/api/BuildGraphFromPathsPlugin")
+        )
+        rJava::J("net/maizegenetics/plugindef/ParameterCache")$load(
+            toString(configFile)
+        )
+        phgPlugin$pathMethod(toString(methods))
+        msg <- "Building the graph from paths..."
     }
 
-    ### ADVANCED
-    phgPlugin$setParameter("includeSequences", toString(includeSequence))
-    phgPlugin$setParameter("includeVariantContexts", toString(includeVariant))
-
-
     ## Build the PHG...
-    message("Building the graph...")
+    message(msg)
     phgObj <- phgPlugin$build()
     phgObj <- sumExpBuilder(phgObj = phgObj)
     phgObj <- methods::new(Class = "PHGDataSet", phgObj)
