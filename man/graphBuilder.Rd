@@ -8,6 +8,7 @@ graphBuilder(
   configFile,
   methods,
   chrom = NULL,
+  buildType = c("haplotype", "path"),
   includeSequence = FALSE,
   includeVariant = FALSE
 )
@@ -19,13 +20,16 @@ graphBuilder(
 
 \item{chrom}{A vector of chromosomes to include in graph. If NULL, defaults
 to all. To specify multiple chromosome, pass as a vector of strings (i.e.
-\code{c("1", "2", "3")}).}
+\code{c("1", "2", "3")}). Is currently only used for haplotypes.}
+
+\item{buildType}{How do you want to build the graph? Options are by
+\code{haplotype} or by \code{path}.}
 
 \item{includeSequence}{Whether to include sequences in haplotype nodes.
-(ADVANCED)}
+Is currently only used for haplotypes. (ADVANCED)}
 
 \item{includeVariant}{Whether to include variant contexts in haplotype
-nodes. (ADVANCED)}
+nodes. Is currently only used for haplotypes. (ADVANCED)}
 }
 \description{
 R wrapper to build a PHG graph object for downstream use.

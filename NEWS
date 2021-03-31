@@ -1,3 +1,8 @@
+## CHANGES IN VERSION 0.1.12
+* Added new parameters in `graphBuilder()`
+  + `buildType` - do you want the graph built from paths or haplotypes?
+
+
 ## CHANGES IN VERSION 0.1.11
 * Added NEWS file for tracking version updates.
 * Added error checks for catching C stack usage errors for configuration file
