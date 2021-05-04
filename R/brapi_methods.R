@@ -109,6 +109,30 @@ setMethod(
 )
 
 
+## Get server information ----
+#' @title Retrieve server info data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{serverinfo} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname serverInfo
+#'
+#' @export
+setGeneric("serverInfo", function(object) standardGeneric("serverInfo"))
+
+#' @rdname serverInfo
+#' @export
+setMethod(
+    f = "serverInfo",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "serverinfo", "calls")
+    }
+)
+
+
 ## Get graphs ----
 #' @title Retrieve graph data from BrAPI connection
 #'

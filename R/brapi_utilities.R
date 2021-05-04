@@ -41,18 +41,20 @@ parseJSON <- function(url, verbose = FALSE) {
 #'
 #' @param object A \code{BrapiCon} object.
 #' @param ep A specified endpoint to request.
+#' @param returnCall What JSON section should be returned? Defaults to
+#'   \code{data}.
 #'
 #' @return A \code{tibble} object.
 #'
 #' @importFrom tibble as_tibble
-json2tibble <- function(object, ep) {
+json2tibble <- function(object, ep, returnCall = "data") {
     endPoint <- paste0(brapiURL(object), "/", ep)
     endPoint <- parseJSON(endPoint)
 
-    if (is.null(endPoint[["result"]][["data"]])) {
+    if (is.null(endPoint[["result"]][[returnCall]])) {
         return(tibble::as_tibble(endPoint))
     } else {
-        return(tibble::as_tibble(endPoint[["result"]][["data"]]))
+        return(tibble::as_tibble(endPoint[["result"]][[returnCall]]))
     }
 }
 

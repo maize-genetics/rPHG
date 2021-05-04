@@ -4,12 +4,15 @@
 \alias{json2tibble}
 \title{JSON to tibble converter}
 \usage{
-json2tibble(object, ep)
+json2tibble(object, ep, returnCall = "data")
 }
 \arguments{
 \item{object}{A \code{BrapiCon} object.}
 
 \item{ep}{A specified endpoint to request.}
+
+\item{returnCall}{What JSON section should be returned? Defaults to
+\code{data}.}
 }
 \value{
 A \code{tibble} object.
