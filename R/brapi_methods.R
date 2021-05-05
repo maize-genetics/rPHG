@@ -158,3 +158,75 @@ setMethod(
 )
 
 
+## Get references ----
+#' @title Retrieve reference data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{references} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname references
+#'
+#' @export
+setGeneric("references", function(object) standardGeneric("references"))
+
+#' @rdname references
+#' @export
+setMethod(
+    f = "references",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "references")
+    }
+)
+
+
+## Get studies ----
+#' @title Retrieve study data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{studies} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname studies
+#'
+#' @export
+setGeneric("studies", function(object) standardGeneric("studies"))
+
+#' @rdname studies
+#' @export
+setMethod(
+    f = "studies",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "studies")
+    }
+)
+
+
+## Get reference sets ----
+#' @title Retrieve reference set data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{referenceSets} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname referenceSets
+#'
+#' @export
+setGeneric("referenceSets", function(object) standardGeneric("referenceSets"))
+
+#' @rdname referenceSets
+#' @export
+setMethod(
+    f = "referenceSets",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "referencesets")
+    }
+)
+
+
