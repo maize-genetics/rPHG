@@ -67,6 +67,7 @@ json2tibble <- function(object, ep, returnCall = "data") {
 #' @param dbID A PHG method.
 #'
 #' @importFrom httr content
+#' @importFrom igraph graph_from_data_frame
 json2igraph <- function(object, dbID) {
     if (missing(dbID)) stop("PHG method required", call. = FALSE)
 

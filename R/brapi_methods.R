@@ -88,7 +88,7 @@ setMethod(
 ## Get callsets ----
 #' @title Retrieve callsets from BrAPI connection
 #'
-#' @description Retrieves data from the \code{calls} endpoint of a BrAPI
+#' @description Retrieves data from the \code{callsets} endpoint of a BrAPI
 #'   server.
 #'
 #' @param object A \code{BrapiCon} object.
