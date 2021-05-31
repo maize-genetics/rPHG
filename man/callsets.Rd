@@ -13,6 +13,6 @@ callsets(object)
 \item{object}{A \code{BrapiCon} object.}
 }
 \description{
-Retrieves data from the \code{calls} endpoint of a BrAPI
+Retrieves data from the \code{callsets} endpoint of a BrAPI
   server.
 }
