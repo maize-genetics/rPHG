@@ -90,7 +90,9 @@ pathsForMethod <- function(configFile, pathMethod) {
 #'   different \code{file_group_names}, they will be combined.
 #' @param readMappingMethodName The method name for the read mappings
 #'   (only takes a single method).
-#' @param haplotypeMethodName The haplotype method name.
+#' @param haplotypeMethodName The haplotype method name. This parameter can
+#'   either be one entry of type \code{character} or a vector of type
+#'   \code{character}.
 #' @param fileGroup the name of the file group for the line from the database.
 #'   This parameter is only necessary if the line (taxon) has more than one
 #'   file group and only the reads for a specific file group are wanted.
@@ -106,6 +108,14 @@ readMappingsForLineName <- function(configFile,
                                     fileGroup = NULL) {
 
     configCatcher(configFile)
+
+    #if (length(readMappingMethodName) > 1) {
+    #    readMappingMethodName <- paste(readMappingMethodName, collapse = ":")
+    #}
+
+    if (length(haplotypeMethodName) > 1) {
+        haplotypeMethodName <- paste(haplotypeMethodName, collapse = ":")
+    }
 
     # Retrieve Java data vector object(s)
     rmObj <- rJava::J(
