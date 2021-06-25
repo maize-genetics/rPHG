@@ -1,3 +1,11 @@
+## CHANGES IN VERSION 0.1.13
+* Update JAR files that correlate with latest PHG build (v0.0.30)
+* Fix multiple method bug in `readMappingsForLineName()`
+  + Fix pertains to the `haplotypeMethodName` parameter;
+  + This fix can now take either a singular `character` parameter or a
+    vector of `character`-type objects.
+
+
 ## CHANGES IN VERSION 0.1.12
 * Added new parameters in `graphBuilder()`
   + `buildType` - do you want the graph built from paths or haplotypes?
