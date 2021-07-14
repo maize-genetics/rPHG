@@ -1,8 +1,8 @@
-.onLoad <- function(libname, pkgname) {
-    ## Initialize Jar
-    rJava::.jpackage(pkgname, lib.loc = libname)
-    rJava::.jaddClassPath(dir(file.path(getwd(), "inst/java"), full.names = TRUE))
-}
+# .onLoad <- function(libname, pkgname) {
+#     ## Initialize Jar
+#     rJava::.jpackage(pkgname, lib.loc = libname)
+#     rJava::.jaddClassPath(dir(file.path(getwd(), "inst/java"), full.names = TRUE))
+# }
 
 .onAttach <- function(libname, pkgname) {
     msg <- paste0(
