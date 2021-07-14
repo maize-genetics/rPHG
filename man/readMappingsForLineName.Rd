@@ -22,7 +22,9 @@ different \code{file_group_names}, they will be combined.}
 \item{readMappingMethodName}{The method name for the read mappings
 (only takes a single method).}
 
-\item{haplotypeMethodName}{The haplotype method name.}
+\item{haplotypeMethodName}{The haplotype method name. This parameter can
+either be one entry of type \code{character} or a vector of type
+\code{character}.}
 
 \item{fileGroup}{the name of the file group for the line from the database.
 This parameter is only necessary if the line (taxon) has more than one
