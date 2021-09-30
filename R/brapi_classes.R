@@ -76,6 +76,23 @@ setClass(
 )
 
 
+setClass(
+    Class = "BrapiConPHG",
+    contains = "BrapiCon",
+    slots = c(
+        methodID = "character",
+        refRangeFilter = "character",
+        sampleFilter = "character"
+    ),
+    prototype = prototype(
+        methodID = NA_character_,
+        refRangeFilter = NA_character_,
+        sampleFilter = NA_character_
+    ),
+    validity = validBrapiCon
+)
+
+
 #' @title BrapiCon object and constructors
 #'
 #' @description \code{BrapiCon} is the primary container for housing BrAPI
