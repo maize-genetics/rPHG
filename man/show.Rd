@@ -7,11 +7,18 @@
 \title{Show method for BrapiCon objects}
 \usage{
 \S4method{show}{BrapiCon}(object)
+
+\S4method{show}{BrapiConPHG}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object.}
+\item{object}{a \code{\linkS4class{BrapiConPHG}} object.}
 }
 \description{
+Prints out the information from the BrAPI connection object
+  including server status codes. See this
+  \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{Wikipedia link}
+  for further details about what these codes mean.
+
 Prints out the information from the BrAPI connection object
   including server status codes. See this
   \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{Wikipedia link}

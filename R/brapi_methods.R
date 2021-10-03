@@ -1,4 +1,12 @@
-# === BrAPI general methods =========================================
+#####################################################################
+##
+## Overview:
+##  This file houses methods and generics related to `BrapiCon` and
+##  `BrapiConPHG` classes
+##
+#####################################################################
+
+# === BrapiCon general methods ======================================
 
 ## Display message ----
 #' @title Show method for BrapiCon objects
@@ -228,5 +236,124 @@ setMethod(
         json2tibble(object, "referencesets")
     }
 )
+
+
+
+
+
+# === BrapiConPHG general methods ===================================
+
+## Display message ----
+#' @title Show method for BrapiConPHG objects
+#'
+#' @description Prints out the information from the BrAPI connection object
+#'   including server status codes. See this
+#'   \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{Wikipedia link}
+#'   for further details about what these codes mean.
+#'
+#' @param object a \code{\linkS4class{BrapiConPHG}} object.
+#'
+#' @docType methods
+#' @name show
+#' @rdname show
+#' @aliases show show,BrapiCon-method
+#'
+#' @export
+setMethod(
+    f = "show",
+    signature = "BrapiConPHG",
+    definition = function(object) {
+        rrCheck <- ifelse(is.na(object@refRangeFilter), "[ ]", "[x]")
+        sampleCheck <- ifelse(is.na(object@sampleFilter), "[ ]", "[x]")
+
+        cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
+        cat("  method:         ", object@methodID, "\n")
+        cat("  variant filter: ", rrCheck, "\n")
+        cat("  sample filter:  ", sampleCheck, "\n")
+    }
+)
+
+
+## (2A) Filter columns (ref ranges) ----
+#' @export
+filterRefRanges <- function(
+    x,
+    gr = NULL,
+    chromosome = NULL,
+    start = NULL,
+    end = NULL
+) {
+    if (class(x) != "BrapiConPHG") {
+        stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
+    }
+
+    if (!is.null(gr)) {
+        if (inherits(gr, "GRanges")) {
+            if (is.null(chromosome)) {
+                grDF <- as.data.frame(gr)
+                seqString <- paste0(
+                    grDF$seqnames, ":",
+                    grDF$start, "-", grDF$end,
+                    collapse = ","
+                )
+                rrString <- paste0("ranges=", seqString)
+            } else {
+                grSub <- dropSeqlevels(gr, chromosome, pruning.mode = "coarse")
+                grDF <- as.data.frame(grSub)
+                seqStringGR <- paste0(
+                    grDF$seqnames, ":",
+                    grDF$start, "-", grDF$end,
+                    collapse = ","
+                )
+                seqStringChr <- paste0(chromosome, collapse = ",")
+                rrString <- paste0("ranges=", seqStringChr, ",", seqStringGR)
+            }
+
+        } else {
+            stop("Not a valid GRanges object", call. = FALSE)
+        }
+    } else {
+        if (!is.null(chromosome) && is.null(start) && is.null(end)) {
+            rrString <- paste0("ranges=", paste0(chromosome, collapse = ","))
+        } else if (!is.null(chromosome) && !is.null(start) && !is.null(end)) {
+            if (length(unique(sapply(list(chromosome, start, end), length))) == 1) {
+                seqString <- paste0(
+                    chromosome, ":",
+                    start, "-", end,
+                    collapse = ","
+                )
+                rrString <- paste0("ranges=", seqString)
+            } else {
+                stop("Range vectors do not have the same length", call. = FALSE)
+            }
+        } else {
+            stop("Incorrect filtration parameters", call. = FALSE)
+        }
+    }
+
+    # Add filter on `refRangeFilter` slot
+    x@refRangeFilter <- rrString
+
+    return(x)
+}
+
+
+## (2A) Filter rows (samples)
+#' @export
+filterSamples <- function(x, samples) {
+    if (class(x) != "BrapiConPHG") {
+        stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
+    }
+
+    if (is.vector(samples) && is.atomic(samples)) {
+        sampleString <- paste0("sampleNames=", paste0(samples, collapse = ","))
+    } else {
+        stop("`samples` argument must be an atomic vector", call. = FALSE)
+    }
+
+    x@sampleFilter <- sampleString
+
+    return(x)
+}
 
 

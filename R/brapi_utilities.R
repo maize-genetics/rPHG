@@ -97,3 +97,45 @@ json2igraph <- function(object, dbID) {
 }
 
 
+#' @param x A \code{BrapiConPHG} object.
+#' @export
+getVTList <- function(x) {
+    if (class(x) != "BrapiConPHG") {
+        stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
+    }
+
+    baseURL <- paste0(x@url, "/variantTables/", x@methodID)
+
+    ranges <- x@refRangeFilter
+    samples <- x@sampleFilter
+
+    rangeURL <- paste0(
+        baseURL,
+        "/variants",
+        ifelse(is.na(ranges), "", paste0("?", ranges))
+    )
+
+    sampleURL <- paste0(
+        baseURL,
+        "/samples",
+        ifelse(is.na(samples), "", paste0("?", samples))
+    )
+
+    tableURL <- paste0(
+        baseURL, "/table", "?",
+        ifelse(is.na(ranges), "", paste0(ranges)), "&",
+        ifelse(is.na(samples), "", paste0(samples))
+    )
+    tableURL <- gsub("\\?$|\\?&$", "", tableURL)
+    tableURL <- gsub("\\?&", "?", tableURL)
+
+    return(
+        list(
+            rangeURL = rangeURL,
+            sampleURL = sampleURL,
+            tableURL = tableURL
+        )
+    )
+}
+
+

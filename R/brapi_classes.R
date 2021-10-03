@@ -1,41 +1,15 @@
-#' @title BrAPI connection validation
-#'
-#' @description Checks if \code{BrapiCon} class objects are valid.
-#'
-#' @param object A \code{BrapiCon} object.
-#'
-#' @importFrom curl has_internet
-validBrapiCon <- function(object) {
+#####################################################################
+##
+## Overview:
+##  This file houses BrAPI-related functions for:
+##    * Class representation
+##    * Validity checking classes
+##    * Constructing classes (e.g. helper functions)
+##
+#####################################################################
 
-    errors <- character()
 
-    port <- object@port
-    protocol <- object@protocol
-    version <- object@version
-
-    if (!curl::has_internet()) {
-        msg <- "An internet connection could not be made."
-        errors <- c(errors, msg)
-    }
-
-    if (!(port %in% 1:65535)) {
-        msg <- "Not a valid port number."
-        errors <- c(errors, msg)
-    }
-
-    if (!(protocol %in% c("http", "https"))) {
-        msg <- "Protocols can only be 'htttp' or 'https'."
-        errors <- c(errors, msg)
-    }
-
-    if (!(version %in% c("v1", "v2"))) {
-        msg <- "Versions 1 or 2 are only allowed."
-        errors <- c(errors, msg)
-    }
-
-    if (length(errors) == 0) TRUE else errors
-}
-
+# === BrapiCon Class ================================================
 
 #' @title An S4 BrapiCon Class
 #'
@@ -71,26 +45,46 @@ setClass(
         version = NA_character_,
         token = NA_character_,
         url = NA_character_
-    ),
-    validity = validBrapiCon
+    )
 )
 
 
-setClass(
-    Class = "BrapiConPHG",
-    contains = "BrapiCon",
-    slots = c(
-        methodID = "character",
-        refRangeFilter = "character",
-        sampleFilter = "character"
-    ),
-    prototype = prototype(
-        methodID = NA_character_,
-        refRangeFilter = NA_character_,
-        sampleFilter = NA_character_
-    ),
-    validity = validBrapiCon
-)
+#' @title BrAPI connection validation
+#'
+#' @description Checks if \code{BrapiCon} class objects are valid.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @importFrom curl has_internet
+setValidity("BrapiCon", function(object) {
+    errors <- character()
+
+    port <- object@port
+    protocol <- object@protocol
+    version <- object@version
+
+    if (!curl::has_internet()) {
+        msg <- "An internet connection could not be made."
+        errors <- c(errors, msg)
+    }
+
+    if (!(port %in% 1:65535)) {
+        msg <- "Not a valid port number."
+        errors <- c(errors, msg)
+    }
+
+    if (!(protocol %in% c("http", "https"))) {
+        msg <- "Protocols can only be 'http' or 'https'."
+        errors <- c(errors, msg)
+    }
+
+    if (!(version %in% c("v1", "v2"))) {
+        msg <- "Versions 1 or 2 are only allowed."
+        errors <- c(errors, msg)
+    }
+
+    if (length(errors) == 0) TRUE else errors
+})
 
 
 #' @title BrapiCon object and constructors
@@ -133,6 +127,52 @@ BrapiCon <- function(host,
         protocol = protocol,
         version = version,
         url = url
+    )
+}
+
+
+
+
+
+# === BrapiConPHG Class =============================================
+
+
+#' @title An S4 BrapiConPHG Class
+#'
+#' @description Class \code{BrapiConPHG} defines a \code{rPHG}
+#'    Class for storing BrAPI connection data plust PHG coordinate info.
+#'
+#' @slot brapiCon A \code{BrapiCon} object.
+#' @slot methodID A PHG method identifier.
+#' @slot refRangeFilter Reference range selection URL parameters.
+#' @slot sampleFilter Sample / taxa selection URL parameters.
+#'
+#' @name BrapiConPHG-class
+#' @rdname BrapiConPHG-class
+#' @exportClass BrapiConPHG
+setClass(
+    Class = "BrapiConPHG",
+    contains = "BrapiCon",
+    slots = c(
+        methodID = "character",
+        refRangeFilter = "character",
+        sampleFilter = "character"
+    ),
+    prototype = list(
+        methodID = NA_character_,
+        refRangeFilter = NA_character_,
+        sampleFilter = NA_character_
+    )
+)
+
+
+## (1) Pick method ----
+#' @export
+PHGMethod <- function(brapiObj, x) {
+    methods::new(
+        "BrapiConPHG",
+        brapiObj,
+        methodID = x
     )
 }
 
