@@ -3,16 +3,22 @@
 \name{referenceSets}
 \alias{referenceSets}
 \alias{referenceSets,BrapiCon-method}
+\alias{availablePHGMethods}
 \title{Retrieve reference set data from BrAPI connection}
 \usage{
 referenceSets(object)
 
 \S4method{referenceSets}{BrapiCon}(object)
+
+availablePHGMethods(object)
 }
 \arguments{
 \item{object}{A \code{BrapiCon} object.}
 }
 \description{
 Retrieves data from the \code{referenceSets} endpoint of a BrAPI
+  server.
+
+Retrieves data from the \code{variantTables} endpoint of a BrAPI
   server.
 }

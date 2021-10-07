@@ -238,6 +238,30 @@ setMethod(
 )
 
 
+## Get available PHG methods ----
+#' @title Retrieve available PHG method data from BrAPI connection
+#'
+#' @description Retrieves data from the \code{variantTables} endpoint of a BrAPI
+#'   server.
+#'
+#' @param object A \code{BrapiCon} object.
+#'
+#' @rdname availablePHGMethods
+#'
+#' @export
+setGeneric("availablePHGMethods", function(object) standardGeneric("availablePHGMethods"))
+
+#' @rdname availablePHGMethods
+#' @export
+setMethod(
+    f = "availablePHGMethods",
+    signature = "BrapiCon",
+    definition = function(object) {
+        json2tibble(object, "variantTables")
+    }
+)
+
+
 
 
 
@@ -357,3 +381,102 @@ filterSamples <- function(x, samples) {
 }
 
 
+## Get ref ranges for given PHG method ----
+#' @title Retrieve available ref range data from a given PHG method
+#'
+#' @description Retrieves reference range information from a given PHG method.
+#'   Data returned is (1) chromosome, (2) start, and (3) stop coordinates.
+#'
+#' @param object A \code{BrapiConPHG} object.
+#'
+#' @rdname readRefRanges
+#'
+#' @export
+setGeneric("readRefRanges", function(object) standardGeneric("readRefRanges"))
+
+#' @rdname readRefRanges
+#'
+#' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges
+#'
+#' @export
+setMethod(
+    f = "readRefRanges",
+    signature = "BrapiConPHG",
+    definition = function(object) {
+        urls <- getVTList(object)
+
+        rrDF <- parseJSON(urls$rangeURL)
+        rrDF <- rrDF$result$data
+
+        gr <- GenomicRanges::GRanges(
+            seqnames = rrDF$referenceName,
+            ranges = IRanges::IRanges(rrDF$start, rrDF$end),
+            variantDbId = as.numeric(rrDF$variantDbId)
+        )
+        return(gr)
+    }
+)
+
+
+## Get samples for given PHG method ----
+#' @title Retrieve available sample data from a given PHG method
+#'
+#' @description Retrieves sample information from a given PHG method.
+#'   Data returned is (1) sample name, (2) sample DB ID, (3) description,
+#'   and (4) additional information.
+#'
+#' @param object A \code{BrapiConPHG} object.
+#'
+#' @rdname readSamples
+#'
+#' @export
+setGeneric("readSamples", function(object) standardGeneric("readSamples"))
+
+#' @rdname readSamples
+#'
+#' @importFrom tibble as_tibble
+#'
+#' @export
+setMethod(
+    f = "readSamples",
+    signature = "BrapiConPHG",
+    definition = function(object) {
+        urls <- getVTList(object)
+
+        sampleDF <- parseJSON(urls$sampleURL)
+        sampleDF <- sampleDF$result$data
+
+        return(tibble::as_tibble(sampleDF))
+    }
+)
+
+
+## Get table for given PHG method ----
+#' @title Retrieve available table data from a given PHG method
+#'
+#' @description Retrieves table information from a given PHG method.
+#'   Data returned is a \code{matrix} object.
+#'
+#' @param object A \code{BrapiConPHG} object.
+#'
+#' @rdname readTable
+#'
+#' @export
+setGeneric("readTable", function(object) standardGeneric("readTable"))
+
+#' @rdname readTable
+#'
+#' @export
+setMethod(
+    f = "readTable",
+    signature = "BrapiConPHG",
+    definition = function(object) {
+        urls <- getVTList(object)
+
+        tableDF <- parseJSON(urls$tableURL)
+        tableDF <- tableDF$result$genotypes
+
+        return(tableDF)
+    }
+)

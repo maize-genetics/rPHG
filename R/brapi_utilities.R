@@ -97,6 +97,11 @@ json2igraph <- function(object, dbID) {
 }
 
 
+#' @title Retrieve variant table BrAPI URLs
+#'
+#' @description Returns a list of three BrAPI endpoints: (1) sample, (2)
+#'   variants (i.e. reference ranges), and (3) table info.
+#'
 #' @param x A \code{BrapiConPHG} object.
 #' @export
 getVTList <- function(x) {
