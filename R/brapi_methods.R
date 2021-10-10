@@ -31,7 +31,7 @@ setMethod(
 
         status <- tryCatch(
             expr = {
-                httr::GET(brapiURL(object))$status
+                httr::GET(paste0(brapiURL(object), "/serverinfo"))$status
             },
             error = function(cond) "ERROR"
         )
@@ -398,6 +398,8 @@ setGeneric("readRefRanges", function(object) standardGeneric("readRefRanges"))
 #'
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
+#' @importFrom rJava .jevalArray
+#' @importFrom rJava .jnew
 #'
 #' @export
 setMethod(
@@ -406,13 +408,21 @@ setMethod(
     definition = function(object) {
         urls <- getVTList(object)
 
-        rrDF <- parseJSON(urls$rangeURL)
-        rrDF <- rrDF$result$data
+        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+
+        rrArray <- rJC$getRefRangesFromBrapi(
+            urls$rangeURL,
+            60000L
+        )
+        rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
 
         gr <- GenomicRanges::GRanges(
-            seqnames = rrDF$referenceName,
-            ranges = IRanges::IRanges(rrDF$start, rrDF$end),
-            variantDbId = as.numeric(rrDF$variantDbId)
+            seqnames = rrArray[1, ],
+            ranges = IRanges::IRanges(
+                start = as.numeric(rrArray[2, ]),
+                end = as.numeric(rrArray[3, ])
+            ),
+            variantDbId = as.numeric(rrArray[4, ])
         )
         return(gr)
     }
@@ -474,9 +484,30 @@ setMethod(
     definition = function(object) {
         urls <- getVTList(object)
 
-        tableDF <- parseJSON(urls$tableURL)
-        tableDF <- tableDF$result$genotypes
+        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
 
-        return(tableDF)
+        rrArray <- rJC$getRefRangesFromBrapi(
+            urls$rangeURL,
+            60000L
+        )
+        rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
+
+        tableArray <- rJC$getHapArrayFromBrapi(
+            urls$tableURL,
+            1000L
+        )
+        tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
+
+        sampleNames <- parseJSON(urls$sampleURL)
+        sampleNames <- sampleNames$result$data$sampleName
+
+        colnames(tableArray) <- sampleNames
+        rownames(tableArray) <- rrArray[4, ]
+
+        gc <- base::gc()
+
+        return(t(tableArray))
     }
 )
+
+
