@@ -4,7 +4,7 @@
 ##  This file houses BrAPI-related functions for:
 ##    * Class representation
 ##    * Validity checking classes
-##    * Constructing classes (e.g. helper functions)
+##    * Class instantiation (e.g. helper functions)
 ##
 #####################################################################
 
@@ -50,6 +50,8 @@ setClass(
 
 
 #' @title BrAPI connection validation
+#'
+#' @name BrapiCon-validity
 #'
 #' @description Checks if \code{BrapiCon} class objects are valid.
 #'
@@ -142,7 +144,6 @@ BrapiCon <- function(host,
 #' @description Class \code{BrapiConPHG} defines a \code{rPHG}
 #'    Class for storing BrAPI connection data plust PHG coordinate info.
 #'
-#' @slot brapiCon A \code{BrapiCon} object.
 #' @slot methodID A PHG method identifier.
 #' @slot refRangeFilter Reference range selection URL parameters.
 #' @slot sampleFilter Sample / taxa selection URL parameters.
@@ -166,7 +167,14 @@ setClass(
 )
 
 
-## (1) Pick method ----
+#' @title Helper function to construct BrapiConPHG object
+#'
+#' @description Creates a \code{BrapiConPHG} object to be used to read and
+#'   filter data from a given BrAPI endpoint given a verified PHG method.
+#'
+#' @param brapiObj A \code{BrapiCon} object.
+#' @param x A PHG method identifier.
+#'
 #' @export
 PHGMethod <- function(brapiObj, x) {
     methods::new(

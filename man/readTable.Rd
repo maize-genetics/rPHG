@@ -3,14 +3,26 @@
 \name{readTable}
 \alias{readTable}
 \alias{readTable,BrapiConPHG-method}
+\alias{readPHGDatasetFromBrapi,BrapiConPHG-method}
 \title{Retrieve available table data from a given PHG method}
 \usage{
-readTable(object)
+readTable(object, ...)
 
-\S4method{readTable}{BrapiConPHG}(object)
+\S4method{readTable}{BrapiConPHG}(object, index = FALSE, verbose = TRUE, transpose = TRUE)
+
+\S4method{readPHGDatasetFromBrapi}{BrapiConPHG}(object, verbose = TRUE)
 }
 \arguments{
 \item{object}{A \code{BrapiConPHG} object.}
+
+\item{...}{Additional arguments to be passed.}
+
+\item{index}{Should index values be returned? If \code{FALSE}, will return
+haplotype IDs.}
+
+\item{verbose}{Show messages to console?}
+
+\item{transpose}{Should data be transposed upon return?}
 }
 \description{
 Retrieves table information from a given PHG method.

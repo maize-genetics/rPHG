@@ -11,8 +11,6 @@ Class \code{BrapiConPHG} defines a \code{rPHG}
 \section{Slots}{
 
 \describe{
-\item{\code{brapiCon}}{A \code{BrapiCon} object.}
-
 \item{\code{methodID}}{A PHG method identifier.}
 
 \item{\code{refRangeFilter}}{Reference range selection URL parameters.}

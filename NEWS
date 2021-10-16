@@ -1,3 +1,18 @@
+## CHANGES IN VERSION 0.1.12
+* Added BrAPI endpoint methods for obtaining PHG data from BrAPI webservices:
+  + `BrapiCon`
+  + `BrapiConPHG`
+  + `readRefRanges()`
+  + `readSamples()`
+  + `readTable()`
+  + `readPHGDatasetFromBrapi()`
+  + `filterRefRanges()`
+  + `filterSamples()`
+  + `serverInfo()`
+  + `availablePHGMethods()`
+* Added Kotlin methods for improved data parsing speeds.
+
+
 ## CHANGES IN VERSION 0.1.11
 * Added NEWS file for tracking version updates.
 * Added error checks for catching C stack usage errors for configuration file

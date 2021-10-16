@@ -8,7 +8,7 @@
 
 # === BrapiCon general methods ======================================
 
-## Display message ----
+## ----
 #' @title Show method for BrapiCon objects
 #'
 #' @description Prints out the information from the BrAPI connection object
@@ -22,8 +22,6 @@
 #' @name show
 #' @rdname show
 #' @aliases show show,BrapiCon-method
-#'
-#' @export
 setMethod(
     f = "show",
     signature = "BrapiCon",
@@ -45,79 +43,7 @@ setMethod(
 )
 
 
-## Get taxa ----
-#' @title Retrieve samples from BrAPI connection
-#'
-#' @description Retrieves data from the \code{samples} endpoint of a BrAPI
-#'   server.
-#'
-#' @param object a \code{\linkS4class{BrapiCon}} object.
-#'
-#' @rdname samples
-#'
-#' @export
-setGeneric("samples", function(object) standardGeneric("samples"))
-
-#' @rdname samples
-#' @export
-setMethod(
-    f = "samples",
-    signature = "BrapiCon",
-    definition = function(object) {
-        json2tibble(object, "samples")
-    }
-)
-
-
-## Get calls ----
-#' @title Retrieve calls from BrAPI connection
-#'
-#' @description Retrieves data from the \code{calls} endpoint of a BrAPI
-#'   server.
-#'
-#' @param object a \linkS4class{BrapiCon} object.
-#'
-#' @rdname calls
-#'
-#' @export
-setGeneric("calls", function(object) standardGeneric("calls"))
-
-#' @rdname calls
-#' @export
-setMethod(
-    f = "calls",
-    signature = "BrapiCon",
-    definition = function(object) {
-        json2tibble(object, "calls")
-    }
-)
-
-
-## Get callsets ----
-#' @title Retrieve callsets from BrAPI connection
-#'
-#' @description Retrieves data from the \code{callsets} endpoint of a BrAPI
-#'   server.
-#'
-#' @param object A \code{BrapiCon} object.
-#'
-#' @rdname callsets
-#'
-#' @export
-setGeneric("callsets", function(object) standardGeneric("callsets"))
-
-#' @rdname callsets
-#' @export
-setMethod(
-    f = "callsets",
-    signature = "BrapiCon",
-    definition = function(object) {
-        json2tibble(object, "callsets")
-    }
-)
-
-
-## Get server information ----
+## ----
 #' @title Retrieve server info data from BrAPI connection
 #'
 #' @description Retrieves data from the \code{serverinfo} endpoint of a BrAPI
@@ -141,32 +67,7 @@ setMethod(
 )
 
 
-## Get graphs ----
-#' @title Retrieve graph data from BrAPI connection
-#'
-#' @description Retrieves data from the \code{graphs} endpoint of a BrAPI
-#'   server.
-#'
-#' @param object A \code{BrapiCon} object.
-#' @param dbID A PHG method.
-#'
-#' @rdname phGraph
-#'
-#' @export
-setGeneric("phGraph", function(object, dbID) standardGeneric("phGraph"))
-
-#' @rdname phGraph
-#' @export
-setMethod(
-    f = "phGraph",
-    signature = "BrapiCon",
-    definition = function(object, dbID) {
-        json2igraph(object, dbID)
-    }
-)
-
-
-## Get references ----
+## ----
 #' @title Retrieve reference data from BrAPI connection
 #'
 #' @description Retrieves data from the \code{references} endpoint of a BrAPI
@@ -190,31 +91,7 @@ setMethod(
 )
 
 
-## Get studies ----
-#' @title Retrieve study data from BrAPI connection
-#'
-#' @description Retrieves data from the \code{studies} endpoint of a BrAPI
-#'   server.
-#'
-#' @param object A \code{BrapiCon} object.
-#'
-#' @rdname studies
-#'
-#' @export
-setGeneric("studies", function(object) standardGeneric("studies"))
-
-#' @rdname studies
-#' @export
-setMethod(
-    f = "studies",
-    signature = "BrapiCon",
-    definition = function(object) {
-        json2tibble(object, "studies")
-    }
-)
-
-
-## Get reference sets ----
+## ----
 #' @title Retrieve reference set data from BrAPI connection
 #'
 #' @description Retrieves data from the \code{referenceSets} endpoint of a BrAPI
@@ -238,7 +115,7 @@ setMethod(
 )
 
 
-## Get available PHG methods ----
+## ----
 #' @title Retrieve available PHG method data from BrAPI connection
 #'
 #' @description Retrieves data from the \code{variantTables} endpoint of a BrAPI
@@ -267,7 +144,7 @@ setMethod(
 
 # === BrapiConPHG general methods ===================================
 
-## Display message ----
+## ----
 #' @title Show method for BrapiConPHG objects
 #'
 #' @description Prints out the information from the BrAPI connection object
@@ -280,9 +157,7 @@ setMethod(
 #' @docType methods
 #' @name show
 #' @rdname show
-#' @aliases show show,BrapiCon-method
-#'
-#' @export
+#' @aliases show show,BrapiConPHG-method
 setMethod(
     f = "show",
     signature = "BrapiConPHG",
@@ -298,7 +173,28 @@ setMethod(
 )
 
 
-## (2A) Filter columns (ref ranges) ----
+## ----
+#' @title Filter reference ranges from given PHG method
+#'
+#' @description Filters reference ranges for a given PHG method by
+#'   manipulation of BrAPI samples URL call. For a given query, reference
+#'   ranges will be returned if they overlap with a user-defined range.
+#'   Uses 1-based coordinate information.
+#'
+#' @param x A \code{BrapiConPHG} object.
+#' @param gr A \code{GRanges} object. Houses genomic range information for
+#'   filter.
+#' @param chromosome A vector of chromosome ids of type \code{character}. Can
+#'   be of length one to size \code{n}. If used, this will return all reference
+#'   ranges within a given chromosome.
+#' @param start A vector of start positions of type \code{numeric}. If used,
+#'   an equal number of \code{end} elements will be needed to avoid error.
+#' @param end A vector of end positions of type \code{numeric}. These will
+#'   link up with the \code{start} positions. Must be equal to the \code{start}
+#'   parameter.
+#'
+#' @importFrom GenomeInfoDb dropSeqlevels
+#'
 #' @export
 filterRefRanges <- function(
     x,
@@ -322,7 +218,7 @@ filterRefRanges <- function(
                 )
                 rrString <- paste0("ranges=", seqString)
             } else {
-                grSub <- dropSeqlevels(gr, chromosome, pruning.mode = "coarse")
+                grSub <- GenomeInfoDb::dropSeqlevels(gr, chromosome, pruning.mode = "coarse")
                 grDF <- as.data.frame(grSub)
                 seqStringGR <- paste0(
                     grDF$seqnames, ":",
@@ -362,7 +258,16 @@ filterRefRanges <- function(
 }
 
 
-## (2A) Filter rows (samples)
+## ----
+#' @title Filter samples from given PHG method
+#'
+#' @description Filters samples for a given PHG method by manipulation of BrAPI
+#'   samples URL call. Returns exact matches only. If query is not exact match,
+#'   no data will be returned for that given sample.
+#'
+#' @param x A \code{BrapiConPHG} object.
+#' @param samples A vector of taxa ID of type \code{character}.
+#'
 #' @export
 filterSamples <- function(x, samples) {
     if (class(x) != "BrapiConPHG") {
@@ -381,7 +286,7 @@ filterSamples <- function(x, samples) {
 }
 
 
-## Get ref ranges for given PHG method ----
+## ----
 #' @title Retrieve available ref range data from a given PHG method
 #'
 #' @description Retrieves reference range information from a given PHG method.
@@ -412,7 +317,7 @@ setMethod(
 
         rrArray <- rJC$getRefRangesFromBrapi(
             urls$rangeURL,
-            60000L
+            as.integer(1000)
         )
         rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
 
@@ -429,7 +334,7 @@ setMethod(
 )
 
 
-## Get samples for given PHG method ----
+## ----
 #' @title Retrieve available sample data from a given PHG method
 #'
 #' @description Retrieves sample information from a given PHG method.
@@ -462,26 +367,33 @@ setMethod(
 )
 
 
-## Get table for given PHG method ----
+## ----
 #' @title Retrieve available table data from a given PHG method
 #'
 #' @description Retrieves table information from a given PHG method.
 #'   Data returned is a \code{matrix} object.
 #'
 #' @param object A \code{BrapiConPHG} object.
+#' @param ... Additional arguments to be passed.
 #'
 #' @rdname readTable
 #'
 #' @export
-setGeneric("readTable", function(object) standardGeneric("readTable"))
+setGeneric("readTable", function(object, ...) standardGeneric("readTable"))
 
 #' @rdname readTable
+#'
+#' @param index Should index values be returned? If \code{FALSE}, will return
+#'   haplotype IDs.
+#' @param verbose Show messages to console?
+#' @param transpose Should data be transposed upon return?
 #'
 #' @export
 setMethod(
     f = "readTable",
     signature = "BrapiConPHG",
-    definition = function(object) {
+    definition = function(object, index = FALSE, verbose = TRUE, transpose = TRUE) {
+        if (verbose) message("Downloading table data...")
         urls <- getVTList(object)
 
         rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
@@ -492,10 +404,18 @@ setMethod(
         )
         rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
 
-        tableArray <- rJC$getHapArrayFromBrapi(
-            urls$tableURL,
-            1000L
-        )
+        if (index) {
+            tableArray <- rJC$getHapIndexArrayFromBrapi(
+                urls$tableURL,
+                1000L
+            )
+        } else {
+            tableArray <- rJC$getHapIdArrayFromBrapi(
+                urls$tableURL,
+                urls$rangeURL,
+                1000L
+            )
+        }
         tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
 
         sampleNames <- parseJSON(urls$sampleURL)
@@ -504,10 +424,59 @@ setMethod(
         colnames(tableArray) <- sampleNames
         rownames(tableArray) <- rrArray[4, ]
 
-        gc <- base::gc()
+        if (transpose) {
+            ta <- t(tableArray)
+        } else {
+            ta <- tableArray
+        }
 
-        return(t(tableArray))
+        gc <- base::gc()
+        return(ta)
     }
 )
+
+
+## ----
+#' @title Read PHGDataset object from BrAPI PHG method
+#'
+#' @description Creates a \code{PHGDataset} object by reading sample,
+#'   reference range, and feature data information.
+#'
+#' @param object A \code{BrapiConPHG} object.
+#' @param ... Additional arguments to be passed.
+#'
+#' @rdname readPHGDatasetFromBrapi
+#'
+#' @export
+setGeneric("readPHGDatasetFromBrapi", function(object, ...) {
+    standardGeneric("readPHGDatasetFromBrapi")
+})
+
+#' @rdname readTable
+#'
+#' @export
+setMethod(
+    f = "readPHGDatasetFromBrapi",
+    signature = "BrapiConPHG",
+    definition = function(object, verbose = TRUE) {
+        if (verbose) message("Downloading PHG data...")
+
+        urls <- getVTList(object)
+
+        rr <- readRefRanges(object)
+        hapArray <- readTable(object, transpose = FALSE, verbose = FALSE)
+        samples <- readSamples(object)
+
+        phgSE <- SummarizedExperiment::SummarizedExperiment(
+            assays = list(hapID = hapArray),
+            rowRanges = rr,
+            colData = samples
+        )
+
+        return(methods::new(Class = "PHGDataSet", phgSE))
+    }
+)
+
+
 
 

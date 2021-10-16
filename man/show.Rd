@@ -4,6 +4,7 @@
 \name{show}
 \alias{show}
 \alias{show,BrapiCon-method}
+\alias{show,BrapiConPHG-method}
 \title{Show method for BrapiCon objects}
 \usage{
 \S4method{show}{BrapiCon}(object)
