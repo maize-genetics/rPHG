@@ -51,9 +51,14 @@ URL:
     https://bitbucket.org/bucklerlab/rphg/src/master/
 Imports:
     corrplot,
+    curl,
+    GenomeInfoDb,
     GenomicRanges,
     ggplot2,
+    httr,
+    igraph,
     IRanges,
+    jsonlite,
     knitr,
     magrittr,
     methods,
@@ -64,11 +69,12 @@ Imports:
 Depends:
     SummarizedExperiment
 Suggests:
-    BiocStyle
+    BiocStyle,
+    testthat
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder:
     knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 biocViews:
     GenomeWideAssociation

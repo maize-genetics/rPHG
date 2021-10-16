@@ -1,4 +1,16 @@
 ## CHANGES IN VERSION 0.1.12
+* Added BrAPI endpoint methods for obtaining PHG data from BrAPI webservices:
+  + `BrapiCon`
+  + `BrapiConPHG`
+  + `readRefRanges()`
+  + `readSamples()`
+  + `readTable()`
+  + `readPHGDatasetFromBrapi()`
+  + `filterRefRanges()`
+  + `filterSamples()`
+  + `serverInfo()`
+  + `availablePHGMethods()`
+* Added Kotlin methods for improved data parsing speeds.
 * Added new parameters in `graphBuilder()`
   + `buildType` - do you want the graph built from paths or haplotypes?
 
