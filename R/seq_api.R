@@ -75,13 +75,22 @@ setMethod(
             FALSE
         )
 
+        # Get ref range metadata
+        hapRR <- rowRanges(myPHG)
+        rrDf <- as.data.frame(hapRR[hapRR$refRange_id %in% paste0("R", seqRes$refRangeIds)])
+
         # Return Biostrings data
         if (length(seqRes$hapIds) == 0) {
             message("No sequences found for given parameters.")
             return(NULL)
         } else {
             myStrings <- Biostrings::DNAStringSet(seqRes$sequence)
-            names(myStrings) <- seqRes$hapIds
+            names(myStrings) <- paste0(
+                seqRes$hapIds, " ",
+                seqRes$taxa, " ",
+                as.character(rrDf$seqnames), ":",
+                rrDf$start, "-", rrDf$end
+            )
             return(myStrings)
         }
     }
@@ -140,6 +149,11 @@ setMethod(
 
         rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RPHGMethodsKotlin")
         seqRes <- rJC$getHapIdSeq(jPhgObj, .jarray(hapId))
+        hapAssay <- SummarizedExperiment::assay(object)
+        hapRR <- SummarizedExperiment::rowRanges(object)
+        metaDf <- data.frame(
+            hap_id = NA, taxa = NA, seqname = NA, start = NA, end = NA, rr_id = NA
+        )
 
         if (seqRes$size() == 0) {
             message("No sequences found for given parameters.")
@@ -150,9 +164,31 @@ setMethod(
             myStringSet <- Biostrings::DNAStringSet()
             for (i in seq_len(seqRes$size())) {
                 tmpRow <- seqRes$get(as.integer(i - 1))
+
+                # Get taxa (col names) from assay
+                taxaVal <- colnames(hapAssay)[which(hapAssay == tmpRow$getHapId(), arr.ind = TRUE)[, 2]]
+                taxaVal <- paste(taxaVal, collapse = ";")
+                # Get ref range (row names) values from assay
+                rrVal   <- rownames(hapAssay)[which(hapAssay == tmpRow$getHapId(), arr.ind = TRUE)[, 1]]
+                rrDf    <- as.data.frame(hapRR[hapRR$refRange_id ==  rrVal])
+
                 myStringSet[[i]] <- tmpRow$getSequence()
-                names(myStringSet)[i] <- tmpRow$getHapId()
+                names(myStringSet)[i] <- paste0(
+                    tmpRow$getHapId(), " ",
+                    taxaVal, " ",
+                    as.character(rrDf$seqnames), ":",
+                    rrDf$start, "-", rrDf$end
+                )
+
+                # add metadata
+                metaDf[i, "hap_id"]  <- tmpRow$getHapId()
+                metaDf[i, "taxa"]    <- taxaVal
+                metaDf[i, "seqname"] <- as.character(rrDf$seqnames)
+                metaDf[i, "start"]   <- rrDf$start
+                metaDf[i, "end"]     <- rrDf$end
+                metaDf[i, "rr_id"]   <- gsub("R", "", rrVal)
             }
+            S4Vectors::metadata(myStringSet)$seqInfo <- metaDf
             return(myStringSet)
         }
     }

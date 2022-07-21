@@ -313,7 +313,7 @@ setMethod(
     definition = function(object) {
         urls <- getVTList(object)
 
-        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RPHGMethodsKotlin")
 
         rrArray <- rJC$getRefRangesFromBrapi(
             urls$rangeURL,
@@ -396,7 +396,7 @@ setMethod(
         if (verbose) message("Downloading table data...")
         urls <- getVTList(object)
 
-        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RPHGMethodsKotlin")
 
         rrArray <- rJC$getRefRangesFromBrapi(
             urls$rangeURL,
