@@ -87,7 +87,7 @@ setMethod(
             myStrings <- Biostrings::DNAStringSet(seqRes$sequence)
             names(myStrings) <- paste0(
                 seqRes$hapIds, " ",
-                seqRes$taxa, " ",
+                # seqRes$taxa, " ",
                 as.character(rrDf$seqnames), ":",
                 rrDf$start, "-", rrDf$end
             )
@@ -167,7 +167,7 @@ setMethod(
 
                 # Get taxa (col names) from assay
                 taxaVal <- colnames(hapAssay)[which(hapAssay == tmpRow$getHapId(), arr.ind = TRUE)[, 2]]
-                taxaVal <- paste(taxaVal, collapse = ";")
+                # taxaVal <- paste(taxaVal, collapse = ";")
                 # Get ref range (row names) values from assay
                 rrVal   <- rownames(hapAssay)[which(hapAssay == tmpRow$getHapId(), arr.ind = TRUE)[, 1]]
                 rrDf    <- as.data.frame(hapRR[hapRR$refRange_id ==  rrVal])
@@ -175,14 +175,14 @@ setMethod(
                 myStringSet[[i]] <- tmpRow$getSequence()
                 names(myStringSet)[i] <- paste0(
                     tmpRow$getHapId(), " ",
-                    taxaVal, " ",
+                    # taxaVal, " ",
                     as.character(rrDf$seqnames), ":",
                     rrDf$start, "-", rrDf$end
                 )
 
                 # add metadata
                 metaDf[i, "hap_id"]  <- tmpRow$getHapId()
-                metaDf[i, "taxa"]    <- taxaVal
+                metaDf[i, "taxa"]    <- I(list(taxaVal))
                 metaDf[i, "seqname"] <- as.character(rrDf$seqnames)
                 metaDf[i, "start"]   <- rrDf$start
                 metaDf[i, "end"]     <- rrDf$end
