@@ -3,7 +3,7 @@
 ## NOTE: make sure you are connected to Cornell's network
 
 test_that("Utility functions return correct info.", {
-    urlGood <- "http://cbsudc01.biohpc.cornell.edu/brapi/v2/serverinfo"
+    urlGood <- "https://test-server.brapi.org/brapi/v2/serverinfo"
     urlBad  <- "fail"
 
     ## Test 1 ----
@@ -18,7 +18,7 @@ test_that("Utility functions return correct info.", {
 
     ## Test 3 ----
     myCon <- BrapiCon(
-        host = "cbsudc01.biohpc.cornell.edu"
+        host = "test-server.brapi.org"
     )
     res <- class(json2tibble(myCon, "callsets"))
     expect_equal(
