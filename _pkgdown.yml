@@ -12,11 +12,11 @@ footer:
 home:
   links:
   - text: Report a bug
-    href: https://github.com/maize-genetics/rTASSEL/issues
+    href: https://github.com/maize-genetics/rPHG/issues
 
 articles:
 - title: Articles
   navbar: ~
   contents:
-  - rphg_installation
+  - rphg_walkthrough
 
