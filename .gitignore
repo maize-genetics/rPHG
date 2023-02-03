@@ -1,3 +1,4 @@
+## General ----
 *.swp
 *.swo
 *.html
@@ -9,4 +10,19 @@
 .Rproj.user
 .httr-oauth
 rTASSEL_log
-rPHG_log
+vignettes/*.log
+vignettes/figure/
+
+
+## R projects ----
+*.Rproj
+docs
+docs/
+
+
+## `testthat` problems ----
+tests/testthat/*.rds
+
+
+## JOSS ----
+*.jats
