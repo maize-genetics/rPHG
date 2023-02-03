@@ -1,22 +1,4 @@
-url: https://maize-genetics.github.io/rPHG
-
+url: https://maize-genetics.github.io/rPHG/
 template:
   bootstrap: 5
-
-footer:
-  structure:
-    left: acknowledgment
-  components:
-    acknowledgment: <b>rPHG</b> is an R package developed by <a href="https://www.maizegenetics.net/">The Buckler Lab</a>
-
-home:
-  links:
-  - text: Report a bug
-    href: https://github.com/maize-genetics/rPHG/issues
-
-articles:
-- title: Articles
-  navbar: ~
-  contents:
-  - rphg_walkthrough
 
