@@ -2,6 +2,7 @@
 
 [![Life Cycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![R-CMD-check](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml)
+[![DOI](https://img.shields.io/badge/Bioinformatics-10.1093%2Fbioinformatics%2Fbtac410-brightgreen)](https://doi.org/10.1093/bioinformatics/btac410)
 
 ## Objective
 The main goal of developing this package is to construct an R-based front-end to connect to the Practical Haplotype Graph - a general, graph-based, computational framework for genotype inference.
