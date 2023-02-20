@@ -1,10 +1,12 @@
 # === Tests for building graph objects ==============================
 
-tmpOut <- capture.output(startLogger())
+tmpFile <- tempfile(fileext = ".txt")
+startLogger(tmpFile)
+
 
 test_that("graphBuilder() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     expect_error(graphBuilder("does/not/exist"))
 
@@ -12,3 +14,4 @@ test_that("graphBuilder() returns correct data", {
     expect_message(graphBuilder(tmpFile, methods = "CONSENSUS", chrom = "1"))
     expect_message(graphBuilder(tmpFile, methods = "PATH_METHOD", buildType = "path"))
 })
+

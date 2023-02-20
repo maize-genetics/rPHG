@@ -1,3 +1,13 @@
+## CHANGES IN VERSION 0.1.14
+* Update logging function (`startLogger()`)
+* Add new tests to expand code coverage
+* Deprecate BrAPI calls that use external `khttp` client in PHG jar
+
+
+## CHANGES IN VERSION 0.1.13
+* Update to latest jar files including PHG build
+
+
 ## CHANGES IN VERSION 0.1.12
 * Added BrAPI endpoint methods for obtaining PHG data from BrAPI webservices:
   + `BrapiCon`

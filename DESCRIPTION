@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.13
+Version: 0.1.14
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -47,7 +47,7 @@ Description:
     for genomic selection models. This can in turn increase predictive accuracy
     and selection intensity in a breeding program.
 License: GPL-3 | file LICENSE
-URL:https://bitbucket.org/bucklerlab/rphg/src/master/,
+URL: https://bitbucket.org/bucklerlab/rphg/src/master/,
     https://maize-genetics.github.io/rPHG/
 Imports:
     corrplot,
@@ -56,7 +56,6 @@ Imports:
     GenomicRanges,
     ggplot2,
     httr,
-    igraph,
     IRanges,
     jsonlite,
     magrittr,
@@ -75,6 +74,6 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder:
     knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 biocViews:
     GenomeWideAssociation

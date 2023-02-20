@@ -313,22 +313,31 @@ setMethod(
     definition = function(object) {
         urls <- getVTList(object)
 
-        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+        # rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+        # rrArray <- rJC$getRefRangesFromBrapi(
+        #     urls$rangeURL,
+        #     as.integer(1000)
+        # )
+        # rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
 
-        rrArray <- rJC$getRefRangesFromBrapi(
-            urls$rangeURL,
-            as.integer(1000)
+        pageSize <- ifelse(
+            grepl("variants$", urls$rangeURL),
+            "?pageSize=",
+            "&pageSize="
         )
-        rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
+
+        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "100000"))
+        rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
-            seqnames = rrArray[1, ],
+            seqnames = rrDF$referenceName,
             ranges = IRanges::IRanges(
-                start = as.numeric(rrArray[2, ]),
-                end = as.numeric(rrArray[3, ])
+                start = rrDF$start,
+                end = rrDF$end
             ),
-            variantDbId = as.numeric(rrArray[4, ])
+            variantDbId = rrDF$variantDbId
         )
+
         return(gr)
     }
 )
@@ -393,45 +402,46 @@ setMethod(
     f = "readTable",
     signature = "BrapiConPHG",
     definition = function(object, index = FALSE, verbose = TRUE, transpose = TRUE) {
-        if (verbose) message("Downloading table data...")
-        urls <- getVTList(object)
-
-        rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
-
-        rrArray <- rJC$getRefRangesFromBrapi(
-            urls$rangeURL,
-            60000L
-        )
-        rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
-
-        if (index) {
-            tableArray <- rJC$getHapIndexArrayFromBrapi(
-                urls$tableURL,
-                1000L
-            )
-        } else {
-            tableArray <- rJC$getHapIdArrayFromBrapi(
-                urls$tableURL,
-                urls$rangeURL,
-                1000L
-            )
-        }
-        tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
-
-        sampleNames <- parseJSON(urls$sampleURL)
-        sampleNames <- sampleNames$result$data$sampleName
-
-        colnames(tableArray) <- sampleNames
-        rownames(tableArray) <- rrArray[4, ]
-
-        if (transpose) {
-            ta <- t(tableArray)
-        } else {
-            ta <- tableArray
-        }
-
-        gc <- base::gc()
-        return(ta)
+        message("WIP...")
+        # if (verbose) message("Downloading table data...")
+        # urls <- getVTList(object)
+        #
+        # rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
+        #
+        # rrArray <- rJC$getRefRangesFromBrapi(
+        #     urls$rangeURL,
+        #     60000L
+        # )
+        # rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
+        #
+        # if (index) {
+        #     tableArray <- rJC$getHapIndexArrayFromBrapi(
+        #         urls$tableURL,
+        #         1000L
+        #     )
+        # } else {
+        #     tableArray <- rJC$getHapIdArrayFromBrapi(
+        #         urls$tableURL,
+        #         urls$rangeURL,
+        #         1000L
+        #     )
+        # }
+        # tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
+        #
+        # sampleNames <- parseJSON(urls$sampleURL)
+        # sampleNames <- sampleNames$result$data$sampleName
+        #
+        # colnames(tableArray) <- sampleNames
+        # rownames(tableArray) <- rrArray[4, ]
+        #
+        # if (transpose) {
+        #     ta <- t(tableArray)
+        # } else {
+        #     ta <- tableArray
+        # }
+        #
+        # gc <- base::gc()
+        # return(ta)
     }
 )
 
@@ -459,21 +469,22 @@ setMethod(
     f = "readPHGDatasetFromBrapi",
     signature = "BrapiConPHG",
     definition = function(object, verbose = TRUE) {
-        if (verbose) message("Downloading PHG data...")
-
-        urls <- getVTList(object)
-
-        rr <- readRefRanges(object)
-        hapArray <- readTable(object, transpose = FALSE, verbose = FALSE)
-        samples <- readSamples(object)
-
-        phgSE <- SummarizedExperiment::SummarizedExperiment(
-            assays = list(hapID = hapArray),
-            rowRanges = rr,
-            colData = samples
-        )
-
-        return(methods::new(Class = "PHGDataSet", phgSE))
+        message("WIP...")
+        # if (verbose) message("Downloading PHG data...")
+        #
+        # urls <- getVTList(object)
+        #
+        # rr <- readRefRanges(object)
+        # hapArray <- readTable(object, transpose = FALSE, verbose = FALSE)
+        # samples <- readSamples(object)
+        #
+        # phgSE <- SummarizedExperiment::SummarizedExperiment(
+        #     assays = list(hapID = hapArray),
+        #     rowRanges = rr,
+        #     colData = samples
+        # )
+        #
+        # return(methods::new(Class = "PHGDataSet", phgSE))
     }
 )
 
