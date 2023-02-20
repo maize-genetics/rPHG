@@ -15,7 +15,7 @@ startLogger <- function(path = NULL) {
         path <- "rPHG_log"
     }
 
-    if (grepl(pattern = "~", x = path)) {
+    if (grepl(pattern = "^~", x = path)) {
         stop(
             paste0(
                 "It seems that you are using a '~' instead of your full",
