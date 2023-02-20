@@ -49,16 +49,13 @@
     <loc>https://maize-genetics.github.io/rPHG/reference/configCatcher.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/configFileMaker.html</loc>
+    <loc>https://maize-genetics.github.io/rPHG/reference/createConfigFile.html</loc>
   </url>
   <url>
     <loc>https://maize-genetics.github.io/rPHG/reference/filterRefRanges.html</loc>
   </url>
   <url>
     <loc>https://maize-genetics.github.io/rPHG/reference/filterSamples.html</loc>
-  </url>
-  <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/flapjackExport.html</loc>
   </url>
   <url>
     <loc>https://maize-genetics.github.io/rPHG/reference/getVTList.html</loc>
@@ -71,9 +68,6 @@
   </url>
   <url>
     <loc>https://maize-genetics.github.io/rPHG/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/json2igraph.html</loc>
   </url>
   <url>
     <loc>https://maize-genetics.github.io/rPHG/reference/json2tibble.html</loc>
