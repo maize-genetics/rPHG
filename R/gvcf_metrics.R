@@ -9,11 +9,10 @@
 #'
 #' @export
 gvcfMetrics <- function(gvcfDir = NULL, indelReport = FALSE) {
-    rJC <- .jnew("net.maizegenetics.pangenome.hapCalling.VCFMetricsPlugin")
+    rJC <- rJava::.jnew("net.maizegenetics.pangenome.hapCalling.VCFMetricsPlugin")
 
     myVcfStatFile <- tempfile(".tsv")
     myIndelStatFile <- tempfile("*.tsv")
-
 
     rJC$vcfDir(gvcfDir)
     rJC$outFile(myVcfStatFile)
@@ -27,10 +26,16 @@ gvcfMetrics <- function(gvcfDir = NULL, indelReport = FALSE) {
 
 # ## Basic testing ----
 # library(rJava)
-#
-# rPHG::startLogger("/home/bm646/Downloads/gvcf_metric_test/debug_log")
-# gvcfDir <- "/home/bm646/Downloads/gvcf_metric_test/"
-#
+# 
+# if (Sys.info()["sysname"] == "Windows") {
+#     rPHG::startLogger("c:/Users/brand/Downloads/gvcf_test/debug_log.txt")
+#     gvcfDir <- "c:/Users/brand/Downloads/gvcf_test/"
+# } else {
+#     rPHG::startLogger("/home/bm646/Downloads/gvcf_metric_test/debug_log")
+#     gvcfDir <- "/home/bm646/Downloads/gvcf_metric_test/"
+# }
+# 
+# 
 # myStats <- gvcfMetrics(gvcfDir = gvcfDir)
 
 
