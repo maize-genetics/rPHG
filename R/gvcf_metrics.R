@@ -16,26 +16,44 @@ gvcfMetrics <- function(gvcfDir = NULL, indelReport = FALSE) {
 
     rJC$vcfDir(gvcfDir)
     rJC$outFile(myVcfStatFile)
+
+    if (indelReport) {
+        rJC$indelFile(myIndelStatFile)
+    }
+
     rJC$run()
 
     vcfStatsDf <- read.table(myVcfStatFile, header = TRUE)
 
-    return(vcfStatsDf)
+    if (indelReport) {
+        indelStatsDf <- read.table(myIndelStatFile, header = FALSE, fill = TRUE)
+    }
+
+    if (indelReport) {
+        return(
+            list(
+                "gvcf_stats"  = vcfStatsDf,
+                "indel_stats" = indelStatsDf
+            )
+        )
+    } else {
+        return(vcfStatsDf)
+    }
 }
 
 
 # ## Basic testing ----
 # library(rJava)
-# 
+#
 # if (Sys.info()["sysname"] == "Windows") {
 #     rPHG::startLogger("c:/Users/brand/Downloads/gvcf_test/debug_log.txt")
 #     gvcfDir <- "c:/Users/brand/Downloads/gvcf_test/"
 # } else {
 #     rPHG::startLogger("/home/bm646/Downloads/gvcf_metric_test/debug_log")
-#     gvcfDir <- "/home/bm646/Downloads/gvcf_metric_test/"
+#     gvcfDir <- "/home/bm646/Downloads/gvcf_metric_test/small/"
 # }
-# 
-# 
-# myStats <- gvcfMetrics(gvcfDir = gvcfDir)
+#
+#
+# myStats <- gvcfMetrics(gvcfDir = gvcfDir, indelReport = TRUE)
 
 
