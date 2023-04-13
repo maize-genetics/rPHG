@@ -4,13 +4,12 @@
 \alias{gvcfMetrics}
 \title{Generate metrics for GVCF data}
 \usage{
-gvcfMetrics(gvcfDir = NULL, indelReport = FALSE)
+gvcfMetrics(gvcfDir, indelReport = FALSE)
 }
 \arguments{
 \item{gvcfDir}{Directory containing GVCF file(s) to process.}
 
-\item{indelReport}{Do you want to generate an indel size report? Defaults
-to \code{FALSE}.}
+\item{indelReport}{Do you want to generate an indel size report? Defaults to \code{FALSE}.}
 }
 \description{
 Generate metrics for GVCF data

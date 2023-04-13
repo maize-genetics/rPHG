@@ -6,7 +6,7 @@ startLogger(tmpFile)
 
 test_that("numHaploPerRange() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
@@ -24,7 +24,7 @@ test_that("numHaploPerRange() returns correct data", {
 
 test_that("plotNumHaplo() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
@@ -37,7 +37,7 @@ test_that("plotNumHaplo() returns correct data", {
 
 test_that("calcMutualInfo() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
@@ -51,7 +51,7 @@ test_that("calcMutualInfo() returns correct data", {
 
 test_that("plotMutualInfo() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
@@ -61,7 +61,7 @@ test_that("plotMutualInfo() returns correct data", {
 
 test_that("calcDiff() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
@@ -89,29 +89,12 @@ test_that("searchSimilarGametes() returns correct data", {
 
 test_that("searchSimilarGametes() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
+    createConfigFile(tmpFile)
 
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
 
     expect_error(searchRecombination(mtcars))
     expect_error(searchRecombination(phgObject = NULL, phgHapIDMat = NULL))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

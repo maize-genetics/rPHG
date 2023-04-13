@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats_and_visualization.R
 \name{searchSimilarGametes}
 \alias{searchSimilarGametes}
-\title{Search for similar gamets}
+\title{Search for similar gametes}
 \usage{
 searchSimilarGametes(
   phgObject = NULL,

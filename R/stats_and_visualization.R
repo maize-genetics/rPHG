@@ -246,7 +246,7 @@ calcDiff <- function(gamHapIDs, targetHapIDs) {
 
 
 
-#' @title Search for similar gamets
+#' @title Search for similar gametes
 #'
 #' @description Search for inbred lines (gametes) that are similar to a
 #'   specified gamete in specified reference ranges. Supply either a haplotype
