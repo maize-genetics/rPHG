@@ -34,11 +34,26 @@ setMethod(
             error = function(cond) "ERROR"
         )
 
-        cat("A BrAPI connection object\n")
-        cat("  Server...........:", host(object), "\n")
-        cat("  Port.............:", port(object), "\n")
-        cat("  Server status....:", status, "\n")
-        cat("  BrAPI version....:", version(object), "\n")
+        if (is.numeric(status) && status >= 200 && status <= 299) {
+            statusMsg <- cli::col_green(status)
+        } else {
+            statusMsg <- cli::col_red(status)
+        }
+
+        # cat("A BrAPI connection object\n")
+        # cat("  Server...........:", host(object), "\n")
+        # cat("  Port.............:", port(object), "\n")
+        # cat("  Server status....:", status, "\n")
+        # cat("  BrAPI version....:", version(object), "\n")
+
+        cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+        cli::cli_text("A {.strong BrAPI} connection object")
+        cli::cli_ul(id = "foo")
+        cli::cli_li("{.field Server}...........: {.url {host(object)}}")
+        cli::cli_li("{.field Port}.............: { {port(object)} }")
+        cli::cli_li("{.field Server status}....: { statusMsg }")
+        cli::cli_li("{.field BrAPI version}....: { {version(object)} }")
+        cli::cli_end(id = "foo")
     }
 )
 
@@ -162,13 +177,25 @@ setMethod(
     f = "show",
     signature = "BrapiConPHG",
     definition = function(object) {
-        rrCheck <- ifelse(is.na(object@refRangeFilter), "[ ]", "[x]")
-        sampleCheck <- ifelse(is.na(object@sampleFilter), "[ ]", "[x]")
+        cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+        rrCheck <- ifelse(
+            test = is.na(object@refRangeFilter),
+            yes  = cli::symbol$square_small,
+            no   = cli::symbol$square_small_filled
+        )
+        sampleCheck <- ifelse(
+            test = is.na(object@sampleFilter),
+            yes  = cli::symbol$square_small,
+            no   = cli::symbol$square_small_filled
+        )
 
-        cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
-        cat("  method:         ", object@methodID, "\n")
-        cat("  variant filter: ", rrCheck, "\n")
-        cat("  sample filter:  ", sampleCheck, "\n")
+        # cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
+        cli::cli_text(cli::col_grey("<BrapiConPHG: {.strong BrAPI <-> PHG} pointer object>"))
+        cli::cli_ul(id = "foo")
+        cli::cli_li("method:         {.strong {object@methodID}}")
+        cli::cli_li("variant filter: { rrCheck }")
+        cli::cli_li("sample filter : { sampleCheck }")
+        cli::cli_end(id = "foo")
     }
 )
 
