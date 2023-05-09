@@ -180,7 +180,7 @@ setMethod(
         cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
         activeSlotMsg   <- cli::symbol$square_small_filled
-        inactiveSlotMsg <- cli::symble$square_small
+        inactiveSlotMsg <- cli::symbol$square_small
 
         rrCheck <- ifelse(
             test = is.na(object@refRangeFilter),
@@ -446,7 +446,7 @@ setMethod(
         if (is.null(numCores)) {
             numCores <- 1
         }
-        if (!is.null(numCores) || !is.numeric(numCores)) {
+        if (!is.numeric(numCores)) {
             stop("numCores parameter must be numeric or NULL")
         }
 
@@ -454,8 +454,8 @@ setMethod(
         urls <- getVTList(object)
 
         # Calculate total pages
-        methods <- availablePHGMethods(BrapiCon(baseUrl, protocol = "http"))
-        totalVariants <- methods[which(methods$variantTableDbId == phgMethod), ]$numVariants
+        methods <- availablePHGMethods(object)
+        totalVariants <- methods[which(methods$variantTableDbId == object@methodID), ]$numVariants
         totalPages <- ceiling(totalVariants / 10000)
 
         # Download each page (iterative)
