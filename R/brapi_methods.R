@@ -326,7 +326,7 @@ setMethod(
             "&pageSize="
         )
 
-        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "100000"))
+        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "200000"))
         rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
@@ -388,60 +388,82 @@ setMethod(
 #' @rdname readTable
 #'
 #' @export
-setGeneric("readTable", function(object, ...) standardGeneric("readTable"))
+setGeneric("readTable", function(object, ...) {
+    standardGeneric("readTable")
+})
 
 #' @rdname readTable
 #'
-#' @param index Should index values be returned? If \code{FALSE}, will return
-#'   haplotype IDs.
-#' @param verbose Show messages to console?
-#' @param transpose Should data be transposed upon return?
+#' @param numCores Number of processing cores for faster processing times.
+#' @param debug Is this method for examples purposes?
+#'
+#' @importFrom cli cli_progress_bar
+#' @importFrom cli cli_progress_done
+#' @importFrom cli cli_progress_step
+#' @importFrom cli cli_progress_update
+#' @importFrom httr content
+#' @importFrom httr GET
+#' @importFrom jsonlite fromJSON
+#' @importFrom parallel mclapply
 #'
 #' @export
 setMethod(
     f = "readTable",
     signature = "BrapiConPHG",
-    definition = function(object, index = FALSE, verbose = TRUE, transpose = TRUE) {
-        message("WIP...")
-        # if (verbose) message("Downloading table data...")
-        # urls <- getVTList(object)
-        #
-        # rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
-        #
-        # rrArray <- rJC$getRefRangesFromBrapi(
-        #     urls$rangeURL,
-        #     60000L
-        # )
-        # rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
-        #
-        # if (index) {
-        #     tableArray <- rJC$getHapIndexArrayFromBrapi(
-        #         urls$tableURL,
-        #         1000L
-        #     )
-        # } else {
-        #     tableArray <- rJC$getHapIdArrayFromBrapi(
-        #         urls$tableURL,
-        #         urls$rangeURL,
-        #         1000L
-        #     )
-        # }
-        # tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
-        #
-        # sampleNames <- parseJSON(urls$sampleURL)
-        # sampleNames <- sampleNames$result$data$sampleName
-        #
-        # colnames(tableArray) <- sampleNames
-        # rownames(tableArray) <- rrArray[4, ]
-        #
-        # if (transpose) {
-        #     ta <- t(tableArray)
-        # } else {
-        #     ta <- tableArray
-        # }
-        #
-        # gc <- base::gc()
-        # return(ta)
+    definition = function(object, numCores = NULL, debug = TRUE) {
+        # Logic checks
+        if (is.null(numCores)) {
+            numCores <- 1
+        }
+        if (!is.null(numCores) || !is.numeric(numCores)) {
+            stop("numCores parameter must be numeric or NULL")
+        }
+
+        # Get URLs
+        urls <- getVTList(object)
+
+        # Calculate total pages
+        methods <- availablePHGMethods(BrapiCon(baseUrl, protocol = "http"))
+        totalVariants <- methods[which(methods$variantTableDbId == phgMethod), ]$numVariants
+        totalPages <- ceiling(totalVariants / 10000)
+
+        # Download each page (iterative)
+        # TODO - can we async this? (e.g. futures)
+        allResp <- vector("list", totalPages)
+        cli::cli_progress_step("Downloading data")
+        cli::cli_progress_bar("   - Progress: ", total = totalPages)
+        for (i in seq_len(totalPages)) {
+            currentUrl <- sprintf(urls$tableURL, i - 1, 0)
+            allResp[[i]] <- httr::GET(currentUrl)
+            cli::cli_progress_update()
+        }
+        cli::cli_progress_done()
+
+        # F1 - Convert hap ID string to integer (e.g. "21/21" -> 21)
+        brapiHapIdStringToInt <- function(x) {
+            id <- strsplit(x, "/")[[1]][1]
+            ifelse(id == ".", return(NA), return(as.integer(id)))
+        }
+
+        # F2 - process matrix slices (convert from JSON to int matrix)
+        processMatrix <- function(x) {
+            xNew <- httr::content(x, as = "text", encoding = "ISO-8859-1")
+            xNew <- jsonlite::fromJSON(xNew)
+            xMat <- xNew$result$dataMatrices$dataMatrix[[1]]
+            colnames(xMat) <- xNew$result$callSetDbIds
+            rownames(xMat) <- xNew$result$variants
+            xMat <- apply(xMat, c(1, 2), brapiHapIdStringToInt)
+            return(xMat)
+        }
+
+        # Clean up data (parallel)
+        cli::cli_progress_step("Cleaning data")
+        finalMatrices <- parallel::mclapply(allResp, processMatrix, mc.cores = numCores)
+
+        # Bind all data into one matrix and return
+        cli::cli_progress_step("Combining responses")
+        unionMatrix <- t(do.call(rbind, finalMatrices))
+        return(unionMatrix)
     }
 )
 
@@ -468,7 +490,7 @@ setGeneric("readPHGDatasetFromBrapi", function(object, ...) {
 setMethod(
     f = "readPHGDatasetFromBrapi",
     signature = "BrapiConPHG",
-    definition = function(object, verbose = TRUE) {
+    definition = function(object) {
         message("WIP...")
         # if (verbose) message("Downloading PHG data...")
         #

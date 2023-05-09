@@ -50,6 +50,7 @@ License: GPL-3 | file LICENSE
 URL: https://bitbucket.org/bucklerlab/rphg/src/master/,
     https://maize-genetics.github.io/rPHG/
 Imports:
+    cli,
     corrplot,
     curl,
     GenomeInfoDb,
@@ -60,6 +61,7 @@ Imports:
     jsonlite,
     magrittr,
     methods,
+    parallel,
     rJava,
     rlang,
     S4Vectors,
