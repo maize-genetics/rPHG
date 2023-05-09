@@ -129,13 +129,23 @@ getVTList <- function(x) {
         ifelse(is.na(samples), "", paste0("?", samples))
     )
 
+    # tableURL <- paste0(
+    #     baseURL, "/table", "?",
+    #     ifelse(is.na(ranges), "", paste0(ranges)), "&",
+    #     ifelse(is.na(samples), "", paste0(samples))
+    # )
+    # tableURL <- gsub("\\?$|\\?&$", "", tableURL)
+    # tableURL <- gsub("\\?&", "?", tableURL)
+
     tableURL <- paste0(
-        baseURL, "/table", "?",
-        ifelse(is.na(ranges), "", paste0(ranges)), "&",
-        ifelse(is.na(samples), "", paste0(samples))
+        brapiURL(x),
+        "/allelematrix",
+        "?variantSetDbId=", x@methodID,
+        "&dimensionVariantPageSize=100", # currently hardcoded
+        "&dimensionCallSetPageSize=50", # currently hardcoded
+        "&dimensionVariantPage=%i",
+        "&dimensionCallSetPage=%i"
     )
-    tableURL <- gsub("\\?$|\\?&$", "", tableURL)
-    tableURL <- gsub("\\?&", "?", tableURL)
 
     return(
         list(
