@@ -178,15 +178,19 @@ setMethod(
     signature = "BrapiConPHG",
     definition = function(object) {
         cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+        activeSlotMsg   <- cli::symbol$square_small_filled
+        inactiveSlotMsg <- cli::symble$square_small
+
         rrCheck <- ifelse(
             test = is.na(object@refRangeFilter),
-            yes  = cli::symbol$square_small,
-            no   = cli::symbol$square_small_filled
+            yes  = activeSlotMsg,
+            no   = inactiveSlotMsg
         )
         sampleCheck <- ifelse(
             test = is.na(object@sampleFilter),
-            yes  = cli::symbol$square_small,
-            no   = cli::symbol$square_small_filled
+            yes  = activeSlotMsg,
+            no   = inactiveSlotMsg
         )
 
         # cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
