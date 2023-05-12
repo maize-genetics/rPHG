@@ -184,13 +184,13 @@ setMethod(
 
         rrCheck <- ifelse(
             test = is.na(object@refRangeFilter),
-            yes  = activeSlotMsg,
-            no   = inactiveSlotMsg
+            yes  = inactiveSlotMsg,
+            no   = activeSlotMsg
         )
         sampleCheck <- ifelse(
             test = is.na(object@sampleFilter),
-            yes  = activeSlotMsg,
-            no   = inactiveSlotMsg
+            yes  = inactiveSlotMsg,
+            no   = activeSlotMsg
         )
 
         # cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
@@ -461,8 +461,8 @@ setMethod(
         # Download each page (iterative)
         # TODO - can we async this? (e.g. futures)
         allResp <- vector("list", totalPages)
-        cli::cli_progress_step("Downloading data")
-        cli::cli_progress_bar("   - Progress: ", total = totalPages)
+        cli::cli_progress_step("Establishing connection")
+        cli::cli_progress_bar("   - Downloading: ", total = totalPages)
         for (i in seq_len(totalPages)) {
             currentUrl <- sprintf(urls$tableURL, i - 1, 0)
             allResp[[i]] <- httr::GET(currentUrl)
