@@ -357,7 +357,7 @@ setMethod(
             "&pageSize="
         )
 
-        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "200000"))
+        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "1200"))
         rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
@@ -426,7 +426,7 @@ setGeneric("readTable", function(object, ...) {
 #' @rdname readTable
 #'
 #' @param numCores Number of processing cores for faster processing times.
-#' @param debug Is this method for examples purposes?
+#' @param transpose Do you want to transpose table?
 #'
 #' @importFrom cli cli_progress_bar
 #' @importFrom cli cli_progress_done
@@ -441,7 +441,7 @@ setGeneric("readTable", function(object, ...) {
 setMethod(
     f = "readTable",
     signature = "BrapiConPHG",
-    definition = function(object, numCores = NULL, debug = TRUE) {
+    definition = function(object, numCores = NULL, transpose = TRUE) {
         # Logic checks
         if (is.null(numCores)) {
             numCores <- 1
@@ -493,7 +493,12 @@ setMethod(
 
         # Bind all data into one matrix and return
         cli::cli_progress_step("Combining responses")
-        unionMatrix <- t(do.call(rbind, finalMatrices))
+        if (transpose) {
+            unionMatrix <- t(do.call(rbind, finalMatrices))
+        } else {
+            unionMatrix <- do.call(rbind, finalMatrices)
+        }
+        
         return(unionMatrix)
     }
 )
@@ -522,25 +527,26 @@ setMethod(
     f = "readPHGDatasetFromBrapi",
     signature = "BrapiConPHG",
     definition = function(object) {
-        message("WIP...")
-        # if (verbose) message("Downloading PHG data...")
-        #
-        # urls <- getVTList(object)
-        #
-        # rr <- readRefRanges(object)
-        # hapArray <- readTable(object, transpose = FALSE, verbose = FALSE)
-        # samples <- readSamples(object)
-        #
-        # phgSE <- SummarizedExperiment::SummarizedExperiment(
-        #     assays = list(hapID = hapArray),
-        #     rowRanges = rr,
-        #     colData = samples
-        # )
-        #
-        # return(methods::new(Class = "PHGDataSet", phgSE))
+
+        urls <- getVTList(object)
+
+        hapArray <- readTable(object, transpose = FALSE)
+        
+        cli::cli_progress_step("Getting ref range data")
+        rr <- readRefRanges(object)
+        cli::cli_progress_step("Getting sample data")
+        samples <- head(readSamples(object), n = 50)
+        
+        colnames(hapArray) <- samples$sampleName
+
+        phgSE <- SummarizedExperiment::SummarizedExperiment(
+            assays = list(hapID = hapArray),
+            rowRanges = rr,
+            colData = samples
+        )
+
+        return(methods::new(Class = "PHGDataSet", phgSE))
     }
 )
-
-
 
 
