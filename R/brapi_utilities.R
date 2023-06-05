@@ -141,8 +141,8 @@ getVTList <- function(x) {
         brapiURL(x),
         "/allelematrix",
         "?variantSetDbId=", x@methodID,
-        "&dimensionVariantPageSize=100", # currently hardcoded
-        "&dimensionCallSetPageSize=50", # currently hardcoded
+        "&dimensionVariantPageSize=10000", # currently hardcoded
+        "&dimensionCallSetPageSize=5000", # currently hardcoded
         "&dimensionVariantPage=%i",
         "&dimensionCallSetPage=%i"
     )
