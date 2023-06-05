@@ -357,7 +357,7 @@ setMethod(
             "&pageSize="
         )
 
-        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "1200"))
+        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "150000"))
         rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
