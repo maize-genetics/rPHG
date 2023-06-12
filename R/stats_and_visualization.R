@@ -350,3 +350,108 @@ searchRecombination <- function(phgObject = NULL,
 
     return(gametesSame[gametesDiff == 1])
 }
+
+
+# ----
+#' @title Visualize Graph Data
+#'
+#' @description
+#' Generates an interactive network plot for a given set of reference ranges
+#' and a set of taxa.
+#'
+#' @param x A \code{PHGDataSet} object
+#'
+#' @export
+phgVisNetwork <- function(x) {
+
+    # TODO - add filtering logic for given taxa and/or reference ranges
+    hapTableMini <- x
+
+    refRangeDataMini <- rowRanges(x) |>
+        head(nRanges) |>
+        as.data.frame()
+
+    taxaGroups <- lapply(seq_len(ncol(hapTableMini)), function(i) {
+        split(rownames(hapTableMini), hapTableMini[, i])
+    })
+
+    hapIds     <- hapTableMini |> apply(2, unique)
+    hapLevels  <- rep(names(hapIds), vapply(hapIds, length, integer(1))) |> as.numeric()
+    fullHapIds <- paste0(hapIds |> unlist(), "_", hapLevels)
+    taxaToHtml <- function(x) {
+        vapply(x, function(i) {
+            paste0("<p><b>Taxa: </b>", paste(i, collapse = ", "), "</p>")
+        }, character(1))
+    }
+    tooltipVec <- lapply(taxaGroups, taxaToHtml) |> unlist()
+
+    refRangeHtml <- lapply(hapLevels, function(i) {
+        paste0(
+            "<p><b>Chr: </b>",
+            refRangeDataMini[i, ]$seqnames,
+            "</p>",
+            "<p><b>Range: </b>",
+            refRangeDataMini[i, ]$start,
+            " - ",
+            refRangeDataMini[i, ]$end,
+            "</p>"
+        )
+    }) |> unlist()
+
+    nodes <- data.frame(
+        id     = seq_along(fullHapIds),
+        label  = fullHapIds,
+        level = hapLevels,
+        title = paste0(refRangeHtml, tooltipVec)
+    )
+
+    lne <- c()
+    rne <- c()
+    for (i in seq_len(ncol(hapTableMini) - 1)) {
+        ln <- paste0(hapTableMini[, i], "_", i)
+        rn <- paste0(hapTableMini[, i + 1], "_", i + 1)
+
+        cnxn <- paste0(ln, "+", rn) |> unique()
+
+        for (c in cnxn) {
+            splits <- strsplit(c, "\\+") |> unlist()
+            f <- which(fullHapIds == splits[1])
+            t <- which(fullHapIds == splits[2])
+            lne <- c(lne, f)
+            rne <- c(rne, t)
+        }
+    }
+
+    edges <- data.frame(
+        from = lne,
+        to = rne
+    )
+
+
+    visNetwork(nodes, edges) |>
+        visEdges(arrows = "to") |>
+        visOptions(highlightNearest = list(enabled = T, degree = 2, hover = T)) |>
+        visHierarchicalLayout(direction = "LR")
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
