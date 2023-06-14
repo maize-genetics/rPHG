@@ -360,27 +360,67 @@ searchRecombination <- function(phgObject = NULL,
 #' and a set of taxa.
 #'
 #' @param x A \code{PHGDataSet} object
+#' @param samples Samples/taxa to include in plot
+#' @param sampleHighlight Sample path to highlight
+#' @param seqId A sequence (e.g. chromosome) ID
+#' @param start Start position for ref ranges
+#' @param end End position for ref ranges
+#' @param ... Additional parameters to pass for ref range inclusion
 #'
 #' @export
-phgVisNetwork <- function(x) {
+plotGraph <- function(
+    x,
+    samples = NULL,
+    sampleHighlight = NULL,
+    seqId = NULL,
+    start = NULL,
+    end = NULL,
+    ...
+) {
 
-    # TODO - add filtering logic for given taxa and/or reference ranges
-    hapTableMini <- x
+    # # Testing
+    # start <- 100
+    # end   <- 1000000
+    # seqId <- "1"
+    # # samples <- c("Z001E0001", "Z001E0028", "Z001E0080")
+    # # samples <- NULL
+    # set.seed(123)
+    # samples <- sample(colnames(x), 100)
+    # # pathToHighlight <- c("Z001E0001")
+    # pathToHighlight <- sample(samples, 1)
 
-    refRangeDataMini <- rowRanges(x) |>
-        head(nRanges) |>
-        as.data.frame()
+    # Filter by taxa and ref ranges
+    if (is.null(samples)) samples <- colnames(x)
+    hapTableMini <- x[, colnames(x) %in% samples]
+    hapTableMini <- IRanges::subsetByOverlaps(
+        hapTableMini,
+        GenomicRanges::GRanges(seqnames = seqId, ranges = start:end)
+    )
 
-    taxaGroups <- lapply(seq_len(ncol(hapTableMini)), function(i) {
-        split(rownames(hapTableMini), hapTableMini[, i])
+    # Get hap ID matrix
+    currentMatrix <- t(SummarizedExperiment::assay(hapTableMini))
+    currentMatrix[is.na(currentMatrix)] <- -128
+
+    # Get ref range data frame
+    refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
+
+    # Group taxa by hap ID and ref range
+    taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {
+        split(rownames(currentMatrix), currentMatrix[, i])
     })
 
-    hapIds     <- hapTableMini |> apply(2, unique)
+    # Generate distinct IDs (hap ID + ref range ID)
+    hapIds     <- currentMatrix |> apply(2, unique)
     hapLevels  <- rep(names(hapIds), vapply(hapIds, length, integer(1))) |> as.numeric()
-    fullHapIds <- paste0(hapIds |> unlist(), "_", hapLevels)
+    fullHapIds <- paste0(
+        lapply(hapIds, function(i) i[order(i)]) |> unlist(),
+        "_", hapLevels
+    )
+
+    # HTML tooltip processing
     taxaToHtml <- function(x) {
         vapply(x, function(i) {
-            paste0("<p><b>Taxa: </b>", paste(i, collapse = ", "), "</p>")
+            paste0("<b>Taxa: </b>", paste(i, collapse = ", "), "</p>")
         }, character(1))
     }
     tooltipVec <- lapply(taxaGroups, taxaToHtml) |> unlist()
@@ -389,15 +429,16 @@ phgVisNetwork <- function(x) {
         paste0(
             "<p><b>Chr: </b>",
             refRangeDataMini[i, ]$seqnames,
-            "</p>",
-            "<p><b>Range: </b>",
+            "<br>",
+            "<b>Range: </b>",
             refRangeDataMini[i, ]$start,
             " - ",
             refRangeDataMini[i, ]$end,
-            "</p>"
+            "<br>"
         )
     }) |> unlist()
 
+    # Final graph data (nodes)
     nodes <- data.frame(
         id     = seq_along(fullHapIds),
         label  = fullHapIds,
@@ -405,11 +446,20 @@ phgVisNetwork <- function(x) {
         title = paste0(refRangeHtml, tooltipVec)
     )
 
+    if (!is.null(pathToHighlight)) {
+        for (i in pathToHighlight) {
+            nodes$group <- ifelse(grepl(i, nodes$title), i, NA)
+            nodes$color <- ifelse(grepl(i, nodes$title), "maroon", "lightgrey")
+        }
+        nodes$title <- gsub(i, paste0("<b>", i, "</b>"), nodes$title)
+    }
+
+    # Final graph data (edges)
     lne <- c()
     rne <- c()
-    for (i in seq_len(ncol(hapTableMini) - 1)) {
-        ln <- paste0(hapTableMini[, i], "_", i)
-        rn <- paste0(hapTableMini[, i + 1], "_", i + 1)
+    for (i in seq_len(ncol(currentMatrix) - 1)) {
+        ln <- paste0(currentMatrix[, i], "_", i)
+        rn <- paste0(currentMatrix[, i + 1], "_", i + 1)
 
         cnxn <- paste0(ln, "+", rn) |> unique()
 
@@ -427,31 +477,11 @@ phgVisNetwork <- function(x) {
         to = rne
     )
 
-
-    visNetwork(nodes, edges) |>
-        visEdges(arrows = "to") |>
-        visOptions(highlightNearest = list(enabled = T, degree = 2, hover = T)) |>
-        visHierarchicalLayout(direction = "LR")
-
+    # Return vis.js object
+    visNetwork::visNetwork(nodes, edges) |>
+        visNetwork::visEdges(arrows = "to") |>
+        visNetwork::visOptions(selectedBy = "group",) |>
+        visNetwork::visHierarchicalLayout(direction = "LR")
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
