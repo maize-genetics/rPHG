@@ -365,6 +365,8 @@ searchRecombination <- function(phgObject = NULL,
 #' @param seqId A sequence (e.g. chromosome) ID
 #' @param start Start position for ref ranges
 #' @param end End position for ref ranges
+#' @param colMajor Highlight path color
+#' @param colMinor Muted path color
 #' @param ... Additional parameters to pass for ref range inclusion
 #'
 #' @export
@@ -375,9 +377,10 @@ plotGraph <- function(
     seqId = NULL,
     start = NULL,
     end = NULL,
+    colMajor = "maroon",
+    colMinor = "lightgrey",
     ...
 ) {
-
     # # Testing
     # start <- 100
     # end   <- 1000000
@@ -386,8 +389,8 @@ plotGraph <- function(
     # # samples <- NULL
     # set.seed(123)
     # samples <- sample(colnames(x), 100)
-    # # pathToHighlight <- c("Z001E0001")
-    # pathToHighlight <- sample(samples, 1)
+    # # sampleHighlight <- c("Z001E0001")
+    # sampleHighlight <- sample(samples, 1)
 
     # Filter by taxa and ref ranges
     if (is.null(samples)) samples <- colnames(x)
@@ -446,12 +449,14 @@ plotGraph <- function(
         title = paste0(refRangeHtml, tooltipVec)
     )
 
-    if (!is.null(pathToHighlight)) {
-        for (i in pathToHighlight) {
+    if (!is.null(sampleHighlight)) {
+        for (i in sampleHighlight) {
             nodes$group <- ifelse(grepl(i, nodes$title), i, NA)
-            nodes$color <- ifelse(grepl(i, nodes$title), "maroon", "lightgrey")
+            nodes$color <- ifelse(grepl(i, nodes$title), colMajor, colMinor)
         }
         nodes$title <- gsub(i, paste0("<b>", i, "</b>"), nodes$title)
+    } else {
+        nodes$color <- colMajor
     }
 
     # Final graph data (edges)
@@ -480,7 +485,6 @@ plotGraph <- function(
     # Return vis.js object
     visNetwork::visNetwork(nodes, edges) |>
         visNetwork::visEdges(arrows = "to") |>
-        visNetwork::visOptions(selectedBy = "group",) |>
         visNetwork::visHierarchicalLayout(direction = "LR")
 }
 
