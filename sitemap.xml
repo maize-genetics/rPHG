@@ -1,138 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/404.html</loc>
+    <loc>https://rphg.maizegenetics.net/404.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/LICENSE-text.html</loc>
+    <loc>https://rphg.maizegenetics.net/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/articles/index.html</loc>
+    <loc>https://rphg.maizegenetics.net/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/articles/rphg_walkthrough.html</loc>
+    <loc>https://rphg.maizegenetics.net/articles/rphg_walkthrough.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/authors.html</loc>
+    <loc>https://rphg.maizegenetics.net/authors.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/index.html</loc>
+    <loc>https://rphg.maizegenetics.net/index.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/BrapiCon-class.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/BrapiCon-class.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/BrapiCon-validity.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/BrapiCon-validity.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/BrapiCon.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/BrapiCon.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/BrapiConPHG-class.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/BrapiConPHG-class.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/PHGDataSet-class.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/PHGDataSet-class.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/PHGMethod.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/PHGMethod.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/availablePHGMethods.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/availablePHGMethods.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/brapiURL.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/brapiURL.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/calcMutualInfo.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/calcMutualInfo.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/configCatcher.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/configCatcher.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/createConfigFile.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/createConfigFile.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/filterRefRanges.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/filterRefRanges.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/filterSamples.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/filterSamples.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/getVTList.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/getVTList.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/graphBuilder.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/graphBuilder.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/hapIDMatrix.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/hapIDMatrix.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/index.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/json2tibble.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/json2tibble.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/numHaploPerRange.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/numHaploPerRange.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/parseJSON.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/parseJSON.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/pathMatrix.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/pathMatrix.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/pathsForMethod.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/pathsForMethod.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/plotMutualInfo.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/plotMutualInfo.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/plotNumHaplo.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/plotNumHaplo.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readMappingTableInfo.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readMappingTableInfo.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readMappingsForLineName.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readMappingsForLineName.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readPHGDatasetFromBrapi.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readPHGDatasetFromBrapi.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readRefRanges.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readRefRanges.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readSamples.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readSamples.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/readTable.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/readTable.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/refRangeTable.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/refRangeTable.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/referenceSets.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/referenceSets.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/references.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/references.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/searchRecombination.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/searchRecombination.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/searchSimilarGametes.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/searchSimilarGametes.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/serverInfo.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/serverInfo.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/show.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/show.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/showPHGMethods.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/showPHGMethods.html</loc>
   </url>
   <url>
-    <loc>https://maize-genetics.github.io/rPHG/reference/startLogger.html</loc>
+    <loc>https://rphg.maizegenetics.net/reference/startLogger.html</loc>
   </url>
 </urlset>
