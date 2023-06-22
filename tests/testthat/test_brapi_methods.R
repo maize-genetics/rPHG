@@ -18,7 +18,7 @@ test_that("BrapiCon() constructor returns correct data", {
 
 
 test_that("availablePHGMethods() returns correct data", {
-    urlTest <- "cbsudc01.biohpc.cornell.edu"
+    urlTest <- "maizephg.maizegenetics.net"
     testCon <- BrapiCon(urlTest)
 
     expect_equal(
@@ -28,7 +28,7 @@ test_that("availablePHGMethods() returns correct data", {
 
     expect_equal(
         object = colnames(availablePHGMethods(testCon)),
-        expected = c("variantTableDbId","numVariants", "numSamples")
+        expected = c("variantTableDbId","numVariants", "numSamples", "additionalInfo")
     )
 })
 
@@ -183,20 +183,15 @@ test_that("readRefRanges() returns correct data", {
 
 
 test_that("readSamples() returns correct data", {
-    urlTest    <- "cbsudc01.biohpc.cornell.edu"
-    testMethod <- "NonMergedReadMapping_AllNamParents_Haploid"
+    urlTest    <- "maizephg.maizegenetics.net"
+    testMethod <- "anchorwave_gapfilled_assembly_PATH"
 
     testCon       <- BrapiCon(urlTest)
     bcPHGNoFilter <- PHGMethod(testCon, testMethod)
-    bcPHGFilter   <- filterSamples(
-        x = PHGMethod(testCon, testMethod),
-        samples = c("Z001E0001-628NHAAXX_1", "Z001E0001-D10RTACXX_5")
-    )
-
-    sampleRes <- readSamples(bcPHGFilter)
+    sampleRes <- readSamples(bcPHGNoFilter)
 
     expect_true(inherits(sampleRes, "data.frame"))
-    expect_equal(nrow(sampleRes), 2)
+    expect_equal(nrow(sampleRes), 5)
 })
 
 
