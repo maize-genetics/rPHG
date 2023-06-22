@@ -18,12 +18,12 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-    fig.path='figure/graphics-',
-    cache.path='cache/graphics-',
-    fig.align='center',
-    external=TRUE,
-    echo=TRUE,
-    warning=FALSE
+  fig.path = "figure/graphics-",
+  cache.path = "cache/graphics-",
+  fig.align = "center",
+  external = TRUE,
+  echo = TRUE,
+  warning = FALSE
 )
 ```
 
@@ -52,7 +52,7 @@ and selection intensity in a breeding program.
 
 Detailed documentation and source code can be found on our website:
 
-https://bitbucket.org/bucklerlab/practicalhaplotypegraph/wiki/Home
+https://rphg.maizegenetics.net/articles/rphg_walkthrough.html
 
 ## Motivation
 The main goal of developing this package is to construct an R-based front-end
@@ -99,17 +99,13 @@ sudo ln -s $(/usr/libexec/java_home)/lib/server/libjvm.dylib /usr/local/lib
 
 You should now be able to enter RStudio and setup rJava.
 
-## Install from BitBucket
+## Install from GitHub
 After you have `rJava` up and running on your machine, install `rPHG` by
-installing the source code from our BitBucket repository:
+installing the source code from our GitHub repository:
 
 ```{r, eval=FALSE, echo=TRUE}
 if (!require("devtools")) install.packages("devtools")
-devtools::install_bitbucket(
-    repo = "bucklerlab/rphg",
-    ref = "master",
-    build_vignettes = TRUE
-)
+devtools::install_github(repo = "maize-genetics/rPHG")
 ```
 
 After source code has been compiled, the package can be loaded using:
@@ -252,8 +248,8 @@ Next, we can build the optimal graph object. A single function, called
 
 ```{r, eval=FALSE, echo=TRUE}
 phgObj <- graphBuilder(
-    configFile = config_path,
-    methods = "GATK_PIPELINE"
+  configFile = config_path,
+  methods = "GATK_PIPELINE"
 )
 ```
 
@@ -505,8 +501,8 @@ haploPlot <- plotNumHaplo(numHaploPerRange(phgObject = phgObj))
 
 # (2) Pipe example. Need to load `magrittr` package first!
 haploPlot <- phgObj %>%
-    rPHG::numHaploPerRange() %>%
-    rPHG::plotNumHaplo()
+  rPHG::numHaploPerRange() %>%
+  rPHG::plotNumHaplo()
 
 # Return visualization
 haploPlot
@@ -532,10 +528,10 @@ using the `%>%` operator from `magrittr`.
 library(magrittr)
 
 phgObj %>%
-    rPHG::plotMutualInfo(
-      refRanges = assays(phgObj)$hapID %>% 
-        rownames()
-    )
+  rPHG::plotMutualInfo(
+    refRanges = assays(phgObj)$hapID %>%
+      rownames()
+  )
 ```
 
 ![Visualize reference range "relatedness".](img/corrplot_example.png)\
