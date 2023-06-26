@@ -19,6 +19,9 @@
     <loc>https://rphg.maizegenetics.net/index.html</loc>
   </url>
   <url>
+    <loc>https://rphg.maizegenetics.net/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://rphg.maizegenetics.net/reference/BrapiCon-class.html</loc>
   </url>
   <url>
@@ -79,9 +82,6 @@
     <loc>https://rphg.maizegenetics.net/reference/parseJSON.html</loc>
   </url>
   <url>
-    <loc>https://rphg.maizegenetics.net/reference/pathMatrix.html</loc>
-  </url>
-  <url>
     <loc>https://rphg.maizegenetics.net/reference/pathsForMethod.html</loc>
   </url>
   <url>
@@ -134,5 +134,11 @@
   </url>
   <url>
     <loc>https://rphg.maizegenetics.net/reference/startLogger.html</loc>
+  </url>
+  <url>
+    <loc>https://rphg.maizegenetics.net/reference/taxaByNode.html</loc>
+  </url>
+  <url>
+    <loc>https://rphg.maizegenetics.net/reference/tnHashMapToTibble.html</loc>
   </url>
 </urlset>

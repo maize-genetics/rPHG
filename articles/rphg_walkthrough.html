@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rPHG</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,9 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/rphg_walkthrough.html">Getting Started with rPHG</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -489,6 +492,68 @@ names) within the PHG database at each given reference range (row
 names).</p>
 </div>
 <div class="section level3">
+<h3 id="getting-taxa-information">Getting taxa information<a class="anchor" aria-label="anchor" href="#getting-taxa-information"></a>
+</h3>
+<p>We can also retrieve taxa (e.g. sample) information from a
+<code>PHGDataSet</code> object for each reference range and haplotype
+IDs or for a given collection of reference range IDs. This can be
+achieved using the <code><a href="../reference/taxaByNode.html">taxaByNode()</a></code> function. We can retrieve
+taxa information by either passing a collection of reference range IDs
+or for convenience sake, a genomic range consisting of three
+elements:</p>
+<ul>
+<li>
+<code>start</code> Start position (bp) of range</li>
+<li>
+<code>end</code> End position (bp) of range</li>
+<li>
+<code>seqname</code> A sequence name (e.g. chromosome ID) of query
+range</li>
+</ul>
+<p>For example, if we would want to retrieve taxa information for
+reference ranges that fall within bp <code>1</code> and
+<code>35000</code> of chromosome <code>1</code> in our graph, we could
+enter the following:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">qTaxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/taxaByNode.html">taxaByNode</a></span><span class="op">(</span><span class="va">phgObj</span>, start <span class="op">=</span> <span class="fl">1</span>, end <span class="op">=</span> <span class="fl">35000</span>, seqnames <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">qTaxa</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## # A tibble: 18 × 3</span></span>
+<span><span class="co">##    ref_range_id hap_id taxa_id  </span></span>
+<span><span class="co">##    &lt;chr&gt;        &lt;chr&gt;  &lt;list&gt;   </span></span>
+<span><span class="co">##  1 1            112    &lt;chr [2]&gt;</span></span>
+<span><span class="co">##  2 1            113    &lt;chr [2]&gt;</span></span>
+<span><span class="co">##  3 1            114    &lt;chr [2]&gt;</span></span>
+<span><span class="co">##  4 2            103    &lt;chr [2]&gt;</span></span>
+<span><span class="co">##  5 2            104    &lt;chr [2]&gt;</span></span>
+<span><span class="co">##  6 2            105    &lt;chr [2]&gt;</span></span></code></pre>
+<p>…where <code>qTaxa</code> is a <code>tibble</code> object containing
+three columns:</p>
+<ul>
+<li>
+<code>ref_range_id</code>: reference range ID</li>
+<li>
+<code>hap_id</code>: haplotype ID found within the given reference
+range</li>
+<li>
+<code>taxa_id</code>: a list of atomic vectors containing taxa IDs
+represented as character.</li>
+</ul>
+<p>If we would want to get taxa for a specific haplotype ID, we could
+use some simple <code>dplyr</code> logic:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">qTaxa</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hap_id</span> <span class="op">==</span> <span class="st">"112"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu">pull</span><span class="op">(</span><span class="va">taxa_id</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If we know exactly what set of reference range IDs we want, we can
+override the range parameters and use the <code>rrSet</code> parameter
+which takes a vector of reference range IDs:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get taxa set in reference ranges 1 and 5</span></span>
+<span><span class="fu"><a href="../reference/taxaByNode.html">taxaByNode</a></span><span class="op">(</span><span class="va">phgObj</span>, rrSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="access-java-data">Access Java data<a class="anchor" aria-label="anchor" href="#access-java-data"></a>
 </h3>
 <p>(<strong>NOTE</strong>: <em>for advanced use only!</em>) To access
@@ -497,7 +562,7 @@ from <code>S4Vectors</code> can be used. Doing so will return a Java
 reference object that can be used for defining you own potential
 functions and methods that do not exist within the <code>rPHG</code>
 package:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata</a></span><span class="op">(</span><span class="va">phgObj</span><span class="op">)</span><span class="op">$</span><span class="va">jObj</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Java-Object{net.maizegenetics.pangenome.api.HaplotypeGraph@f381794}"</span></span></code></pre>
 </div>
@@ -517,7 +582,7 @@ similarity between reference ranges and taxa.</p>
 </h3>
 <p>To see the total number of haplotypes at each given reference range,
 the function, <code><a href="../reference/numHaploPerRange.html">numHaploPerRange()</a></code> can be used:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rPHG</span><span class="fu">::</span><span class="fu"><a href="../reference/numHaploPerRange.html">numHaploPerRange</a></span><span class="op">(</span>phgObject <span class="op">=</span> <span class="va">phgObj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 20 rows and 5 columns</span></span>
 <span><span class="co">##           names     start       end     width numHaplotypes</span></span>
@@ -541,7 +606,7 @@ as a linear genomic plot. If you are familiar with pipe
 (<code>%&gt;%</code>) operators in R via the <code>magrittr</code>
 package, this pipeline from <code>PHGDataSet</code> to visualization can
 be used as well:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># (1) Non-pipe example</span></span>
@@ -570,7 +635,7 @@ taxa for a given reference range.</p>
 in the form of a vector (e.g. <code>c("R1", "R2", "R3")</code>) are
 needed. This function can also be piped using the <code>%&gt;%</code>
 operator from <code>magrittr</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">phgObj</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
