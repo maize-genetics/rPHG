@@ -1,5 +1,9 @@
 ## ----
 #' Convert PHG HashMap to tibble (house-keeping)
+#'
+#' @param x HashMap to R list
+#'
+#' @importFrom tibble tibble
 tnHashMapToTibble <- function(x) {
     rrNames <- names(x)
     hapNames <- lapply(x, names)

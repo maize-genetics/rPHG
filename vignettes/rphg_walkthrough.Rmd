@@ -435,7 +435,68 @@ SummarizedExperiment::assays(phgObj)$hapID
 ```
 
 The above matrix represents a haplotype ID for each taxa (column names) within 
-the PHG database at each given reference range (row names). 
+the PHG database at each given reference range (row names).
+
+
+## Getting taxa information
+We can also retrieve taxa (e.g. sample) information from a `PHGDataSet`
+object for each reference range and haplotype IDs or for a given collection of
+reference range IDs. This can be achieved using the `taxaByNode()` function.
+We can retrieve taxa information by either passing a collection of reference
+range IDs or for convenience sake, a genomic range consisting of three
+elements:
+
+* `start` Start position (bp) of range
+* `end` End position (bp) of range
+* `seqname` A sequence name (e.g. chromosome ID) of query range
+
+For example, if we would want to retrieve taxa information for reference
+ranges that fall within bp `1` and `35000` of chromosome `1` in our graph, we 
+could enter the following:
+
+```{r, eval=FALSE, echo=TRUE}
+qTaxa <- taxaByNode(phgObj, start = 1, end = 35000, seqnames = "1")
+head(qTaxa)
+```
+
+```
+## # A tibble: 18 × 3
+##    ref_range_id hap_id taxa_id  
+##    <chr>        <chr>  <list>   
+##  1 1            112    <chr [2]>
+##  2 1            113    <chr [2]>
+##  3 1            114    <chr [2]>
+##  4 2            103    <chr [2]>
+##  5 2            104    <chr [2]>
+##  6 2            105    <chr [2]>
+```
+
+...where `qTaxa` is a `tibble` object containing three columns:
+
+* `ref_range_id`: reference range ID
+* `hap_id`: haplotype ID found within the given reference range
+* `taxa_id`: a list of atomic vectors containing taxa IDs represented as 
+  character.
+
+If we would want to get taxa for a specific haplotype ID, we could use some
+simple `dplyr` logic:
+
+```{r, eval=FALSE, echo=TRUE}
+library(dplyr)
+qTaxa |>
+    filter(hap_id == "112") |> 
+    pull(taxa_id) |> 
+    unlist()
+```
+
+If we know exactly what set of reference range IDs we want, we can override
+the range parameters and use the `rrSet` parameter which takes a vector
+of reference range IDs:
+
+```{r, eval=FALSE, echo=TRUE}
+# Get taxa set in reference ranges 1 and 5
+taxaByNode(phgObj, rrSet = c(1, 5))
+```
 
 
 ## Access Java data
