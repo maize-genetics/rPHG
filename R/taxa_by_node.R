@@ -1,14 +1,58 @@
+## ----
+#' @title Get taxa data for selected reference ranges
+#'
 #' @description
 #' Base code to get assembly information from haplotype node objects
 #'
 #' @param phgObj An object of class \code{PHGDataSet}.
-#' @param rrSet A collection of reference
+#' @param start Start position (bp) for reference range filtering.
+#' @param end End position (bp) for reference range filtering.
+#' @param seqnames Sequence name (e.g. chromosome ID) for reference range
+#'    filtering.
+#' @param rrSet A collection of reference range IDs. Defaults to \code{NULL}
+#'    if specified with an integer vector, \code{start}, \code{end}, and
+#'    \code{seqnames} parameters will be ignored.
 #'
 #' @importFrom rJava J
 #' @importFrom rJava .jnew
+#' @importFrom rJava .jcall
 #'
+#' @export
+taxaByNode <- function(
+    phgObj,
+    start = NULL,
+    end = NULL,
+    seqnames = NULL,
+    rrSet = NULL
+) {
+    # Get valid ref ranges from PHGDataSet
+    if (is.null(rrSet)) {
+        if (is.null(start)) {
+            stop("Genomic range parameters are needed")
+        }
+        if (is.null(end)) {
+            stop("Genomic range parameters are needed")
+        }
+        if (is.null(seqnames)) {
+            stop("Genomic range parameters are needed")
+        }
+        q <- GenomicRanges::GRanges(
+            seqnames = seqnames,
+            ranges = IRanges::IRanges(
+                start = start,
+                end = end
+            )
+        )
 
-taxaByNode <- function(phgObj, rrSet) {
+        rrSet <- gsub(
+            pattern = "R",
+            replacement = "",
+            x = IRanges::subsetByOverlaps(
+                SummarizedExperiment::rowRanges(phgObj),
+                q
+            )$refRange_id
+        )
+    }
 
     jGObj <- S4Vectors::metadata(phgObj)$jObj
     taxaBNDriver <- rJava::.jnew(
@@ -55,7 +99,7 @@ taxaByNode <- function(phgObj, rrSet) {
 
     names(assemblies) <- rrIds
 
-    return(assemblies)
+    return(tnHashMapToTibble(assemblies))
 }
 
 
