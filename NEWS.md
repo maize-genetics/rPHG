@@ -1,21 +1,22 @@
-## CHANGES IN VERSION 0.1.15
+## rPHG 0.1.15
 * Added new function, `taxaByNode()`
   + Returns a `tibble` object of taxa IDs that are found
     in a group of haplotype IDs for a given set of reference
     range IDs
 * Update to latest jar files including PHG build
 
-## CHANGES IN VERSION 0.1.14
+
+## rPHG 0.1.14
 * Update logging function (`startLogger()`)
 * Add new tests to expand code coverage
 * Deprecate BrAPI calls that use external `khttp` client in PHG jar
 
 
-## CHANGES IN VERSION 0.1.13
+## rPHG 0.1.13
 * Update to latest jar files including PHG build
 
 
-## CHANGES IN VERSION 0.1.12
+## rPHG 0.1.12
 * Added BrAPI endpoint methods for obtaining PHG data from BrAPI webservices:
   + `BrapiCon`
   + `BrapiConPHG`
@@ -32,7 +33,7 @@
   + `buildType` - do you want the graph built from paths or haplotypes?
 
 
-## CHANGES IN VERSION 0.1.11
+## rPHG 0.1.11
 * Added NEWS file for tracking version updates.
 * Added error checks for catching C stack usage errors for configuration file
   checks in functions that require configuration file path parameters.

@@ -1,44 +1,4 @@
-#' @title Generate a path matrix
-#'
-#' @description Generates a matrix of paths from a directory path of
-#'   \code{path.txt} files
-#'
-#' @author Brandon Monier
-#' @author Peter Bradbury
-#'
-#' @param configFile Path to a configuration file for your graph database.
-#' @param pathDir A directory to path files.
-#'
-#' @importFrom rJava .jarray
-#' @importFrom rJava is.jnull
-#' @importFrom rJava J
-#'
-#' @export
-pathMatrix <- function(configFile, pathDir) {
-
-    configCatcher(configFile)
-
-    pathFiles <- list.files(pathDir, full.names = TRUE)
-
-    jfiles <- rJava::.jarray(pathFiles)
-    pathHapids <- rJava::J(
-        "net.maizegenetics.pangenome.api/RMethods",
-        "pathHapids",
-        configFile,
-        jfiles
-    )
-    pathMatrix <- pathHapids$matrix
-    if(!rJava::is.jnull(pathHapids$rowNames)) {
-        rownames(pathMatrix) <- pathHapids$rowNames
-    }
-    if(!rJava::is.jnull(pathHapids$columnNames)) {
-        colnames(pathMatrix) <- pathHapids$columnNames
-    }
-    return(pathMatrix)
-}
-
-
-
+## ----
 #' @title Generate a matrix for all the paths for \code{pathMethod}
 #'
 #' @description Returns a \code{matrix} object of haplotype ids with taxa name
@@ -75,7 +35,7 @@ pathsForMethod <- function(configFile, pathMethod) {
 }
 
 
-
+## ----
 #' @title Retrieve read mapping information from PHG database.
 #'
 #' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
@@ -131,7 +91,7 @@ readMappingsForLineName <- function(configFile,
 }
 
 
-
+## ----
 #' @title Retrieve read mapping records from PHG database.
 #'
 #' @description Returns an \code{S4Vectors} \code{DataFrame} object of read

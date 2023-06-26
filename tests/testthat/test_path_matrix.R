@@ -3,15 +3,6 @@
 tmpFile <- tempfile(fileext = ".txt")
 startLogger(tmpFile)
 
-
-test_that("pathMatrix() returns correct data", {
-    tmpFile <- tempfile(fileext = ".txt")
-    rPHG:::createConfigFile(tmpFile)
-
-    expect_error(pathMatrix(mtcars))
-})
-
-
 test_that("pathsForMethod() returns correct data", {
     tmpFile <- tempfile(fileext = ".txt")
     rPHG:::createConfigFile(tmpFile)
@@ -54,21 +45,5 @@ test_that("readMappingTableInfo() returns correct data", {
     rPHG:::createConfigFile(tmpFile)
     expect_true(inherits(readMappingTableInfo(tmpFile), "DataFrame"))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
