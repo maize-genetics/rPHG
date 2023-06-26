@@ -13,9 +13,14 @@
 #'    if specified with an integer vector, \code{start}, \code{end}, and
 #'    \code{seqnames} parameters will be ignored.
 #'
+#' @importFrom IRanges IRanges
+#' @importFrom IRanges subsetByOverlaps
+#' @importFrom GenomicRanges GRanges
 #' @importFrom rJava J
 #' @importFrom rJava .jnew
 #' @importFrom rJava .jcall
+#' @importFrom S4Vectors metadata
+#' @importFrom SummarizedExperiment rowRanges
 #'
 #' @export
 taxaByNode <- function(
