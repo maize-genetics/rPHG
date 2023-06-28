@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rPHG</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -552,6 +552,46 @@ which takes a vector of reference range IDs:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get taxa set in reference ranges 1 and 5</span></span>
 <span><span class="fu"><a href="../reference/taxaByNode.html">taxaByNode</a></span><span class="op">(</span><span class="va">phgObj</span>, rrSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Additionally, users can visualize sections of the graph and
+highlighted paths using the <code><a href="../reference/plotGraph.html">plotGraph()</a></code> function:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phgObj</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/plotGraph.html">plotGraph</a></span><span class="op">(</span></span>
+<span>        seqnames <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        start <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>        end <span class="op">=</span> <span class="fl">100000</span>,</span>
+<span>        samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Z001E0001"</span>, <span class="st">"Z001E0002"</span>, <span class="st">"Z001E0004"</span>, <span class="st">"Z001E0096"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<p><img src="img/visnetwork_01.png"> The <code>samples</code>
+parameter is a collection of sample IDs found in the PHG object. This
+can be specified to NULL if you would like <em>all</em> samples to be
+included for each selected reference range.</p>
+<p>A path can be highlighted for a given taxa/sample ID by entering the
+ID in the <code>sampleHighlight</code> parameter:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phgObj</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/plotGraph.html">plotGraph</a></span><span class="op">(</span></span>
+<span>        seqId <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        start <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>        end   <span class="op">=</span> <span class="fl">100000</span>,</span>
+<span>        samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Z001E0001"</span>, <span class="st">"Z001E0002"</span>, <span class="st">"Z001E0004"</span>, <span class="st">"Z001E0096"</span><span class="op">)</span>,</span>
+<span>        sampleHighlight <span class="op">=</span> <span class="st">"Z001E0001"</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<p><img src="img/visnetwork_02.png"></p>
+<p>Highlight colors can also be defined with the <code>colMajor</code>
+and <code>colMinor</code> parameters:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">phgObj</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../reference/plotGraph.html">plotGraph</a></span><span class="op">(</span></span>
+<span>        seqId <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        start <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>        end   <span class="op">=</span> <span class="fl">100000</span>,</span>
+<span>        samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Z001E0001"</span>, <span class="st">"Z001E0002"</span>, <span class="st">"Z001E0004"</span>, <span class="st">"Z001E0096"</span><span class="op">)</span>,</span>
+<span>        sampleHighlight <span class="op">=</span> <span class="st">"Z001E0001"</span>,</span>
+<span>        colMajor <span class="op">=</span> <span class="st">"#4287f5"</span>,</span>
+<span>        colMinor <span class="op">=</span> <span class="st">"#818ea3"</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
+<p><img src="img/visnetwork_03.png"></p>
 </div>
 <div class="section level3">
 <h3 id="access-java-data">Access Java data<a class="anchor" aria-label="anchor" href="#access-java-data"></a>
@@ -562,7 +602,7 @@ from <code>S4Vectors</code> can be used. Doing so will return a Java
 reference object that can be used for defining you own potential
 functions and methods that do not exist within the <code>rPHG</code>
 package:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">S4Vectors</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata</a></span><span class="op">(</span><span class="va">phgObj</span><span class="op">)</span><span class="op">$</span><span class="va">jObj</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Java-Object{net.maizegenetics.pangenome.api.HaplotypeGraph@f381794}"</span></span></code></pre>
 </div>
@@ -582,7 +622,7 @@ similarity between reference ranges and taxa.</p>
 </h3>
 <p>To see the total number of haplotypes at each given reference range,
 the function, <code><a href="../reference/numHaploPerRange.html">numHaploPerRange()</a></code> can be used:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rPHG</span><span class="fu">::</span><span class="fu"><a href="../reference/numHaploPerRange.html">numHaploPerRange</a></span><span class="op">(</span>phgObject <span class="op">=</span> <span class="va">phgObj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 20 rows and 5 columns</span></span>
 <span><span class="co">##           names     start       end     width numHaplotypes</span></span>
@@ -606,7 +646,7 @@ as a linear genomic plot. If you are familiar with pipe
 (<code>%&gt;%</code>) operators in R via the <code>magrittr</code>
 package, this pipeline from <code>PHGDataSet</code> to visualization can
 be used as well:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># (1) Non-pipe example</span></span>
@@ -635,7 +675,7 @@ taxa for a given reference range.</p>
 in the form of a vector (e.g. <code>c("R1", "R2", "R3")</code>) are
 needed. This function can also be piped using the <code>%&gt;%</code>
 operator from <code>magrittr</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">phgObj</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
