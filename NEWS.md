@@ -1,3 +1,10 @@
+## rPHG 0.1.16
+* Added new function, `plotGraph()`
+  + Returns a `visNetwork` object for a given section of PHG data filtered
+    by reference range
+* Updated installation information on README
+
+
 ## rPHG 0.1.15
 * Added new function, `taxaByNode()`
   + Returns a `tibble` object of taxa IDs that are found

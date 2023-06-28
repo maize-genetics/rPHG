@@ -1,20 +1,16 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(
-    fig.path='figure/graphics-',
-    cache.path='cache/graphics-',
-    fig.align='center',
-    external=TRUE,
-    echo=TRUE,
-    warning=FALSE
+  fig.path = "figure/graphics-",
+  cache.path = "cache/graphics-",
+  fig.align = "center",
+  external = TRUE,
+  echo = TRUE,
+  warning = FALSE
 )
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  if (!require("devtools")) install.packages("devtools")
-#  devtools::install_bitbucket(
-#      repo = "bucklerlab/rphg",
-#      ref = "master",
-#      build_vignettes = TRUE
-#  )
+#  devtools::install_github(repo = "maize-genetics/rPHG")
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  library(rPHG)
@@ -34,8 +30,8 @@ knitr::opts_chunk$set(
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  phgObj <- graphBuilder(
-#      configFile = config_path,
-#      methods = "GATK_PIPELINE"
+#    configFile = config_path,
+#    methods = "GATK_PIPELINE"
 #  )
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
@@ -56,6 +52,52 @@ knitr::opts_chunk$set(
 #  SummarizedExperiment::assays(phgObj)$hapID
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  qTaxa <- taxaByNode(phgObj, start = 1, end = 35000, seqnames = "1")
+#  head(qTaxa)
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  library(dplyr)
+#  qTaxa |>
+#      filter(hap_id == "112") |>
+#      pull(taxa_id) |>
+#      unlist()
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  # Get taxa set in reference ranges 1 and 5
+#  taxaByNode(phgObj, rrSet = c(1, 5))
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqnames = 1,
+#          start = 1000,
+#          end = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096")
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqId = 1,
+#          start = 1000,
+#          end   = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+#          sampleHighlight = "Z001E0001"
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqId = 1,
+#          start = 1000,
+#          end   = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+#          sampleHighlight = "Z001E0001",
+#          colMajor = "#4287f5",
+#          colMinor = "#818ea3"
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  S4Vectors::metadata(phgObj)$jObj
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
@@ -69,8 +111,8 @@ knitr::opts_chunk$set(
 #  
 #  # (2) Pipe example. Need to load `magrittr` package first!
 #  haploPlot <- phgObj %>%
-#      rPHG::numHaploPerRange() %>%
-#      rPHG::plotNumHaplo()
+#    rPHG::numHaploPerRange() %>%
+#    rPHG::plotNumHaplo()
 #  
 #  # Return visualization
 #  haploPlot
@@ -79,8 +121,8 @@ knitr::opts_chunk$set(
 #  library(magrittr)
 #  
 #  phgObj %>%
-#      rPHG::plotMutualInfo(
-#        refRanges = assays(phgObj)$hapID %>%
-#          rownames()
-#      )
+#    rPHG::plotMutualInfo(
+#      refRanges = assays(phgObj)$hapID %>%
+#        rownames()
+#    )
 

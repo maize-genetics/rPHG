@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.15
+Version: 0.1.16
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -63,7 +63,8 @@ Imports:
     rJava,
     rlang,
     S4Vectors,
-    tibble
+    tibble,
+    visNetwork
 Depends:
     SummarizedExperiment
 Suggests:

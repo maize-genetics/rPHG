@@ -98,6 +98,31 @@ test_that("searchSimilarGametes() returns correct data", {
 })
 
 
+test_that("plotGraph() returns correct data", {
+    tmpFile <- tempfile(fileext = ".txt")
+    rPHG:::createConfigFile(tmpFile)
+
+    testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
+    testPathPhg <- graphBuilder(tmpFile, "PATH_METHOD", buildType = "path")
+
+    conG  <- plotGraph(testPhgObj, start = 1, end = 35000, seqnames = "1")
+    pathG <- plotGraph(testPathPhg, start = 1, end = 35000, seqnames = "1")
+
+    pathGHighlight <- plotGraph(
+        x = testPathPhg,
+        start = 1, end = 35000, seqnames = "1",
+        sampleHighlight = "RecLineA1RefA1gco1_wgs"
+    )
+
+    expect_true(is(pathG, "visNetwork"))
+    expect_true(is(conG, "visNetwork"))
+
+    expect_equal(length(unique(conG$x$nodes$color)), 1)
+    expect_equal(length(unique(pathGHighlight$x$nodes$color)), 2)
+
+
+})
+
 
 
 
