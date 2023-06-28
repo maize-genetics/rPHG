@@ -498,6 +498,59 @@ of reference range IDs:
 taxaByNode(phgObj, rrSet = c(1, 5))
 ```
 
+Additionally, users can visualize sections of the graph and highlighted
+paths using the `plotGraph()` function:
+
+```{r, eval=FALSE, echo=TRUE}
+phgObj |>
+    plotGraph(
+        seqnames = 1,
+        start = 1000,
+        end = 100000,
+        samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096")
+    )
+```
+
+![](img/visnetwork_01.png)
+The `samples` parameter is a collection of sample IDs found in the PHG object.
+This can be specified to NULL if you would like _all_ samples to be included
+for each selected reference range.
+
+A path can be highlighted for a given taxa/sample ID by entering the ID in
+the `sampleHighlight` parameter:
+
+```{r, eval=FALSE, echo=TRUE}
+phgObj |>
+    plotGraph(
+        seqId = 1,
+        start = 1000,
+        end   = 100000,
+        samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+        sampleHighlight = "Z001E0001"
+    )
+```
+
+
+![](img/visnetwork_02.png)
+
+Highlight colors can also be defined with the `colMajor` and `colMinor`
+parameters:
+
+```{r, eval=FALSE, echo=TRUE}
+phgObj |>
+    plotGraph(
+        seqId = 1,
+        start = 1000,
+        end   = 100000,
+        samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+        sampleHighlight = "Z001E0001",
+        colMajor = "#4287f5",
+        colMinor = "#818ea3"
+    )
+```
+
+![](img/visnetwork_03.png)
+
 
 ## Access Java data
 (**NOTE**: *for advanced use only!*) To access Java object data for the PHG API,

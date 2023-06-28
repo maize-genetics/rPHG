@@ -362,19 +362,26 @@ searchRecombination <- function(phgObject = NULL,
 #' @param x A \code{PHGDataSet} object
 #' @param samples Samples/taxa to include in plot
 #' @param sampleHighlight Sample path to highlight
-#' @param seqId A sequence (e.g. chromosome) ID
+#' @param seqnames A sequence (e.g. chromosome) ID
 #' @param start Start position for ref ranges
 #' @param end End position for ref ranges
 #' @param colMajor Highlight path color
 #' @param colMinor Muted path color
 #' @param ... Additional parameters to pass for ref range inclusion
 #'
+#' @importFrom IRanges subsetByOverlaps
+#' @importFrom GenomicRanges GRanges
+#' @importFrom SummarizedExperiment assay
+#' @importFrom visNetwork visEdges
+#' @importFrom visNetwork visHierarchicalLayout
+#' @importFrom visNetwork visNetwork
+#'
 #' @export
 plotGraph <- function(
     x,
     samples = NULL,
     sampleHighlight = NULL,
-    seqId = NULL,
+    seqnames = NULL,
     start = NULL,
     end = NULL,
     colMajor = "maroon",
@@ -384,7 +391,7 @@ plotGraph <- function(
     # # Testing
     # start <- 100
     # end   <- 1000000
-    # seqId <- "1"
+    # seqnames <- "1"
     # # samples <- c("Z001E0001", "Z001E0028", "Z001E0080")
     # # samples <- NULL
     # set.seed(123)
@@ -397,7 +404,7 @@ plotGraph <- function(
     hapTableMini <- x[, colnames(x) %in% samples]
     hapTableMini <- IRanges::subsetByOverlaps(
         hapTableMini,
-        GenomicRanges::GRanges(seqnames = seqId, ranges = start:end)
+        GenomicRanges::GRanges(seqnames = seqnames, ranges = start:end)
     )
 
     # Get hap ID matrix
@@ -445,8 +452,8 @@ plotGraph <- function(
 
     # Final graph data (nodes)
     nodes <- data.frame(
-        id     = seq_along(fullHapIds),
-        label  = fullHapIds,
+        id    = seq_along(fullHapIds),
+        label = fullHapIds,
         level = hapLevels,
         title = paste0(refRangeHtml, tooltipVec)
     )

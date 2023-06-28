@@ -63,7 +63,8 @@ Imports:
     rJava,
     rlang,
     S4Vectors,
-    tibble
+    tibble,
+    visNetwork
 Depends:
     SummarizedExperiment
 Suggests:

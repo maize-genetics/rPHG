@@ -67,6 +67,37 @@ knitr::opts_chunk$set(
 #  taxaByNode(phgObj, rrSet = c(1, 5))
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqnames = 1,
+#          start = 1000,
+#          end = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096")
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqId = 1,
+#          start = 1000,
+#          end   = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+#          sampleHighlight = "Z001E0001"
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
+#  phgObj |>
+#      plotGraph(
+#          seqId = 1,
+#          start = 1000,
+#          end   = 100000,
+#          samples = c("Z001E0001", "Z001E0002", "Z001E0004", "Z001E0096"),
+#          sampleHighlight = "Z001E0001",
+#          colMajor = "#4287f5",
+#          colMinor = "#818ea3"
+#      )
+
+## ---- eval=FALSE, echo=TRUE---------------------------------------------------
 #  S4Vectors::metadata(phgObj)$jObj
 
 ## ---- eval=FALSE, echo=TRUE---------------------------------------------------

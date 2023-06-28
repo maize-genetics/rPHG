@@ -1,9 +1,17 @@
+## CHANGES IN VERSION 0.1.16
+* Added new function, `plotGraph()`
+  + Returns a `visNetwork` object for a given section of PHG data filtered
+    by reference range
+* Updated installation information on README
+
+
 ## CHANGES IN VERSION 0.1.15
 * Added new function, `taxaByNode()`
   + Returns a `tibble` object of taxa IDs that are found
     in a group of haplotype IDs for a given set of reference
     range IDs
 * Update to latest jar files including PHG build
+
 
 ## CHANGES IN VERSION 0.1.14
 * Update logging function (`startLogger()`)

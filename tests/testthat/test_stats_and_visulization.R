@@ -105,12 +105,12 @@ test_that("plotGraph() returns correct data", {
     testPhgObj <- graphBuilder(tmpFile, "CONSENSUS")
     testPathPhg <- graphBuilder(tmpFile, "PATH_METHOD", buildType = "path")
 
-    conG  <- plotGraph(testPhgObj, start = 1, end = 35000, seqId = "1")
-    pathG <- plotGraph(testPathPhg, start = 1, end = 35000, seqId = "1")
+    conG  <- plotGraph(testPhgObj, start = 1, end = 35000, seqnames = "1")
+    pathG <- plotGraph(testPathPhg, start = 1, end = 35000, seqnames = "1")
 
     pathGHighlight <- plotGraph(
         x = testPathPhg,
-        start = 1, end = 35000, seqId = "1",
+        start = 1, end = 35000, seqnames = "1",
         sampleHighlight = "RecLineA1RefA1gco1_wgs"
     )
 

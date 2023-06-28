@@ -8,7 +8,7 @@ plotGraph(
   x,
   samples = NULL,
   sampleHighlight = NULL,
-  seqId = NULL,
+  seqnames = NULL,
   start = NULL,
   end = NULL,
   colMajor = "maroon",
@@ -23,7 +23,7 @@ plotGraph(
 
 \item{sampleHighlight}{Sample path to highlight}
 
-\item{seqId}{A sequence (e.g. chromosome) ID}
+\item{seqnames}{A sequence (e.g. chromosome) ID}
 
 \item{start}{Start position for ref ranges}
 
