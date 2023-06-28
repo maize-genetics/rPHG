@@ -403,6 +403,8 @@ plotGraph <- function(
     # Get hap ID matrix
     currentMatrix <- t(SummarizedExperiment::assay(hapTableMini))
     currentMatrix[is.na(currentMatrix)] <- -128
+    colnames(currentMatrix) <- gsub("R", "", colnames(currentMatrix)) |>
+        as.numeric()
 
     # Get ref range data frame
     refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
@@ -413,7 +415,7 @@ plotGraph <- function(
     })
 
     # Generate distinct IDs (hap ID + ref range ID)
-    hapIds     <- currentMatrix |> apply(2, unique)
+    hapIds     <- currentMatrix |> apply(2, unique, simplify = FALSE)
     hapLevels  <- rep(names(hapIds), vapply(hapIds, length, integer(1))) |> as.numeric()
     fullHapIds <- paste0(
         lapply(hapIds, function(i) i[order(i)]) |> unlist(),
