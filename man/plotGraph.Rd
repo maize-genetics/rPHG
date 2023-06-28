@@ -11,6 +11,8 @@ plotGraph(
   seqId = NULL,
   start = NULL,
   end = NULL,
+  colMajor = "maroon",
+  colMinor = "lightgrey",
   ...
 )
 }
@@ -26,6 +28,10 @@ plotGraph(
 \item{start}{Start position for ref ranges}
 
 \item{end}{End position for ref ranges}
+
+\item{colMajor}{Highlight path color}
+
+\item{colMinor}{Muted path color}
 
 \item{...}{Additional parameters to pass for ref range inclusion}
 }

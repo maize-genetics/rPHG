@@ -17,5 +17,5 @@ Package source code can be installed directly from this BitBucket repository usi
 
 ```{r}
 if (!require("devtools")) install.packages("devtools")
-devtools::install_bitbucket(repo = "bucklerlab/rPHG")
+devtools::install_github(repo = "maize-genetics/rPHG")
 ```
