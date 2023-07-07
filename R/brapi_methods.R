@@ -35,25 +35,25 @@ setMethod(
         )
 
         if (is.numeric(status) && status >= 200 && status <= 299) {
-            statusMsg <- cli::col_green(status)
+            statusMsg <- "(OK)"
         } else {
-            statusMsg <- cli::col_red(status)
+            statusMsg <- ""
         }
 
-        # cat("A BrAPI connection object\n")
-        # cat("  Server...........:", host(object), "\n")
-        # cat("  Port.............:", port(object), "\n")
-        # cat("  Server status....:", status, "\n")
-        # cat("  BrAPI version....:", version(object), "\n")
+        cat("A BrAPI connection object\n")
+        cat("  Server...........:", host(object), "\n")
+        cat("  Port.............:", port(object), "\n")
+        cat("  Server status....:", status, statusMsg, "\n")
+        cat("  BrAPI version....:", version(object), "\n")
 
-        cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
-        cli::cli_text("A {.strong BrAPI} connection object")
-        cli::cli_ul(id = "foo")
-        cli::cli_li("{.field Server}...........: {.url {host(object)}}")
-        cli::cli_li("{.field Port}.............: { {port(object)} }")
-        cli::cli_li("{.field Server status}....: { statusMsg }")
-        cli::cli_li("{.field BrAPI version}....: { {version(object)} }")
-        cli::cli_end(id = "foo")
+        # cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+        # cli::cli_text("A {.strong BrAPI} connection object")
+        # cli::cli_ul(id = "foo")
+        # cli::cli_li("{.field Server}...........: {.url {host(object)}}")
+        # cli::cli_li("{.field Port}.............: { {port(object)} }")
+        # cli::cli_li("{.field Server status}....: { statusMsg }")
+        # cli::cli_li("{.field BrAPI version}....: { {version(object)} }")
+        # cli::cli_end(id = "foo")
     }
 )
 
@@ -177,10 +177,12 @@ setMethod(
     f = "show",
     signature = "BrapiConPHG",
     definition = function(object) {
-        cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+        # cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
 
-        activeSlotMsg   <- cli::symbol$square_small_filled
-        inactiveSlotMsg <- cli::symbol$square_small
+        # activeSlotMsg   <- cli::symbol$square_small_filled
+        # inactiveSlotMsg <- cli::symbol$square_small
+        activeSlotMsg <- "[x]"
+        inactiveSlotMsg <- "[ ]"
 
         rrCheck <- ifelse(
             test = is.na(object@refRangeFilter),
@@ -193,13 +195,10 @@ setMethod(
             no   = activeSlotMsg
         )
 
-        # cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
-        cli::cli_text(cli::col_grey("<BrapiConPHG: {.strong BrAPI <-> PHG} pointer object>"))
-        cli::cli_ul(id = "foo")
-        cli::cli_li("method:         {.strong {object@methodID}}")
-        cli::cli_li("variant filter: { rrCheck }")
-        cli::cli_li("sample filter : { sampleCheck }")
-        cli::cli_end(id = "foo")
+        cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
+        cat("  method:         ", object@methodID, "\n")
+        cat("  variant filter: ", rrCheck, "\n")
+        cat("  sample filter:  ", sampleCheck, "\n")
     }
 )
 
@@ -226,7 +225,7 @@ setMethod(
 #'
 #' @importFrom GenomeInfoDb dropSeqlevels
 #'
-#' @export
+# #' @export
 filterRefRanges <- function(
     x,
     gr = NULL,
@@ -299,7 +298,7 @@ filterRefRanges <- function(
 #' @param x A \code{BrapiConPHG} object.
 #' @param samples A vector of taxa ID of type \code{character}.
 #'
-#' @export
+# #' @export
 filterSamples <- function(x, samples) {
     if (class(x) != "BrapiConPHG") {
         stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
@@ -357,7 +356,11 @@ setMethod(
             "&pageSize="
         )
 
-        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "150000"))
+        if (object@methodID == "DEMO") {
+            rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "1000"))
+        } else {
+            rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "150000"))
+        }
         rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
@@ -370,6 +373,7 @@ setMethod(
         )
 
         return(gr)
+
     }
 )
 
@@ -402,7 +406,11 @@ setMethod(
         sampleDF <- parseJSON(urls$sampleURL)
         sampleDF <- sampleDF$result$data
 
-        return(tibble::as_tibble(sampleDF))
+        if (object@methodID == "DEMO") {
+            return(utils::head(tibble::as_tibble(sampleDF), n = 25))
+        } else{
+            return(tibble::as_tibble(sampleDF))
+        }
     }
 )
 
@@ -454,21 +462,37 @@ setMethod(
         urls <- getVTList(object)
 
         # Calculate total pages
-        methods <- availablePHGMethods(object)
-        totalVariants <- methods[which(methods$variantTableDbId == object@methodID), ]$numVariants
-        totalPages <- ceiling(totalVariants / 10000)
+
+        if (object@methodID == "DEMO") {
+            totalVariants <- 1000
+            totalPages <- ceiling(totalVariants / 250)
+        } else {
+            methods <- availablePHGMethods(object)
+            totalVariants <- methods[which(methods$variantTableDbId == object@methodID), ]$numVariants
+            totalPages <- ceiling(totalVariants / 10000)
+        }
 
         # Download each page (iterative)
         # TODO - can we async this? (e.g. futures)
         allResp <- vector("list", totalPages)
-        cli::cli_progress_step("Establishing connection")
-        cli::cli_progress_bar("   - Downloading: ", total = totalPages)
+        # cli::cli_progress_step("Establishing connection")
+        message("Establishing connection")
+        # cli::cli_progress_bar("   - Downloading: ", total = totalPages)
+        message("Downloading:")
+        pb <- utils::txtProgressBar(
+            style = 3,
+            char  = "=",
+            min = 1,
+            max = totalPages
+        )
         for (i in seq_len(totalPages)) {
             currentUrl <- sprintf(urls$tableURL, i - 1, 0)
             allResp[[i]] <- httr::GET(currentUrl)
-            cli::cli_progress_update()
+            utils::setTxtProgressBar(pb, i)
+            # cli::cli_progress_update()
         }
-        cli::cli_progress_done()
+        close(pb)
+        # cli::cli_progress_done()
 
         # F1 - Convert hap ID string to integer (e.g. "21/21" -> 21)
         brapiHapIdStringToInt <- function(x) {
@@ -488,17 +512,19 @@ setMethod(
         }
 
         # Clean up data (parallel)
-        cli::cli_progress_step("Cleaning data")
+        # cli::cli_progress_step("Cleaning data")
+        message("Cleaning data")
         finalMatrices <- parallel::mclapply(allResp, processMatrix, mc.cores = numCores)
 
         # Bind all data into one matrix and return
-        cli::cli_progress_step("Combining responses")
+        # cli::cli_progress_step("Combining responses")
+        message("Combining responses")
         if (transpose) {
             unionMatrix <- t(do.call(rbind, finalMatrices))
         } else {
             unionMatrix <- do.call(rbind, finalMatrices)
         }
-        
+
         return(unionMatrix)
     }
 )
@@ -526,17 +552,19 @@ setGeneric("readPHGDatasetFromBrapi", function(object, ...) {
 setMethod(
     f = "readPHGDatasetFromBrapi",
     signature = "BrapiConPHG",
-    definition = function(object) {
+    definition = function(object, ...) {
 
         urls <- getVTList(object)
 
         hapArray <- readTable(object, transpose = FALSE)
-        
-        cli::cli_progress_step("Getting ref range data")
+
+        # cli::cli_progress_step("Getting ref range data")
+        message("Getting ref range data")
         rr <- readRefRanges(object)
-        cli::cli_progress_step("Getting sample data")
+        # cli::cli_progress_step("Getting sample data")
+        message("Getting sample data")
         samples <- head(readSamples(object), n = 50)
-        
+
         colnames(hapArray) <- samples$sampleName
 
         phgSE <- SummarizedExperiment::SummarizedExperiment(

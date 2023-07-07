@@ -112,7 +112,11 @@ getVTList <- function(x) {
         stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
     }
 
-    baseURL <- paste0(x@url, "/variantTables/", x@methodID)
+    if (x@methodID == "DEMO") {
+        baseURL <- paste0(x@url, "/variantTables/", "282_GBS_Alignments_PATHS")
+    } else {
+        baseURL <- paste0(x@url, "/variantTables/", x@methodID)
+    }
 
     ranges <- x@refRangeFilter
     samples <- x@sampleFilter
@@ -137,15 +141,28 @@ getVTList <- function(x) {
     # tableURL <- gsub("\\?$|\\?&$", "", tableURL)
     # tableURL <- gsub("\\?&", "?", tableURL)
 
-    tableURL <- paste0(
-        brapiURL(x),
-        "/allelematrix",
-        "?variantSetDbId=", x@methodID,
-        "&dimensionVariantPageSize=10000", # currently hardcoded
-        "&dimensionCallSetPageSize=5000", # currently hardcoded
-        "&dimensionVariantPage=%i",
-        "&dimensionCallSetPage=%i"
-    )
+    if (x@methodID == "DEMO") {
+        tableURL <- paste0(
+            brapiURL(x),
+            "/allelematrix",
+            "?variantSetDbId=", "282_GBS_Alignments_PATHS",
+            "&dimensionVariantPageSize=250", # currently hardcoded
+            "&dimensionCallSetPageSize=25", # currently hardcoded
+            "&dimensionVariantPage=%i",
+            "&dimensionCallSetPage=%i"
+        )
+    } else {
+        tableURL <- paste0(
+            brapiURL(x),
+            "/allelematrix",
+            "?variantSetDbId=", x@methodID,
+            "&dimensionVariantPageSize=10000", # currently hardcoded
+            "&dimensionCallSetPageSize=5000", # currently hardcoded
+            "&dimensionVariantPage=%i",
+            "&dimensionCallSetPage=%i"
+        )
+    }
+
 
     return(
         list(
