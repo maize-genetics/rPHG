@@ -71,7 +71,7 @@ test_that("getVTList() returns correct exceptions and data", {
 
     expect_equal(
         object = getVTList(bcPHG)$tableURL,
-        expect = "https://test-server.brapi.org:443/brapi/v2/variantTables/test_method/table"
+        expect = "https://test-server.brapi.org:443/brapi/v2/allelematrix?variantSetDbId=test_method&dimensionVariantPageSize=10000&dimensionCallSetPageSize=5000&dimensionVariantPage=%i&dimensionCallSetPage=%i"
     )
 })
 

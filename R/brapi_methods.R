@@ -563,7 +563,7 @@ setMethod(
         rr <- readRefRanges(object)
         # cli::cli_progress_step("Getting sample data")
         message("Getting sample data")
-        samples <- head(readSamples(object), n = 50)
+        samples <- readSamples(object)
 
         colnames(hapArray) <- samples$sampleName
 

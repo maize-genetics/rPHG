@@ -8,9 +8,9 @@
 \usage{
 readTable(object, ...)
 
-\S4method{readTable}{BrapiConPHG}(object, numCores = NULL, debug = TRUE)
+\S4method{readTable}{BrapiConPHG}(object, numCores = NULL, transpose = TRUE)
 
-\S4method{readPHGDatasetFromBrapi}{BrapiConPHG}(object)
+\S4method{readPHGDatasetFromBrapi}{BrapiConPHG}(object, ...)
 }
 \arguments{
 \item{object}{A \code{BrapiConPHG} object.}
@@ -19,7 +19,7 @@ readTable(object, ...)
 
 \item{numCores}{Number of processing cores for faster processing times.}
 
-\item{debug}{Is this method for examples purposes?}
+\item{transpose}{Do you want to transpose table?}
 }
 \description{
 Retrieves table information from a given PHG method.
