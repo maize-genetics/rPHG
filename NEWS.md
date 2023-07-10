@@ -1,3 +1,11 @@
+## rPHG 0.1.18
+* Modified `availablePHGMethods()`:
+  + Now returns only method IDs for graphs with more than 100 samples in the
+    data
+  + This prevents publicly available testing methods to be displayed for
+    new PHG users.
+
+
 ## rPHG 0.1.17
 * Added new `"DEMO"` method parameter for `PHGMethod()` constructor:
   + specified as `PHGMethod("DEMO")`

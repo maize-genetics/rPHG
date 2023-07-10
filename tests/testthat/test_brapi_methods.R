@@ -21,10 +21,9 @@ test_that("availablePHGMethods() returns correct data", {
     urlTest <- "phg.maizegdb.org"
     testCon <- BrapiCon(urlTest)
 
-    expect_equal(
-        object = class(availablePHGMethods(testCon)),
-        expected = c("tbl_df", "tbl", "data.frame")
-    )
+    expect_true(is(availablePHGMethods(testCon), "tbl"))
+    expect_true(is(availablePHGMethods(testCon), "tbl_df"))
+    expect_true(is(availablePHGMethods(testCon), "data.frame"))
 
     expect_equal(
         object = colnames(availablePHGMethods(testCon)),
