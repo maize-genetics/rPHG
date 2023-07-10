@@ -149,7 +149,10 @@ setMethod(
     f = "availablePHGMethods",
     signature = "BrapiCon",
     definition = function(object) {
-        json2tibble(object, "variantTables")
+        ## Temp fix to return proper methods
+        fullTable <- json2tibble(object, "variantTables")
+        filtTable <- fullTable[fullTable$numSamples > 100, ] # arbitrary n
+        return(filtTable)
     }
 )
 
