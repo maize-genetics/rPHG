@@ -12,7 +12,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rPHG</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.17</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,10 +57,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">readTable</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for BrapiConPHG</span></span>
-<span><span class="fu">readTable</span><span class="op">(</span><span class="va">object</span>, index <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, transpose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">readTable</span><span class="op">(</span><span class="va">object</span>, numCores <span class="op">=</span> <span class="cn">NULL</span>, transpose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for BrapiConPHG</span></span>
-<span><span class="fu"><a href="readPHGDatasetFromBrapi.html">readPHGDatasetFromBrapi</a></span><span class="op">(</span><span class="va">object</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="readPHGDatasetFromBrapi.html">readPHGDatasetFromBrapi</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -73,17 +73,12 @@
 <dd><p>Additional arguments to be passed.</p></dd>
 
 
-<dt>index</dt>
-<dd><p>Should index values be returned? If <code>FALSE</code>, will return
-haplotype IDs.</p></dd>
-
-
-<dt>verbose</dt>
-<dd><p>Show messages to console?</p></dd>
+<dt>numCores</dt>
+<dd><p>Number of processing cores for faster processing times.</p></dd>
 
 
 <dt>transpose</dt>
-<dd><p>Should data be transposed upon return?</p></dd>
+<dd><p>Do you want to transpose table?</p></dd>
 
 </dl></div>
 

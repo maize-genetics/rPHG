@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   rphg_walkthrough: rphg_walkthrough.html
-last_built: 2023-06-28T17:54Z
+last_built: 2023-07-10T14:56Z
 urls:
   reference: https://rphg.maizegenetics.net/reference
   article: https://rphg.maizegenetics.net/articles
