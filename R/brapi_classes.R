@@ -177,6 +177,10 @@ setClass(
 #'
 #' @export
 PHGMethod <- function(brapiObj, x) {
+    
+    # For demo purposes only!
+    # if (x == "DEMO") x <- "NAM_GBS_Alignments_PATHS"
+    
     methods::new(
         "BrapiConPHG",
         brapiObj,

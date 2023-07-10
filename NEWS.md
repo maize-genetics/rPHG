@@ -1,3 +1,11 @@
+## rPHG 0.1.17
+* Added new `"DEMO"` method parameter for `PHGMethod()` constructor:
+  + specified as `PHGMethod("DEMO")`
+  + Will download a small section (25 samples x 1000 reference ranges)
+    of the Goodman/Buckler path data
+  + Useful for testing and demonstrations
+
+
 ## rPHG 0.1.16
 * Added new function, `plotGraph()`
   + Returns a `visNetwork` object for a given section of PHG data filtered

@@ -18,7 +18,7 @@ test_that("BrapiCon() constructor returns correct data", {
 
 
 test_that("availablePHGMethods() returns correct data", {
-    urlTest <- "maizephg.maizegenetics.net"
+    urlTest <- "phg.maizegdb.org"
     testCon <- BrapiCon(urlTest)
 
     expect_equal(
@@ -183,7 +183,7 @@ test_that("readRefRanges() returns correct data", {
 
 
 test_that("readSamples() returns correct data", {
-    urlTest    <- "maizephg.maizegenetics.net"
+    urlTest    <- "phg.maizegdb.org"
     testMethod <- "anchorwave_gapfilled_assembly_PATH"
 
     testCon       <- BrapiCon(urlTest)
@@ -196,51 +196,28 @@ test_that("readSamples() returns correct data", {
 
 
 test_that("readTable() returns correct data", {
-    urlTest    <- "cbsudc01.biohpc.cornell.edu"
-    testMethod <- "NonMergedReadMapping_AllNamParents_Haploid"
+    urlTest    <- "phg.maizegdb.org"
+    testMethod <- "DEMO"
 
     testCon       <- BrapiCon(urlTest)
     bcPHGNoFilter <- PHGMethod(testCon, testMethod)
-    bcPHGFilter   <- filterSamples(
-        x = PHGMethod(testCon, testMethod),
-        samples = c("Z001E0001-628NHAAXX_1", "Z001E0001-D10RTACXX_5")
-    )
+    # bcPHGFilter   <- filterSamples(
+    #     x = PHGMethod(testCon, testMethod),
+    #     samples = c("Z001E0001-628NHAAXX_1", "Z001E0001-D10RTACXX_5")
+    # )
 
-    expect_message(readTable(bcPHGFilter))
+    expect_message(readTable(bcPHGNoFilter))
 })
 
 
 test_that("readPHGDatasetFromBrapi() returns correct data", {
-    urlTest    <- "cbsudc01.biohpc.cornell.edu"
-    testMethod <- "NonMergedReadMapping_AllNamParents_Haploid"
+    urlTest    <- "phg.maizegdb.org"
+    testMethod <- "DEMO"
 
     testCon       <- BrapiCon(urlTest)
     bcPHGNoFilter <- PHGMethod(testCon, testMethod)
-    bcPHGFilter   <- filterSamples(
-        x = PHGMethod(testCon, testMethod),
-        samples = c("Z001E0001-628NHAAXX_1", "Z001E0001-D10RTACXX_5")
-    )
 
-    expect_message(readPHGDatasetFromBrapi(bcPHGFilter))
+    expect_message(readPHGDatasetFromBrapi(bcPHGNoFilter))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

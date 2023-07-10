@@ -34,11 +34,26 @@ setMethod(
             error = function(cond) "ERROR"
         )
 
+        if (is.numeric(status) && status >= 200 && status <= 299) {
+            statusMsg <- "(OK)"
+        } else {
+            statusMsg <- ""
+        }
+
         cat("A BrAPI connection object\n")
         cat("  Server...........:", host(object), "\n")
         cat("  Port.............:", port(object), "\n")
-        cat("  Server status....:", status, "\n")
+        cat("  Server status....:", status, statusMsg, "\n")
         cat("  BrAPI version....:", version(object), "\n")
+
+        # cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+        # cli::cli_text("A {.strong BrAPI} connection object")
+        # cli::cli_ul(id = "foo")
+        # cli::cli_li("{.field Server}...........: {.url {host(object)}}")
+        # cli::cli_li("{.field Port}.............: { {port(object)} }")
+        # cli::cli_li("{.field Server status}....: { statusMsg }")
+        # cli::cli_li("{.field BrAPI version}....: { {version(object)} }")
+        # cli::cli_end(id = "foo")
     }
 )
 
@@ -162,8 +177,23 @@ setMethod(
     f = "show",
     signature = "BrapiConPHG",
     definition = function(object) {
-        rrCheck <- ifelse(is.na(object@refRangeFilter), "[ ]", "[x]")
-        sampleCheck <- ifelse(is.na(object@sampleFilter), "[ ]", "[x]")
+        # cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
+
+        # activeSlotMsg   <- cli::symbol$square_small_filled
+        # inactiveSlotMsg <- cli::symbol$square_small
+        activeSlotMsg <- "[x]"
+        inactiveSlotMsg <- "[ ]"
+
+        rrCheck <- ifelse(
+            test = is.na(object@refRangeFilter),
+            yes  = inactiveSlotMsg,
+            no   = activeSlotMsg
+        )
+        sampleCheck <- ifelse(
+            test = is.na(object@sampleFilter),
+            yes  = inactiveSlotMsg,
+            no   = activeSlotMsg
+        )
 
         cat("<BrapiConPHG: BrAPI <-> PHG pointer object>\n")
         cat("  method:         ", object@methodID, "\n")
@@ -195,7 +225,7 @@ setMethod(
 #'
 #' @importFrom GenomeInfoDb dropSeqlevels
 #'
-#' @export
+# #' @export
 filterRefRanges <- function(
     x,
     gr = NULL,
@@ -268,7 +298,7 @@ filterRefRanges <- function(
 #' @param x A \code{BrapiConPHG} object.
 #' @param samples A vector of taxa ID of type \code{character}.
 #'
-#' @export
+# #' @export
 filterSamples <- function(x, samples) {
     if (class(x) != "BrapiConPHG") {
         stop("A `BrapiConPHG` object is needed for the LHS argument", call. = FALSE)
@@ -326,7 +356,11 @@ setMethod(
             "&pageSize="
         )
 
-        rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "100000"))
+        if (object@methodID == "DEMO") {
+            rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "1000"))
+        } else {
+            rrDF <- parseJSON(paste0(urls$rangeURL, pageSize, "150000"))
+        }
         rrDF <- rrDF$result$data
 
         gr <- GenomicRanges::GRanges(
@@ -339,6 +373,7 @@ setMethod(
         )
 
         return(gr)
+
     }
 )
 
@@ -371,7 +406,11 @@ setMethod(
         sampleDF <- parseJSON(urls$sampleURL)
         sampleDF <- sampleDF$result$data
 
-        return(tibble::as_tibble(sampleDF))
+        if (object@methodID == "DEMO") {
+            return(utils::head(tibble::as_tibble(sampleDF), n = 25))
+        } else{
+            return(tibble::as_tibble(sampleDF))
+        }
     }
 )
 
@@ -388,60 +427,105 @@ setMethod(
 #' @rdname readTable
 #'
 #' @export
-setGeneric("readTable", function(object, ...) standardGeneric("readTable"))
+setGeneric("readTable", function(object, ...) {
+    standardGeneric("readTable")
+})
 
 #' @rdname readTable
 #'
-#' @param index Should index values be returned? If \code{FALSE}, will return
-#'   haplotype IDs.
-#' @param verbose Show messages to console?
-#' @param transpose Should data be transposed upon return?
+#' @param numCores Number of processing cores for faster processing times.
+#' @param transpose Do you want to transpose table?
+#'
+#' @importFrom cli cli_progress_bar
+#' @importFrom cli cli_progress_done
+#' @importFrom cli cli_progress_step
+#' @importFrom cli cli_progress_update
+#' @importFrom httr content
+#' @importFrom httr GET
+#' @importFrom jsonlite fromJSON
+#' @importFrom parallel mclapply
 #'
 #' @export
 setMethod(
     f = "readTable",
     signature = "BrapiConPHG",
-    definition = function(object, index = FALSE, verbose = TRUE, transpose = TRUE) {
-        message("WIP...")
-        # if (verbose) message("Downloading table data...")
-        # urls <- getVTList(object)
-        #
-        # rJC <- rJava::.jnew("net/maizegenetics/pangenome/api/RMethodsKotlin")
-        #
-        # rrArray <- rJC$getRefRangesFromBrapi(
-        #     urls$rangeURL,
-        #     60000L
-        # )
-        # rrArray <- rJava::.jevalArray(rrArray, simplify = TRUE)
-        #
-        # if (index) {
-        #     tableArray <- rJC$getHapIndexArrayFromBrapi(
-        #         urls$tableURL,
-        #         1000L
-        #     )
-        # } else {
-        #     tableArray <- rJC$getHapIdArrayFromBrapi(
-        #         urls$tableURL,
-        #         urls$rangeURL,
-        #         1000L
-        #     )
-        # }
-        # tableArray <- rJava::.jevalArray(tableArray, simplify = TRUE)
-        #
-        # sampleNames <- parseJSON(urls$sampleURL)
-        # sampleNames <- sampleNames$result$data$sampleName
-        #
-        # colnames(tableArray) <- sampleNames
-        # rownames(tableArray) <- rrArray[4, ]
-        #
-        # if (transpose) {
-        #     ta <- t(tableArray)
-        # } else {
-        #     ta <- tableArray
-        # }
-        #
-        # gc <- base::gc()
-        # return(ta)
+    definition = function(object, numCores = NULL, transpose = TRUE) {
+        # Logic checks
+        if (is.null(numCores)) {
+            numCores <- 1
+        }
+        if (!is.numeric(numCores)) {
+            stop("numCores parameter must be numeric or NULL")
+        }
+
+        # Get URLs
+        urls <- getVTList(object)
+
+        # Calculate total pages
+
+        if (object@methodID == "DEMO") {
+            totalVariants <- 1000
+            totalPages <- ceiling(totalVariants / 250)
+        } else {
+            methods <- availablePHGMethods(object)
+            totalVariants <- methods[which(methods$variantTableDbId == object@methodID), ]$numVariants
+            totalPages <- ceiling(totalVariants / 10000)
+        }
+
+        # Download each page (iterative)
+        # TODO - can we async this? (e.g. futures)
+        allResp <- vector("list", totalPages)
+        # cli::cli_progress_step("Establishing connection")
+        message("Establishing connection")
+        # cli::cli_progress_bar("   - Downloading: ", total = totalPages)
+        message("Downloading:")
+        pb <- utils::txtProgressBar(
+            style = 3,
+            char  = "=",
+            min = 1,
+            max = totalPages
+        )
+        for (i in seq_len(totalPages)) {
+            currentUrl <- sprintf(urls$tableURL, i - 1, 0)
+            allResp[[i]] <- httr::GET(currentUrl)
+            utils::setTxtProgressBar(pb, i)
+            # cli::cli_progress_update()
+        }
+        close(pb)
+        # cli::cli_progress_done()
+
+        # F1 - Convert hap ID string to integer (e.g. "21/21" -> 21)
+        brapiHapIdStringToInt <- function(x) {
+            id <- strsplit(x, "/")[[1]][1]
+            ifelse(id == ".", return(NA), return(as.integer(id)))
+        }
+
+        # F2 - process matrix slices (convert from JSON to int matrix)
+        processMatrix <- function(x) {
+            xNew <- httr::content(x, as = "text", encoding = "ISO-8859-1")
+            xNew <- jsonlite::fromJSON(xNew)
+            xMat <- xNew$result$dataMatrices$dataMatrix[[1]]
+            colnames(xMat) <- xNew$result$callSetDbIds
+            rownames(xMat) <- xNew$result$variants
+            xMat <- apply(xMat, c(1, 2), brapiHapIdStringToInt)
+            return(xMat)
+        }
+
+        # Clean up data (parallel)
+        # cli::cli_progress_step("Cleaning data")
+        message("Cleaning data")
+        finalMatrices <- parallel::mclapply(allResp, processMatrix, mc.cores = numCores)
+
+        # Bind all data into one matrix and return
+        # cli::cli_progress_step("Combining responses")
+        message("Combining responses")
+        if (transpose) {
+            unionMatrix <- t(do.call(rbind, finalMatrices))
+        } else {
+            unionMatrix <- do.call(rbind, finalMatrices)
+        }
+
+        return(unionMatrix)
     }
 )
 
@@ -468,26 +552,29 @@ setGeneric("readPHGDatasetFromBrapi", function(object, ...) {
 setMethod(
     f = "readPHGDatasetFromBrapi",
     signature = "BrapiConPHG",
-    definition = function(object, verbose = TRUE) {
-        message("WIP...")
-        # if (verbose) message("Downloading PHG data...")
-        #
-        # urls <- getVTList(object)
-        #
-        # rr <- readRefRanges(object)
-        # hapArray <- readTable(object, transpose = FALSE, verbose = FALSE)
-        # samples <- readSamples(object)
-        #
-        # phgSE <- SummarizedExperiment::SummarizedExperiment(
-        #     assays = list(hapID = hapArray),
-        #     rowRanges = rr,
-        #     colData = samples
-        # )
-        #
-        # return(methods::new(Class = "PHGDataSet", phgSE))
+    definition = function(object, ...) {
+
+        urls <- getVTList(object)
+
+        hapArray <- readTable(object, transpose = FALSE)
+
+        # cli::cli_progress_step("Getting ref range data")
+        message("Getting ref range data")
+        rr <- readRefRanges(object)
+        # cli::cli_progress_step("Getting sample data")
+        message("Getting sample data")
+        samples <- readSamples(object)
+
+        colnames(hapArray) <- samples$sampleName
+
+        phgSE <- SummarizedExperiment::SummarizedExperiment(
+            assays = list(hapID = hapArray),
+            rowRanges = rr,
+            colData = samples
+        )
+
+        return(methods::new(Class = "PHGDataSet", phgSE))
     }
 )
-
-
 
 

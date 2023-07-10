@@ -1,5 +1,5 @@
 Package: rPHG
-Version: 0.1.16
+Version: 0.1.17
 Date: 2019-06-03
 Title: R front-end for the practical haplotype graph
 Authors@R: c(
@@ -50,6 +50,7 @@ License: GPL-3 | file LICENSE
 URL: https://bitbucket.org/bucklerlab/rphg/src/master/,
     https://maize-genetics.github.io/rPHG/
 Imports:
+    cli,
     corrplot,
     curl,
     GenomeInfoDb,
@@ -60,6 +61,7 @@ Imports:
     jsonlite,
     magrittr,
     methods,
+    parallel,
     rJava,
     rlang,
     S4Vectors,

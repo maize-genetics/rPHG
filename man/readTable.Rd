@@ -8,21 +8,18 @@
 \usage{
 readTable(object, ...)
 
-\S4method{readTable}{BrapiConPHG}(object, index = FALSE, verbose = TRUE, transpose = TRUE)
+\S4method{readTable}{BrapiConPHG}(object, numCores = NULL, transpose = TRUE)
 
-\S4method{readPHGDatasetFromBrapi}{BrapiConPHG}(object, verbose = TRUE)
+\S4method{readPHGDatasetFromBrapi}{BrapiConPHG}(object, ...)
 }
 \arguments{
 \item{object}{A \code{BrapiConPHG} object.}
 
 \item{...}{Additional arguments to be passed.}
 
-\item{index}{Should index values be returned? If \code{FALSE}, will return
-haplotype IDs.}
+\item{numCores}{Number of processing cores for faster processing times.}
 
-\item{verbose}{Show messages to console?}
-
-\item{transpose}{Should data be transposed upon return?}
+\item{transpose}{Do you want to transpose table?}
 }
 \description{
 Retrieves table information from a given PHG method.
