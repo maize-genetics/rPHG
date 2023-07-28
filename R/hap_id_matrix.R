@@ -1,14 +1,15 @@
-#' @title Generate a haplotype ID matrix
-#'
-#' @description Generates a haplotype ID matrix from a PHG object.
-#'
-#' @author Brandon Monier
-#' @author Peter Bradbury
-#'
-#' @param phgObject A PHG object.
-#'
-#' @importFrom rJava is.jnull
-#' @importFrom rJava J
+## ----
+# @title Generate a haplotype ID matrix
+#
+# @description Generates a haplotype ID matrix from a PHG object.
+#
+# @author Brandon Monier
+# @author Peter Bradbury
+#
+# @param phgObject A PHG object.
+#
+# @importFrom rJava is.jnull
+# @importFrom rJava J
 hapIDMatrix <- function(phgObject) {
 
     ## Pull hap ID matrix from phg object
