@@ -40,20 +40,21 @@ setMethod(
             statusMsg <- ""
         }
 
-        cat("A BrAPI connection object\n")
-        cat("  Server...........:", host(object), "\n")
-        cat("  Port.............:", port(object), "\n")
-        cat("  Server status....:", status, statusMsg, "\n")
-        cat("  BrAPI version....:", version(object), "\n")
+        # cat("A BrAPI connection object\n")
+        # cat("  Server...........:", host(object), "\n")
+        # cat("  Port.............:", port(object), "\n")
+        # cat("  Server status....:", status, statusMsg, "\n")
+        # cat("  BrAPI version....:", version(object), "\n")
 
-        # cli::cli_div(theme = list(ul = list(`margin-left` = 2, before = "")))
-        # cli::cli_text("A {.strong BrAPI} connection object")
-        # cli::cli_ul(id = "foo")
-        # cli::cli_li("{.field Server}...........: {.url {host(object)}}")
-        # cli::cli_li("{.field Port}.............: { {port(object)} }")
-        # cli::cli_li("{.field Server status}....: { statusMsg }")
-        # cli::cli_li("{.field BrAPI version}....: { {version(object)} }")
-        # cli::cli_end(id = "foo")
+        msg <- c(
+            paste0("A ", cli::style_bold("BrAPI"), " connection object"),
+            paste0(" ", cli::col_green(cli::symbol$pointer), " Server...........: ", host(object)),
+            paste0(" ", cli::col_green(cli::symbol$pointer), " Port.............: ", port(object)),
+            paste0(" ", cli::col_green(cli::symbol$pointer), " Server status....: ", statusMsg),
+            paste0(" ", cli::col_green(cli::symbol$pointer), " BrAPI version....: ", version(object))
+        )
+
+        cat(msg, sep = "\n")
     }
 )
 
