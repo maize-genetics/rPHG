@@ -46,12 +46,13 @@ setMethod(
         # cat("  Server status....:", status, statusMsg, "\n")
         # cat("  BrAPI version....:", version(object), "\n")
 
+        pointerSymbol <- cli::col_green(cli::symbol$pointer)
         msg <- c(
             paste0("A ", cli::style_bold("BrAPI"), " connection object"),
-            paste0(" ", cli::col_green(cli::symbol$pointer), " Server...........: ", host(object)),
-            paste0(" ", cli::col_green(cli::symbol$pointer), " Port.............: ", port(object)),
-            paste0(" ", cli::col_green(cli::symbol$pointer), " Server status....: ", statusMsg),
-            paste0(" ", cli::col_green(cli::symbol$pointer), " BrAPI version....: ", version(object))
+            paste0(" ", pointerSymbol, " Server...........: ", host(object)),
+            paste0(" ", pointerSymbol, " Port.............: ", port(object)),
+            paste0(" ", pointerSymbol, " Server status....: ", statusMsg),
+            paste0(" ", pointerSymbol, " BrAPI version....: ", version(object))
         )
 
         cat(msg, sep = "\n")
