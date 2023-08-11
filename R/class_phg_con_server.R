@@ -1,16 +1,4 @@
-#####################################################################
-##
-## Overview:
-##  This file houses BrAPI-related functions for:
-##    * Class representation
-##    * Validity checking classes
-##    * Class instantiation (e.g. helper functions)
-##
-#####################################################################
-
-
-# === BrapiCon Class ================================================
-
+## ----
 #' @title An S4 BrapiCon Class
 #'
 #' @description Class \code{BrapiCon} defines a \code{rPHG}
@@ -49,6 +37,7 @@ setClass(
 )
 
 
+## ----
 #' @title BrAPI connection validation
 #'
 #' @name BrapiCon-validity
@@ -89,6 +78,7 @@ setValidity("BrapiCon", function(object) {
 })
 
 
+## ----
 #' @title BrapiCon object and constructors
 #'
 #' @description \code{BrapiCon} is the primary container for housing BrAPI
@@ -105,10 +95,12 @@ setValidity("BrapiCon", function(object) {
 #' @return A \code{BrapiCon} object.
 #'
 #' @export
-BrapiCon <- function(host,
-                     port = NULL,
-                     protocol = c("http", "https"),
-                     version = c("v2", "v1")) {
+BrapiCon <- function(
+    host,
+    port = NULL,
+    protocol = c("http", "https"),
+    version = c("v2", "v1")
+) {
 
     if (missing(host)) stop("A URL host is needed to make this class.")
 
@@ -133,59 +125,54 @@ BrapiCon <- function(host,
 }
 
 
-
-
-
-# === BrapiConPHG Class =============================================
-
-
-#' @title An S4 BrapiConPHG Class
-#'
-#' @description Class \code{BrapiConPHG} defines a \code{rPHG}
-#'    Class for storing BrAPI connection data plust PHG coordinate info.
-#'
-#' @slot methodID A PHG method identifier.
-#' @slot refRangeFilter Reference range selection URL parameters.
-#' @slot sampleFilter Sample / taxa selection URL parameters.
-#'
-#' @name BrapiConPHG-class
-#' @rdname BrapiConPHG-class
-#' @exportClass BrapiConPHG
-setClass(
-    Class = "BrapiConPHG",
-    contains = "BrapiCon",
-    slots = c(
-        methodID = "character",
-        refRangeFilter = "character",
-        sampleFilter = "character"
-    ),
-    prototype = list(
-        methodID = NA_character_,
-        refRangeFilter = NA_character_,
-        sampleFilter = NA_character_
-    )
+## ----
+#' @rdname brapiURL
+#' @export
+setMethod(
+    f = "brapiURL",
+    signature = signature(object = "BrapiCon"),
+    definition = function(object) {
+        return(object@url)
+    }
 )
 
 
-#' @title Helper function to construct BrapiConPHG object
-#'
-#' @description Creates a \code{BrapiConPHG} object to be used to read and
-#'   filter data from a given BrAPI endpoint given a verified PHG method.
-#'
-#' @param brapiObj A \code{BrapiCon} object.
-#' @param x A PHG method identifier.
-#'
+## ----
+#' @rdname host
 #' @export
-PHGMethod <- function(brapiObj, x) {
-    
-    # For demo purposes only!
-    # if (x == "DEMO") x <- "NAM_GBS_Alignments_PATHS"
-    
-    methods::new(
-        "BrapiConPHG",
-        brapiObj,
-        methodID = x
-    )
-}
+setMethod(
+    f = "host",
+    signature = signature(object = "BrapiCon"),
+    definition = function(object) {
+        return(object@host)
+    }
+)
+
+
+## ----
+#' @rdname serverInfo
+#' @export
+setMethod(
+    f = "serverInfo",
+    signature = signature(object = "BrapiCon"),
+    definition = function(object) {
+        json2tibble(object, "serverinfo", "calls")
+    }
+)
+
+
+## ----
+#' @rdname showPHGMethods
+#' @export
+setMethod(
+    f = "showPHGMethods",
+    signature = signature(object = "BrapiCon"),
+    definition = function(object) {
+        ## Temp fix to return proper methods
+        fullTable <- json2tibble(object, "variantTables")
+        filtTable <- fullTable[fullTable$numSamples > 100, ] # arbitrary n
+        return(filtTable)
+    }
+)
 
 
