@@ -1,18 +1,18 @@
 # === Miscellaneous utilities for rPHG methods ======================
 
 ## ----
-#' @title Create mock config file
-#'
-#' @description Creates a temporary PHG configuration file to access the
-#'    provided example database. Mainly for debugging and educational
-#'    purposes.
-#'
-#' @param file User defined output file
-#' @param host Host service for database
-#' @param user User ID for database access
-#' @param password Password for database access
-#' @param dbType Database architecture used
-#' @param dbPath P
+# @title Create mock config file
+#
+# @description Creates a temporary PHG configuration file to access the
+#    provided example database. Mainly for debugging and educational
+#    purposes.
+#
+# @param file User defined output file
+# @param host Host service for database
+# @param user User ID for database access
+# @param password Password for database access
+# @param dbType Database architecture used
+# @param dbPath Path to DB
 createConfigFile <- function(
     file,
     host = "localhost",
@@ -42,11 +42,11 @@ createConfigFile <- function(
 
 
 ## ----
-#' @title Logic support for config files
-#'
-#' @description Provides logic checking for config files used in PHG creation.
-#'
-#' @param configFile Path to a configuration file for your graph database.
+# @title Logic support for config files
+#
+# @description Provides logic checking for config files used in PHG creation.
+#
+# @param configFile Path to a configuration file for your graph database.
 configCatcher <- function(configFile) {
 
     if (!file.exists(configFile)) {
@@ -75,6 +75,35 @@ configCatcher <- function(configFile) {
     if (!file.exists(dbParam) && grepl("sqlite", dbType)) {
         stop("Path to database (DB=) in SQLite config file does not exist.", call. = FALSE)
     }
+}
+
+
+## ----
+# Parse components of config file into a list object
+#
+# @param file Path to a configuration file for database
+parseConfigFile <- function(file) {
+    FIELDS <- c("host", "DB", "DBtype")
+    conLines <- readLines(file)
+
+    properties <- vapply(FIELDS, \(x) getProperty(conLines, x), character(1))
+
+    return(setNames(as.list(properties), FIELDS))
+}
+
+
+## ----
+# Get property from config file field
+#
+# @param configLines A character vector of config lines
+# @param x A field value
+getProperty <- function(configLines, x) {
+    regexField <- paste0("^", x, "=")
+
+    property <- configLines[grepl(regexField, configLines)] |>
+        gsub("^.*=", "", x = _)
+
+    return(property)
 }
 
 
