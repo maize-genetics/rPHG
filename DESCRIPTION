@@ -46,7 +46,7 @@ Description:
     of large number of samples to increase the size of training populations
     for genomic selection models. This can in turn increase predictive accuracy
     and selection intensity in a breeding program.
-License: GPL-3 | file LICENSE
+License: Apache License (>= 2) | file LICENSE
 URL: https://bitbucket.org/bucklerlab/rphg/src/master/,
     https://maize-genetics.github.io/rPHG/
 Imports:
