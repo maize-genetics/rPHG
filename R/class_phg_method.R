@@ -13,7 +13,7 @@
 #' @exportClass BrapiConPHG
 setClass(
     Class = "BrapiConPHG",
-    contains = "BrapiCon",
+    # contains = "BrapiCon",
     slots = c(
         methodID = "character",
         refRangeFilter = "character",

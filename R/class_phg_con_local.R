@@ -16,15 +16,15 @@
 setClass(
     Class = "PHGLocalCon",
     representation = representation(
-        host = "character",
-        dbName = "character",
-        dbType = "character",
+        host           = "character",
+        dbName         = "character",
+        dbType         = "character",
         configFilePath = "character"
     ),
     prototype = prototype(
-        host = NA_character_,
-        dbName = NA_character_,
-        dbType = NA_character_,
+        host           = NA_character_,
+        dbName         = NA_character_,
+        dbType         = NA_character_,
         configFilePath = NA_character_
     )
 )
@@ -85,7 +85,7 @@ setMethod(
 
 
 ## ----
-#' @title Helper functio to construct a \code{PHGLocalCon} object
+#' @title Helper function to construct a \code{PHGLocalCon} object
 #'
 #' @description
 #' Creates a \code{\linkS4class{PHGLocalCon}} object to be used to read PHG
@@ -102,7 +102,7 @@ PHGLocalCon <- function(file) {
     methods::new(
         Class          = "PHGLocalCon",
         host           = configProperties$host,
-        dbName         = configProperties$DB |> basename(),
+        dbName         = basename(configProperties$DB),
         dbType         = configProperties$DBtype,
         configFilePath = normalizePath(file)
     )

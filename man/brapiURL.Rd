@@ -2,15 +2,15 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_con_server.R
 \name{brapiURL}
 \alias{brapiURL}
-\alias{brapiURL,BrapiCon-method}
+\alias{brapiURL,PHGServerCon-method}
 \title{Return URL path}
 \usage{
 brapiURL(object, ...)
 
-\S4method{brapiURL}{BrapiCon}(object)
+\S4method{brapiURL}{PHGServerCon}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object.}
+\item{object}{an \code{rPHG} local or server connection object.}
 
 \item{...}{Additional arguments, for use in specific methods}
 }

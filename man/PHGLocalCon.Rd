@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_phg_con_local.R
 \name{PHGLocalCon}
 \alias{PHGLocalCon}
-\title{Helper functio to construct a \code{PHGLocalCon} object}
+\title{Helper function to construct a \code{PHGLocalCon} object}
 \usage{
 PHGLocalCon(file)
 }

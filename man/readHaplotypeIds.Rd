@@ -10,7 +10,7 @@ readHaplotypeIds(object, ...)
 \S4method{readHaplotypeIds}{BrapiConPHG}(object, numCores = NULL, transpose = TRUE)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object}
+\item{object}{an \code{rPHG} local or server connection object}
 
 \item{...}{Additional arguments, for use in specific methods}
 

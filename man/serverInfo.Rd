@@ -2,15 +2,15 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_con_server.R
 \name{serverInfo}
 \alias{serverInfo}
-\alias{serverInfo,BrapiCon-method}
+\alias{serverInfo,PHGServerCon-method}
 \title{Return server information}
 \usage{
 serverInfo(object, ...)
 
-\S4method{serverInfo}{BrapiCon}(object)
+\S4method{serverInfo}{PHGServerCon}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object}
+\item{object}{an \code{rPHG} local or server connection object}
 
 \item{...}{Additional arguments, for use in specific methods}
 }

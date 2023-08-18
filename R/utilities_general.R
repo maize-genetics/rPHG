@@ -1,5 +1,3 @@
-# === Miscellaneous utilities for rPHG methods ======================
-
 ## ----
 # @title Create mock config file
 #
@@ -53,26 +51,52 @@ configCatcher <- function(configFile) {
         stop ("Path to config file does not exist.", call. = FALSE)
     }
 
-    tmpLines  <- readLines(configFile)
-    dbParam   <- tmpLines[grepl("DB=", tmpLines)]
-    credParam <- tmpLines[grepl("user=|password=", tmpLines)]
-    dbType    <- tmpLines[grepl("DBtype=", tmpLines)]
+    configLines <- readLines(configFile)
 
-    if (!grepl("=postgres$|=sqlite$", dbType)) {
-        stop("Only postgres or SQLite database types are allowed.", call. = FALSE)
+    # Check for fields
+    # mandatoryFields <- c("host", "user", "password", "DB", "DBtype")
+    mandatoryFields <- c("DB", "DBtype", "host", "password", "user")
+    dbTypes         <- c("sqlite", "postgres")
+    fieldPatterns   <- paste0("^", mandatoryFields, "=")
+
+    # Create logical matrix for given lines in file (i) and fields (j)
+    fcMatrix <- vapply(fieldPatterns, grepl, logical(length(configLines)), configLines)
+
+    # Check for presence of each field
+    presentChecks <- apply(fcMatrix, 2, any)
+
+    # Check for duplicates of each field
+    dupChecks <- apply(fcMatrix, 2, function(x) {
+        ifelse(sum(x, na.rm = TRUE) > 1, TRUE, FALSE)
+    })
+
+    names(presentChecks) <- mandatoryFields
+    names(dupChecks)     <- mandatoryFields
+
+    if (!all(presentChecks)) {
+        stop(
+            "Some mandatory connection fields are missing. Missing fields:\n",
+            paste0("  * ", names(presentChecks[!presentChecks]), collapse = "\n"),
+            call. = FALSE
+        )
     }
 
-    if (length(credParam) != 2) {
-        stop("Missing credentials (user= and/or password=) in config file.", call. = FALSE)
+    if (any(dupChecks)) {
+        stop(
+            "Some mandatory connection fields are duplicated. Duplicated fields:\n",
+            paste0("  * ", names(dupChecks[dupChecks]), collapse = "\n"),
+            call. = FALSE
+        )
     }
 
-    if (length(dbParam) > 1) {
-        stop("Config file contains more than one database path parameter (DB=).", call. = FALSE)
+    dbParam     <- trimws(gsub("^DB=|#.*$", "", configLines[grepl("^DB=", configLines)]))
+    dbTypeParam <- trimws(gsub("^DBtype=|#.*$", "", configLines[grepl("^DBtype=", configLines)]))
+
+    if (!dbTypeParam %in% dbTypes) {
+        stop("Only PostgreSQL (DBtype=postgres) or SQLite (DBtype=sqlite) database types are allowed.", call. = FALSE)
     }
 
-    dbParam <- gsub("DB=", "", dbParam)
-
-    if (!file.exists(dbParam) && grepl("sqlite", dbType)) {
+    if (!file.exists(dbParam) && dbTypeParam == "sqlite") {
         stop("Path to database (DB=) in SQLite config file does not exist.", call. = FALSE)
     }
 }

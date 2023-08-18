@@ -4,7 +4,7 @@
 #' @description
 #' Returns the Uniform Resource Locator (URL) of a \code{BrapiCon} object.
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object.
+#' @param object an \code{rPHG} local or server connection object.
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname brapiURL
@@ -18,7 +18,7 @@ setGeneric("brapiURL", function(object, ...) standardGeneric("brapiURL"))
 #' @description
 #' Returns the host information for a given object
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname host
@@ -32,7 +32,7 @@ setGeneric("host", function(object, ...) standardGeneric("host"))
 #' @description
 #' Returns the port information for a given object
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname port
@@ -46,7 +46,7 @@ setGeneric("port", function(object, ...) standardGeneric("port"))
 #' @description
 #' Returns the version ID for a BrAPI-compliant PHG server
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname brapiVersion
@@ -60,7 +60,7 @@ setGeneric("brapiVersion", function(object, ...) standardGeneric("brapiVersion")
 #' @description
 #' Returns a collection of available PHG methods and metadata
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname showPHGMethods
@@ -74,7 +74,7 @@ setGeneric("showPHGMethods", function(object, ...) standardGeneric("showPHGMetho
 #' @description
 #' Get avaiable BrAPI calls from BrAPI compliant PHG server
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname serverInfo
@@ -88,7 +88,7 @@ setGeneric("serverInfo", function(object, ...) standardGeneric("serverInfo"))
 #' @description
 #' Get reference range data for a given PHG method
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname readRefRanges
@@ -102,7 +102,7 @@ setGeneric("readRefRanges", function(object, ...) standardGeneric("readRefRanges
 #' @description
 #' Gets sample ID data for a given PHG method
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname readSamples
@@ -116,7 +116,7 @@ setGeneric("readSamples", function(object, ...) standardGeneric("readSamples"))
 #' @description
 #' Gets haplotype ID for given samples and reference ranges for PHG method
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname readHaplotypeIds
@@ -132,15 +132,11 @@ setGeneric("readHaplotypeIds", function(object, ...) standardGeneric("readHaplot
 #' return all 3 primary sources of data (samples, reference ranges, and
 #' haplotype IDs).
 #'
-#' @param object a \code{\linkS4class{BrapiCon}} object
+#' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname readPHGDataSet
 #' @export
 setGeneric("readPHGDataSet", function(object, ...) standardGeneric("readPHGDataSet"))
-
-
-
-
 
 

@@ -2,15 +2,15 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_con_server.R
 \name{showPHGMethods}
 \alias{showPHGMethods}
-\alias{showPHGMethods,BrapiCon-method}
+\alias{showPHGMethods,PHGServerCon-method}
 \title{Return available PHG methods}
 \usage{
 showPHGMethods(object, ...)
 
-\S4method{showPHGMethods}{BrapiCon}(object)
+\S4method{showPHGMethods}{PHGServerCon}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object}
+\item{object}{an \code{rPHG} local or server connection object}
 
 \item{...}{Additional arguments, for use in specific methods}
 }

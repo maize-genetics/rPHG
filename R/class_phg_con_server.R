@@ -1,7 +1,7 @@
 ## ----
-#' @title An S4 BrapiCon Class
+#' @title An PHGServerCon Class
 #'
-#' @description Class \code{BrapiCon} defines a \code{rPHG}
+#' @description Class \code{PHGServerCon} defines a \code{rPHG}
 #'    Class for storing BrAPI connection data.
 #'
 #' @slot host A URL to a BrAPI server.
@@ -13,26 +13,26 @@
 #' @slot token API authorization token.
 #' @slot url BrAPI server URL.
 #'
-#' @name BrapiCon-class
-#' @rdname BrapiCon-class
-#' @exportClass BrapiCon
+#' @name PHGServerCon-class
+#' @rdname PHGServerCon-class
+#' @exportClass PHGServerCon
 setClass(
-    Class = "BrapiCon",
+    Class = "PHGServerCon",
     representation = representation(
-        host = "character",
-        port = "numeric",
+        host     = "character",
+        port     = "numeric",
         protocol = "character",
-        version = "character",
-        token = "character",
-        url = "character"
+        version  = "character",
+        token    = "character",
+        url      = "character"
     ),
     prototype = prototype(
-        host = NA_character_,
-        port = NA_integer_,
+        host     = NA_character_,
+        port     = NA_integer_,
         protocol = NA_character_,
-        version = NA_character_,
-        token = NA_character_,
-        url = NA_character_
+        version  = NA_character_,
+        token    = NA_character_,
+        url      = NA_character_
     )
 )
 
@@ -40,14 +40,14 @@ setClass(
 ## ----
 #' @title BrAPI connection validation
 #'
-#' @name BrapiCon-validity
+#' @name PHGServerCon-validity
 #'
-#' @description Checks if \code{BrapiCon} class objects are valid.
+#' @description Checks if \code{PHGServerCon} class objects are valid.
 #'
-#' @param object A \code{BrapiCon} object.
+#' @param object A \code{PHGServerCon} object.
 #'
 #' @importFrom curl has_internet
-setValidity("BrapiCon", function(object) {
+setValidity("PHGServerCon", function(object) {
     errors <- character()
 
     port <- object@port
@@ -79,9 +79,39 @@ setValidity("BrapiCon", function(object) {
 
 
 ## ----
-#' @title BrapiCon object and constructors
+#' @title Show methods for PHGServerCon objects
 #'
-#' @description \code{BrapiCon} is the primary container for housing BrAPI
+#' @description
+#' Prints out information regarding properties from the \code{PHGServerCon}
+#' class to the console
+#'
+#' @param object A \code{\linkS4class{PHGServerCon}} object
+#'
+#' @docType methods
+#' @rdname PHGServerCon-class
+#' @aliases show,PHGServerCon-method
+setMethod(
+    f = "show",
+    signature = "PHGServerCon",
+    definition = function(object) {
+        pointerSymbol <- cli::col_green(cli::symbol$pointer)
+
+        stat <- httpResp(brapiURL(object))
+        msg <- c(
+            paste0("A ", cli::style_bold("PHGServerCon"), " connection object"),
+            paste0(" ", pointerSymbol, " Host............: ", host(object)),
+            paste0(" ", pointerSymbol, " Server Status...: ", stat$status, " (", stat$msg, ")")
+        )
+
+        cat(msg, sep = "\n")
+    }
+)
+
+
+## ----
+#' @title PHGServerCon object constructor
+#'
+#' @description \code{PHGServerCon} is the primary container for housing BrAPI
 #'    connection information.
 #'
 #' @param host A URL to a BrAPI server.
@@ -92,20 +122,35 @@ setValidity("BrapiCon", function(object) {
 #' @param version BrAPI version number. Must be either \code{"v1"} or
 #'    \code{"v2"}. Defaults to \code{v2}.
 #'
-#' @return A \code{BrapiCon} object.
+#' @return A \code{PHGServerCon} object.
 #'
 #' @export
-BrapiCon <- function(
+PHGServerCon <- function(
     host,
     port = NULL,
-    protocol = c("http", "https"),
+    protocol = c("https", "http"),
     version = c("v2", "v1")
 ) {
 
-    if (missing(host)) stop("A URL host is needed to make this class.")
+    respStat   <- httpResp(host)
+    version    <- match.arg(version)
+    protocol   <- match.arg(protocol)
 
-    version <- match.arg(version)
-    protocol <- match.arg(protocol)
+    # Check for http(s) prefix
+    httpReg    <- "^http:\\/\\/"
+    httpsReg   <- "^https:\\/\\/"
+    if (grepl(httpReg, host)) {
+        protocol <- "http"
+        host <- gsub(httpReg, "", host)
+    }
+    if (grepl(httpsReg, host)) {
+        protocol <- "https"
+        host <- gsub(httpsReg, "", host)
+    }
+
+    # Check for BrAPI suffix
+    brapiStart <- "\\/brapi\\/(v1|v2)$"
+    host <- gsub(brapiStart, "", host)
 
     if (is.null(port) && protocol == "http") port <- 80
     if (is.null(port) && protocol == "https") port <- 443
@@ -115,22 +160,25 @@ BrapiCon <- function(
     url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
 
     new(
-        Class = "BrapiCon",
-        host = host,
-        port = port,
+        Class    = "PHGServerCon",
+        host     = host,
+        port     = port,
         protocol = protocol,
-        version = version,
-        url = url
+        version  = version,
+        url      = url
     )
 }
 
+
+
+# /// Methods ///////////////////////////////////////////////////////
 
 ## ----
 #' @rdname brapiURL
 #' @export
 setMethod(
     f = "brapiURL",
-    signature = signature(object = "BrapiCon"),
+    signature = signature(object = "PHGServerCon"),
     definition = function(object) {
         return(object@url)
     }
@@ -142,9 +190,21 @@ setMethod(
 #' @export
 setMethod(
     f = "host",
-    signature = signature(object = "BrapiCon"),
+    signature = signature(object = "PHGServerCon"),
     definition = function(object) {
         return(object@host)
+    }
+)
+
+
+## ----
+#' @rdname host
+#' @export
+setMethod(
+    f = "port",
+    signature = signature(object = "PHGServerCon"),
+    definition = function(object) {
+        return(object@port)
     }
 )
 
@@ -154,7 +214,7 @@ setMethod(
 #' @export
 setMethod(
     f = "serverInfo",
-    signature = signature(object = "BrapiCon"),
+    signature = signature(object = "PHGServerCon"),
     definition = function(object) {
         json2tibble(object, "serverinfo", "calls")
     }
@@ -166,7 +226,7 @@ setMethod(
 #' @export
 setMethod(
     f = "showPHGMethods",
-    signature = signature(object = "BrapiCon"),
+    signature = signature(object = "PHGServerCon"),
     definition = function(object) {
         ## Temp fix to return proper methods
         fullTable <- json2tibble(object, "variantTables")

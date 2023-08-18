@@ -1,4 +1,35 @@
-# === BrAPI utility and house-keeping methods =======================
+## ----
+# Get HTTP response status codes from PHG server
+#
+# @description
+# By default, this will ping the `serverinfo` BrAPI endpoint on the server.
+#
+# @param url Host URL for PHG server
+# @param endpoint What endpoint to append to URL
+httpResp <- function(url, endpoint = "serverinfo") {
+    status <- tryCatch(
+        expr = {
+            httr::GET(file.path(url, endpoint))$status
+        },
+        error = function(cond) NA
+    )
+
+    if (is.na(status)) {
+        stop("Cannot connect to server", call. = FALSE)
+    }
+
+    statusMsg <- switch(
+        EXPR = floor(status / 100),
+        `1`  = cli::col_yellow("Information"),
+        `2`  = cli::col_green("OK"),
+        `3`  = cli::col_blue("Redirection"),
+        `4`  = cli::col_red("Client Error"),
+        `5`  = cli::col_red("Server Error")
+    )
+
+    return(list(status = status, msg = cli::style_bold(statusMsg)))
+}
+
 
 ## ----
 #' @title URL checker

@@ -2,15 +2,15 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_con_server.R
 \name{host}
 \alias{host}
-\alias{host,BrapiCon-method}
+\alias{host,PHGServerCon-method}
 \title{Return host data}
 \usage{
 host(object, ...)
 
-\S4method{host}{BrapiCon}(object)
+\S4method{host}{PHGServerCon}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object}
+\item{object}{an \code{rPHG} local or server connection object}
 
 \item{...}{Additional arguments, for use in specific methods}
 }

@@ -10,7 +10,7 @@ readRefRanges(object, ...)
 \S4method{readRefRanges}{BrapiConPHG}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiCon}} object}
+\item{object}{an \code{rPHG} local or server connection object}
 
 \item{...}{Additional arguments, for use in specific methods}
 }
