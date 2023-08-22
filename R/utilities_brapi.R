@@ -1,4 +1,39 @@
 ## ----
+# Check if BrAPI `serverinfo` endpoint exists
+#
+# @description
+# Checks if BrAPI compliant `serverinfo` endpoint can be reached. This
+# presumption will imply that we can at least connect to this "mandatory"
+# endpoint for the PHG Ktor server.
+#
+# @param url Host URL for PHG server
+# @param endpoint What endpoint to append to URL
+brapiEndpointExists <- function(url, endpoint = "serverinfo") {
+    # # C1 - check for internet connectivity
+    # if (!curl::has_internet()) {
+    #     stop(
+    #         "Connection cannot be made due to no internet connectivity",
+    #         call. = FALSE
+    #     )
+    # }
+
+    # C2 - check for serverinfo endpoint
+    status <- tryCatch(
+        expr = {
+            httr::GET(file.path(url, endpoint))$status
+        },
+        error = function(cond) NA
+    )
+
+    ifelse(
+        test = !is.na(status) && status >= 200 && status <= 299,
+        yes  = return(TRUE),
+        no   = return(FALSE)
+    )
+}
+
+
+## ----
 # Get HTTP response status codes from PHG server
 #
 # @description
@@ -7,16 +42,8 @@
 # @param url Host URL for PHG server
 # @param endpoint What endpoint to append to URL
 httpResp <- function(url, endpoint = "serverinfo") {
-    status <- tryCatch(
-        expr = {
-            httr::GET(file.path(url, endpoint))$status
-        },
-        error = function(cond) NA
-    )
 
-    if (is.na(status)) {
-        stop("Cannot connect to server", call. = FALSE)
-    }
+    status <- httr::GET(file.path(url, endpoint))$status
 
     statusMsg <- switch(
         EXPR = floor(status / 100),
