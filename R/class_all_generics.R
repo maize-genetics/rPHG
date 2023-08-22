@@ -55,6 +55,48 @@ setGeneric("brapiVersion", function(object, ...) standardGeneric("brapiVersion")
 
 
 ## ----
+#' @title Return name of DB
+#'
+#' @description
+#' Returns the name for a given PHG database
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname dbName
+#' @export
+setGeneric("dbName", function(object, ...) standardGeneric("dbName"))
+
+
+## ----
+#' @title Return type of DB
+#'
+#' @description
+#' Returns the type (e.g. postgres or sqlite) for a given PHG database
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname dbType
+#' @export
+setGeneric("dbType", function(object, ...) standardGeneric("dbType"))
+
+
+## ----
+#' @title Return file path of configuration file
+#'
+#' @description
+#' Returns the file path for a configuration file to a PHG database
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname configFilePath
+#' @export
+setGeneric("configFilePath", function(object, ...) standardGeneric("configFilePath"))
+
+
+## ----
 #' @title Return available PHG methods
 #'
 #' @description

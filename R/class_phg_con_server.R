@@ -132,7 +132,6 @@ PHGServerCon <- function(
     version = c("v2", "v1")
 ) {
 
-    respStat   <- httpResp(host)
     version    <- match.arg(version)
     protocol   <- match.arg(protocol)
 
@@ -155,9 +154,18 @@ PHGServerCon <- function(
     if (is.null(port) && protocol == "http") port <- 80
     if (is.null(port) && protocol == "https") port <- 443
 
-    if (port %% 1 != 0) stop("Invalid port number. Must be a whole number.")
+    if (port %% 1 != 0) {
+        stop("Invalid port number. Must be a whole number.", call. = FALSE)
+    }
 
     url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
+
+    if (!brapiEndpointExists(url)) {
+        stop(
+            "Cannot resolve mandatory endpoint: {serverinfo}",
+            call. = FALSE
+        )
+    }
 
     new(
         Class    = "PHGServerCon",
@@ -186,6 +194,18 @@ setMethod(
 
 
 ## ----
+#' @rdname brapiVersion
+#' @export
+setMethod(
+    f = "brapiVersion",
+    signature = signature(object = "PHGServerCon"),
+    definition = function(object) {
+        return(object@version)
+    }
+)
+
+
+## ----
 #' @rdname host
 #' @export
 setMethod(
@@ -198,7 +218,7 @@ setMethod(
 
 
 ## ----
-#' @rdname host
+#' @rdname port
 #' @export
 setMethod(
     f = "port",
@@ -230,7 +250,7 @@ setMethod(
     definition = function(object) {
         ## Temp fix to return proper methods
         fullTable <- json2tibble(object, "variantTables")
-        filtTable <- fullTable[fullTable$numSamples > 100, ] # arbitrary n
+        # filtTable <- fullTable[fullTable$numSamples > 100, ] # arbitrary n
         return(filtTable)
     }
 )

@@ -110,8 +110,54 @@ PHGLocalCon <- function(file) {
 
 
 
+# /// Methods ///////////////////////////////////////////////////////
+
+## ----
+#' @rdname host
+#' @export
+setMethod(
+    f = "host",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object) {
+        return(object@host)
+    }
+)
 
 
+## ----
+#' @rdname dbName
+#' @export
+setMethod(
+    f = "dbName",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object) {
+        return(object@dbName)
+    }
+)
+
+
+## ----
+#' @rdname dbType
+#' @export
+setMethod(
+    f = "dbType",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object) {
+        return(object@dbType)
+    }
+)
+
+
+## ----
+#' @rdname configFilePath
+#' @export
+setMethod(
+    f = "configFilePath",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object) {
+        return(object@configFilePath)
+    }
+)
 
 
 

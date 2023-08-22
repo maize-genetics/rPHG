@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_phg_con_server.R
 \name{PHGServerCon}
 \alias{PHGServerCon}
-\title{PHGServerCon object and constructors}
+\title{PHGServerCon object constructor}
 \usage{
 PHGServerCon(
   host,
