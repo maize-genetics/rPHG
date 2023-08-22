@@ -47,8 +47,8 @@ Description:
     for genomic selection models. This can in turn increase predictive accuracy
     and selection intensity in a breeding program.
 License: Apache License (>= 2) | file LICENSE
-URL: https://bitbucket.org/bucklerlab/rphg/src/master/,
-    https://maize-genetics.github.io/rPHG/
+URL: https://github.com/maize-genetics/rPHG,
+    https://rphg.maizegenetics.net/
 Imports:
     cli,
     corrplot,
