@@ -4,7 +4,6 @@
 #' @description Class \code{PHGServerCon} defines a \code{rPHG}
 #'    Class for storing BrAPI connection data.
 #'
-#' @slot host A URL to a BrAPI server.
 #' @slot port The host port.
 #' @slot protocol Which protocol must be used to fetch the desired data? Must
 #'    be either \code{http} or \code{https}.
@@ -17,9 +16,9 @@
 #' @rdname PHGServerCon-class
 #' @exportClass PHGServerCon
 setClass(
-    Class = "PHGServerCon",
+    Class    = "PHGServerCon",
+    contains = "PHGCon",
     representation = representation(
-        host     = "character",
         port     = "numeric",
         protocol = "character",
         version  = "character",
@@ -27,7 +26,6 @@ setClass(
         url      = "character"
     ),
     prototype = prototype(
-        host     = NA_character_,
         port     = NA_integer_,
         protocol = NA_character_,
         version  = NA_character_,
@@ -79,6 +77,79 @@ setValidity("PHGServerCon", function(object) {
 
 
 ## ----
+#' @title PHGServerCon object constructor
+#'
+#' @description \code{PHGServerCon} is the primary container for housing BrAPI
+#'    connection information.
+#'
+#' @param port The host port. If \code{NULL}, a default port (e.g. \code{80} or
+#'    \code{443}) will be used depending on protocol.
+#' @param protocol Which protocol must be used to fetch the desired data? Must
+#'    be either \code{http} or \code{https}. Defaults to \code{http}.
+#' @param version BrAPI version number. Must be either \code{"v1"} or
+#'    \code{"v2"}. Defaults to \code{v2}.
+#'
+#' @return A \code{PHGServerCon} object.
+#'
+#' @export
+PHGServerCon <- function(
+    host,
+    port = NULL,
+    protocol = c("https", "http"),
+    version = c("v2", "v1")
+) {
+
+    version    <- match.arg(version)
+    protocol   <- match.arg(protocol)
+
+    # Check for http(s) prefix and update protocol arg if needed
+    httpReg    <- "^http:\\/\\/"
+    httpsReg   <- "^https:\\/\\/"
+    if (grepl(httpReg, host)) {
+        protocol <- "http"
+        host <- gsub(httpReg, "", host)
+    }
+    if (grepl(httpsReg, host)) {
+        protocol <- "https"
+        host <- gsub(httpsReg, "", host)
+    }
+
+    # Check for BrAPI suffix - does not check for v1 status - defaults to v2
+    brapiStart <- "\\/brapi\\/(v1|v2)$"
+    host <- gsub(brapiStart, "", host)
+
+    if (is.null(port) && protocol == "http") port <- 80
+    if (is.null(port) && protocol == "https") port <- 443
+
+    if (port %% 1 != 0) {
+        stop("Invalid port number. Must be a whole number.", call. = FALSE)
+    }
+
+    url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
+
+    if (!brapiEndpointExists(url)) {
+        stop(
+            "Cannot resolve mandatory endpoint: {serverinfo}",
+            call. = FALSE
+        )
+    }
+
+    new(
+        Class    = "PHGServerCon",
+        phgType  = "server",
+        host     = host,
+        port     = port,
+        protocol = protocol,
+        version  = version,
+        url      = url
+    )
+}
+
+
+
+# /// Methods (show) ////////////////////////////////////////////////
+
+## ----
 #' @title Show methods for PHGServerCon objects
 #'
 #' @description
@@ -108,78 +179,8 @@ setMethod(
 )
 
 
-## ----
-#' @title PHGServerCon object constructor
-#'
-#' @description \code{PHGServerCon} is the primary container for housing BrAPI
-#'    connection information.
-#'
-#' @param host A URL to a BrAPI server.
-#' @param port The host port. If \code{NULL}, a default port (e.g. \code{80} or
-#'    \code{443}) will be used depending on protocol.
-#' @param protocol Which protocol must be used to fetch the desired data? Must
-#'    be either \code{http} or \code{https}. Defaults to \code{http}.
-#' @param version BrAPI version number. Must be either \code{"v1"} or
-#'    \code{"v2"}. Defaults to \code{v2}.
-#'
-#' @return A \code{PHGServerCon} object.
-#'
-#' @export
-PHGServerCon <- function(
-    host,
-    port = NULL,
-    protocol = c("https", "http"),
-    version = c("v2", "v1")
-) {
 
-    version    <- match.arg(version)
-    protocol   <- match.arg(protocol)
-
-    # Check for http(s) prefix
-    httpReg    <- "^http:\\/\\/"
-    httpsReg   <- "^https:\\/\\/"
-    if (grepl(httpReg, host)) {
-        protocol <- "http"
-        host <- gsub(httpReg, "", host)
-    }
-    if (grepl(httpsReg, host)) {
-        protocol <- "https"
-        host <- gsub(httpsReg, "", host)
-    }
-
-    # Check for BrAPI suffix
-    brapiStart <- "\\/brapi\\/(v1|v2)$"
-    host <- gsub(brapiStart, "", host)
-
-    if (is.null(port) && protocol == "http") port <- 80
-    if (is.null(port) && protocol == "https") port <- 443
-
-    if (port %% 1 != 0) {
-        stop("Invalid port number. Must be a whole number.", call. = FALSE)
-    }
-
-    url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
-
-    if (!brapiEndpointExists(url)) {
-        stop(
-            "Cannot resolve mandatory endpoint: {serverinfo}",
-            call. = FALSE
-        )
-    }
-
-    new(
-        Class    = "PHGServerCon",
-        host     = host,
-        port     = port,
-        protocol = protocol,
-        version  = version,
-        url      = url
-    )
-}
-
-
-
-# /// Methods ///////////////////////////////////////////////////////
+# /// Methods (general) /////////////////////////////////////////////
 
 ## ----
 #' @rdname brapiURL
@@ -201,18 +202,6 @@ setMethod(
     signature = signature(object = "PHGServerCon"),
     definition = function(object) {
         return(object@version)
-    }
-)
-
-
-## ----
-#' @rdname host
-#' @export
-setMethod(
-    f = "host",
-    signature = signature(object = "PHGServerCon"),
-    definition = function(object) {
-        return(object@host)
     }
 )
 
@@ -247,11 +236,11 @@ setMethod(
 setMethod(
     f = "showPHGMethods",
     signature = signature(object = "PHGServerCon"),
-    definition = function(object) {
-        ## Temp fix to return proper methods
-        fullTable <- json2tibble(object, "variantTables")
-        # filtTable <- fullTable[fullTable$numSamples > 100, ] # arbitrary n
-        return(filtTable)
+    definition = function(object, showAdvancedMethods) {
+        methodTableFromServer(
+            brapiURL(object),
+            showAdvancedMethods
+        )
     }
 )
 

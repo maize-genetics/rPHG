@@ -12,7 +12,7 @@
 \item{object}{A \code{\linkS4class{PHGLocalCon}} object}
 }
 \description{
-Class \code{PHGLocalCon} defines a \code{rPHG} class for storing
+A \code{PHGLocalCon} class defines a \code{rPHG} class for storing
 local config file data.
 
 Prints out information regarding properties from the \code{PHGLocalCon}
@@ -21,8 +21,6 @@ class to the console
 \section{Slots}{
 
 \describe{
-\item{\code{host}}{Location path of local SQLite or Postgres database}
-
 \item{\code{dbName}}{Name of database}
 
 \item{\code{dbType}}{Type of database}

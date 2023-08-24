@@ -54,7 +54,6 @@ configCatcher <- function(configFile) {
     configLines <- readLines(configFile)
 
     # Check for fields
-    # mandatoryFields <- c("host", "user", "password", "DB", "DBtype")
     mandatoryFields <- c("DB", "DBtype", "host", "password", "user")
     dbTypes         <- c("sqlite", "postgres")
     fieldPatterns   <- paste0("^", mandatoryFields, "=")
@@ -129,5 +128,43 @@ getProperty <- function(configLines, x) {
 
     return(property)
 }
+
+
+## ----
+# Convert TASSEL TableReport objects to native `data.frame` objects
+#
+# @param x A TASSEL `TableReport` object
+tableReportToDF <- function(x) {
+    rJC <- rJava::J("net/maizegenetics/plugindef/GenerateRCode")
+    tabRep <- rJC$tableReportToVectors(x)
+    
+    tabRepCols <- lapply(tabRep$dataVector, rJava::.jevalArray)
+    
+    tabRepCols <- do.call("data.frame", c(tabRepCols, stringsAsFactors = FALSE))
+    colnames(tabRepCols) <- tabRep$columnNames
+    colnames(tabRepCols) <- gsub(" ", "_", colnames(tabRepCols))
+    
+    return(tibble::as_tibble(tabRepCols))
+}
+
+
+## ----
+# Convert method description field string to list from local PHG method call
+#
+# @param df A PHG method table
+descriptionStringToList <- function(s) {
+    sList <- lapply(
+        X = strsplit(unlist(strsplit(s, "\",\"")), "\":\""),
+        FUN = function(i) gsub("\"}|\\{\"", "", x = i)
+    )
+    
+    names(sList) <- unlist(lapply(sList, function(i) i[1]))
+    sList <- lapply(sList, function(i) i[2])
+    
+    return(sList)
+}
+
+
+
 
 

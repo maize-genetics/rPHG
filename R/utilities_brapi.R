@@ -8,23 +8,17 @@
 #
 # @param url Host URL for PHG server
 # @param endpoint What endpoint to append to URL
-brapiEndpointExists <- function(url, endpoint = "serverinfo") {
-    # # C1 - check for internet connectivity
-    # if (!curl::has_internet()) {
-    #     stop(
-    #         "Connection cannot be made due to no internet connectivity",
-    #         call. = FALSE
-    #     )
-    # }
-
-    # C2 - check for serverinfo endpoint
+brapiEndpointExists <- function(url, endpoint = BRAPI_ENDPOINTS$SERVER_INFO) {
+    # Check specified BrAPI endpoint
     status <- tryCatch(
         expr = {
             httr::GET(file.path(url, endpoint))$status
         },
         error = function(cond) NA
     )
-
+    
+    # NOTE: test currently negates `httResp` check for all status codes. Will
+    #       keep in codebase for possible future debugging tests
     ifelse(
         test = !is.na(status) && status >= 200 && status <= 299,
         yes  = return(TRUE),
@@ -38,10 +32,12 @@ brapiEndpointExists <- function(url, endpoint = "serverinfo") {
 #
 # @description
 # By default, this will ping the `serverinfo` BrAPI endpoint on the server.
+# NOTE: `url` needs `brapi/v2` or `brapi/v1` suffix.
 #
 # @param url Host URL for PHG server
-# @param endpoint What endpoint to append to URL
-httpResp <- function(url, endpoint = "serverinfo") {
+# @param endpoint What endpoint to append to URL? Can be `""` for non BrAPI 
+#                 tests.
+httpResp <- function(url, endpoint = BRAPI_ENDPOINTS$SERVER_INFO) {
 
     status <- httr::GET(file.path(url, endpoint))$status
 
@@ -59,16 +55,11 @@ httpResp <- function(url, endpoint = "serverinfo") {
 
 
 ## ----
-#' @title URL checker
-#'
-#' @description Checks and parses URL inputs to list data from JSON text.
-#'
-#' @param url A BrAPI URL endpoint.
-#' @param verbose Do you want messages shown?
-#'
-#' @importFrom httr GET
-#' @importFrom httr content
-#' @importFrom jsonlite fromJSON
+# Parse JSON response to native R object
+#
+#
+# @param url A BrAPI URL endpoint.
+# @param verbose Do you want messages shown?
 parseJSON <- function(url, verbose = FALSE) {
     res <- tryCatch(
         expr = {

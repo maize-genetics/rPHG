@@ -21,8 +21,6 @@ class to the console
 \section{Slots}{
 
 \describe{
-\item{\code{host}}{A URL to a BrAPI server.}
-
 \item{\code{port}}{The host port.}
 
 \item{\code{protocol}}{Which protocol must be used to fetch the desired data? Must

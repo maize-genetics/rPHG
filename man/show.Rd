@@ -3,17 +3,15 @@
 \docType{methods}
 \name{show}
 \alias{show}
-\alias{show,BrapiConPHG-method}
-\title{Show method for BrapiConPHG objects}
+\alias{show,PHGMethod-method}
+\title{Show method for PHGMethod objects}
 \usage{
-\S4method{show}{BrapiConPHG}(object)
+\S4method{show}{PHGMethod}(object)
 }
 \arguments{
-\item{object}{a \code{\linkS4class{BrapiConPHG}} object.}
+\item{object}{a \code{\linkS4class{PHGMethod}} object.}
 }
 \description{
-Prints out the information from the BrAPI connection object
-  including server status codes. See this
-  \href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{Wikipedia link}
-  for further details about what these codes mean.
+Prints out information regarding properties from the \code{PHGMethod}
+class to the console
 }

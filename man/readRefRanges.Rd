@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_method.R
 \name{readRefRanges}
 \alias{readRefRanges}
-\alias{readRefRanges,BrapiConPHG-method}
+\alias{readRefRanges,PHGMethod-method}
 \title{Return reference ranges}
 \usage{
 readRefRanges(object, ...)
 
-\S4method{readRefRanges}{BrapiConPHG}(object)
+\S4method{readRefRanges}{PHGMethod}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

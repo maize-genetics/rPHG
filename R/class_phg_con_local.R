@@ -2,10 +2,9 @@
 #' @title A PHGLocalCon Class
 #'
 #' @description
-#' Class \code{PHGLocalCon} defines a \code{rPHG} class for storing
+#' A \code{PHGLocalCon} class defines a \code{rPHG} class for storing
 #' local config file data.
 #'
-#' @slot host Location path of local SQLite or Postgres database
 #' @slot dbName Name of database
 #' @slot dbType Type of database
 #' @slot configFilePath Path to configuration file
@@ -14,15 +13,14 @@
 #' @rdname PHGLocalCon-class
 #' @exportClass PHGLocalCon
 setClass(
-    Class = "PHGLocalCon",
+    Class    = "PHGLocalCon",
+    contains = "PHGCon",
     representation = representation(
-        host           = "character",
         dbName         = "character",
         dbType         = "character",
         configFilePath = "character"
     ),
     prototype = prototype(
-        host           = NA_character_,
         dbName         = NA_character_,
         dbType         = NA_character_,
         configFilePath = NA_character_
@@ -56,6 +54,35 @@ setValidity("PHGLocalCon", function(object) {
 
 
 ## ----
+#' @title Helper function to construct a \code{PHGLocalCon} object
+#'
+#' @description
+#' Creates a \code{\linkS4class{PHGLocalCon}} object to be used to read PHG
+#' DB data for a given set of PHG-related methods.
+#'
+#' @param file A path to a PHG configuration file
+#'
+#' @export
+PHGLocalCon <- function(file) {
+    configCatcher(file)
+
+    configProperties <- parseConfigFile(file)
+
+    methods::new(
+        Class          = "PHGLocalCon",
+        phgType        = "local",
+        host           = configProperties$host,
+        dbName         = basename(configProperties$DB),
+        dbType         = configProperties$DBtype,
+        configFilePath = normalizePath(file)
+    )
+}
+
+
+
+# /// Methods (show) ////////////////////////////////////////////////
+
+## ----
 #' @title Show methods for PHGLocalCon objects
 #'
 #' @description
@@ -78,51 +105,14 @@ setMethod(
             paste0(" ", pointerSymbol, " DB Name...: ", object@dbName),
             paste0(" ", pointerSymbol, " DB Type...: ", object@dbType)
         )
-
+        
         cat(msg, sep = "\n")
     }
 )
 
 
-## ----
-#' @title Helper function to construct a \code{PHGLocalCon} object
-#'
-#' @description
-#' Creates a \code{\linkS4class{PHGLocalCon}} object to be used to read PHG
-#' DB data for a given set of PHG-related methods.
-#'
-#' @param file A path to a PHG configuration file
-#'
-#' @export
-PHGLocalCon <- function(file) {
-    configCatcher(file)
 
-    configProperties <- parseConfigFile(file)
-
-    methods::new(
-        Class          = "PHGLocalCon",
-        host           = configProperties$host,
-        dbName         = basename(configProperties$DB),
-        dbType         = configProperties$DBtype,
-        configFilePath = normalizePath(file)
-    )
-}
-
-
-
-# /// Methods ///////////////////////////////////////////////////////
-
-## ----
-#' @rdname host
-#' @export
-setMethod(
-    f = "host",
-    signature = signature(object = "PHGLocalCon"),
-    definition = function(object) {
-        return(object@host)
-    }
-)
-
+# /// Methods (general) /////////////////////////////////////////////
 
 ## ----
 #' @rdname dbName
@@ -160,16 +150,20 @@ setMethod(
 )
 
 
-
-
-
-
-
-
-
-
-
-
-
+## ----
+#' @rdname showPHGMethods
+#' @export
+setMethod(
+    f = "showPHGMethods",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object, showAdvancedMethods) {
+        return(
+            methodTableFromLocal(
+                configFilePath(object),
+                showAdvancedMethods
+            )
+        )
+    }
+)
 
 

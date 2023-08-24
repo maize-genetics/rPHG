@@ -13,34 +13,6 @@ setGeneric("brapiURL", function(object, ...) standardGeneric("brapiURL"))
 
 
 ## ----
-#' @title Return host data
-#'
-#' @description
-#' Returns the host information for a given object
-#'
-#' @param object an \code{rPHG} local or server connection object
-#' @param ... Additional arguments, for use in specific methods
-#'
-#' @rdname host
-#' @export
-setGeneric("host", function(object, ...) standardGeneric("host"))
-
-
-## ----
-#' @title Return port value
-#'
-#' @description
-#' Returns the port information for a given object
-#'
-#' @param object an \code{rPHG} local or server connection object
-#' @param ... Additional arguments, for use in specific methods
-#'
-#' @rdname port
-#' @export
-setGeneric("port", function(object, ...) standardGeneric("port"))
-
-
-## ----
 #' @title Return BrAPI version ID
 #'
 #' @description
@@ -52,6 +24,20 @@ setGeneric("port", function(object, ...) standardGeneric("port"))
 #' @rdname brapiVersion
 #' @export
 setGeneric("brapiVersion", function(object, ...) standardGeneric("brapiVersion"))
+
+
+## ----
+#' @title Return file path of configuration file
+#'
+#' @description
+#' Returns the file path for a configuration file to a PHG database
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname configFilePath
+#' @export
+setGeneric("configFilePath", function(object, ...) standardGeneric("configFilePath"))
 
 
 ## ----
@@ -83,45 +69,103 @@ setGeneric("dbType", function(object, ...) standardGeneric("dbType"))
 
 
 ## ----
-#' @title Return file path of configuration file
+#' @title Return host data
 #'
 #' @description
-#' Returns the file path for a configuration file to a PHG database
+#' Returns the host information for a given object
 #'
 #' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname configFilePath
+#' @rdname host
 #' @export
-setGeneric("configFilePath", function(object, ...) standardGeneric("configFilePath"))
+setGeneric("host", function(object, ...) standardGeneric("host"))
 
 
 ## ----
-#' @title Return available PHG methods
+#' @title Return a PHG connection object
 #'
 #' @description
-#' Returns a collection of available PHG methods and metadata
+#' Returns an \code{rPHG} connection object
 #'
-#' @param object an \code{rPHG} local or server connection object
+#' @param object an \code{rPHG} method object
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname showPHGMethods
+#' @rdname phgConObj
 #' @export
-setGeneric("showPHGMethods", function(object, ...) standardGeneric("showPHGMethods"))
+setGeneric("phgConObj", function(object, ...) standardGeneric("phgConObj"))
 
 
 ## ----
-#' @title Return server information
+#' @title Return method ID
 #'
 #' @description
-#' Get avaiable BrAPI calls from BrAPI compliant PHG server
+#' Returns a method ID string for a given \code{rPHG} method class
+#'
+#' @param object an \code{rPHG} method object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname phgMethod
+#' @export
+setGeneric("phgMethod", function(object, ...) standardGeneric("phgMethod"))
+
+
+## ----
+#' @title Return type of PHG connection
+#'
+#' @description
+#' Returns the PHG type for a given \code{rPHG} local or server connection object
+#'
+#' @param object an \code{rPHG} connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname phgType
+#' @export
+setGeneric("phgType", function(object, ...) standardGeneric("phgType"))
+
+
+## ----
+#' @title Return port value
+#'
+#' @description
+#' Returns the port information for a given object
 #'
 #' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname serverInfo
+#' @rdname port
 #' @export
-setGeneric("serverInfo", function(object, ...) standardGeneric("serverInfo"))
+setGeneric("port", function(object, ...) standardGeneric("port"))
+
+
+## ----
+#' @title Return haplotype IDs
+#'
+#' @description
+#' Gets haplotype ID for given samples and reference ranges for PHG method
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname readHaplotypeIds
+#' @export
+setGeneric("readHaplotypeIds", function(object, ...) standardGeneric("readHaplotypeIds"))
+
+
+## ----
+#' @title Return a PHGDataSet
+#'
+#' @description
+#' Creates a \code{\linkS4class{PHGDataSet}} for a given PHG method. This will
+#' return all 3 primary sources of data (samples, reference ranges, and
+#' haplotype IDs).
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname readPHGDataSet
+#' @export
+setGeneric("readPHGDataSet", function(object, ...) standardGeneric("readPHGDataSet"))
 
 
 ## ----
@@ -153,32 +197,32 @@ setGeneric("readSamples", function(object, ...) standardGeneric("readSamples"))
 
 
 ## ----
-#' @title Return haplotype IDs
+#' @title Return server information
 #'
 #' @description
-#' Gets haplotype ID for given samples and reference ranges for PHG method
+#' Get avaiable BrAPI calls from BrAPI compliant PHG server
 #'
 #' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname readHaplotypeIds
+#' @rdname serverInfo
 #' @export
-setGeneric("readHaplotypeIds", function(object, ...) standardGeneric("readHaplotypeIds"))
+setGeneric("serverInfo", function(object, ...) standardGeneric("serverInfo"))
 
 
 ## ----
-#' @title Return a PHGDataSet
+#' @title Return available PHG methods
 #'
 #' @description
-#' Creates a \code{\linkS4class{PHGDataSet}} for a given PHG method. This will
-#' return all 3 primary sources of data (samples, reference ranges, and
-#' haplotype IDs).
+#' Returns a collection of available PHG methods and metadata
 #'
 #' @param object an \code{rPHG} local or server connection object
+#' @param showAdvancedMethods Do you want to return all possible method IDs
+#'    from the database? Defaults to \code{FALSE}.
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname readPHGDataSet
+#' @rdname showPHGMethods
 #' @export
-setGeneric("readPHGDataSet", function(object, ...) standardGeneric("readPHGDataSet"))
+setGeneric("showPHGMethods", function(object, showAdvancedMethods = FALSE, ...) standardGeneric("showPHGMethods"))
 
 
