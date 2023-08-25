@@ -219,6 +219,18 @@ setMethod(
 
 
 ## ----
+#' @rdname httProtocol
+#' @export
+setMethod(
+    f = "httProtocol",
+    signature = signature(object = "PHGServerCon"),
+    definition = function(object) {
+        return(object@protocol)
+    }
+)
+
+
+## ----
 #' @rdname serverInfo
 #' @export
 setMethod(

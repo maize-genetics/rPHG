@@ -115,6 +115,18 @@ setMethod(
 # /// Methods (general) /////////////////////////////////////////////
 
 ## ----
+#' @rdname configFilePath
+#' @export
+setMethod(
+    f = "configFilePath",
+    signature = signature(object = "PHGLocalCon"),
+    definition = function(object) {
+        return(object@configFilePath)
+    }
+)
+
+
+## ----
 #' @rdname dbName
 #' @export
 setMethod(
@@ -134,18 +146,6 @@ setMethod(
     signature = signature(object = "PHGLocalCon"),
     definition = function(object) {
         return(object@dbType)
-    }
-)
-
-
-## ----
-#' @rdname configFilePath
-#' @export
-setMethod(
-    f = "configFilePath",
-    signature = signature(object = "PHGLocalCon"),
-    definition = function(object) {
-        return(object@configFilePath)
     }
 )
 

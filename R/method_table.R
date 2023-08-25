@@ -7,7 +7,7 @@
 methodTableFromLocal <- function(configFile, showAdvancedMethods) {
     # Get TableReport object from TASSEL jar and convert to data.frame
     plugin <- rJava::new(
-        rJava::J(TASSEL_API$METHOD_TABLE_REPORT_PLUGIN)
+        rJava::J(TASSEL_API$METHOD_TABLE_REPORT)
     )
     plugin <- plugin$configFile(configFile)
     ds <- plugin$performFunction(

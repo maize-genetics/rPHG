@@ -83,6 +83,20 @@ setGeneric("host", function(object, ...) standardGeneric("host"))
 
 
 ## ----
+#' @title Return protocol value
+#'
+#' @description
+#' Returns the protocol information for a given object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname httProtocol
+#' @export
+setGeneric("httProtocol", function(object, ...) standardGeneric("httProtocol"))
+
+
+## ----
 #' @title Return a PHG connection object
 #'
 #' @description
@@ -105,9 +119,9 @@ setGeneric("phgConObj", function(object, ...) standardGeneric("phgConObj"))
 #' @param object an \code{rPHG} method object
 #' @param ... Additional arguments, for use in specific methods
 #'
-#' @rdname phgMethod
+#' @rdname phgMethodId
 #' @export
-setGeneric("phgMethod", function(object, ...) standardGeneric("phgMethod"))
+setGeneric("phgMethodId", function(object, ...) standardGeneric("phgMethodId"))
 
 
 ## ----
@@ -161,11 +175,13 @@ setGeneric("readHaplotypeIds", function(object, ...) standardGeneric("readHaplot
 #' haplotype IDs).
 #'
 #' @param object an \code{rPHG} local or server connection object
+#' @param verbose should retrieval information be printed? Defaults to 
+#'    \code{FALSE}
 #' @param ... Additional arguments, for use in specific methods
 #'
 #' @rdname readPHGDataSet
 #' @export
-setGeneric("readPHGDataSet", function(object, ...) standardGeneric("readPHGDataSet"))
+setGeneric("readPHGDataSet", function(object, verbose = FALSE, ...) standardGeneric("readPHGDataSet"))
 
 
 ## ----
