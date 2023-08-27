@@ -5,7 +5,7 @@
 \alias{PHGMethod-class}
 \title{A PHGMethod Class}
 \description{
-Class \code{PHGMethod} defines a \code{rPHG} Class for storing 
+Class \code{PHGMethod} defines a \code{rPHG} Class for storing
 a "committed" PHG method to return data against.
 }
 \section{Slots}{

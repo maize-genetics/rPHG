@@ -6,7 +6,7 @@
 samplesFromLocal <- function(conObj, conMethod) {
     dbConn <- rJava::.jnew(TASSEL_API$DB_LOADING_UTILS)$
         connection(
-            configFilePath(conObj), 
+            configFilePath(conObj),
             FALSE
         )
 
@@ -17,19 +17,19 @@ samplesFromLocal <- function(conObj, conMethod) {
         sprintf("WHERE methods.name = '%s'", conMethod),
         collapse = " "
     )
-    
+
     rs <- dbConn$createStatement()$executeQuery(sqlQuery)
-    
+
     taxa <- c()
     i <- 1
     while (rs$`next`()) {
         taxa[i] <- rs$getString("line_name")
         i <- i + 1
     }
-    
+
     rs$close()
     dbConn$close()
-    
+
     return(taxa)
 }
 
@@ -46,10 +46,23 @@ samplesFromServer <- function(conObj, conMethod) {
         conMethod,
         BRAPI_ENDPOINTS$SAMPLES
     )
-    
+
     taxaDf <- parseJSON(finalUrl)$result$data
-    
+
     return(taxaDf$sampleName)
+}
+
+
+## ----
+# Get samples from `HaplotypeGraph` objects
+#
+# @param phgObj A PHG `HaplotypeGraph` object
+samplesFromGraphObj <- function(phgObj) {
+    jArray <- rJava::.jevalArray(obj = phgObj$taxaInGraph()$toArray())
+
+    taxa <- unlist(lapply(jArray, function(x) x$getName()))
+
+    return(taxa)
 }
 
 

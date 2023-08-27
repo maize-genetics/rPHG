@@ -21,3 +21,30 @@ hapIdsFromSever <- function(conObj, conMethod) {
 }
 
 
+## ----
+# Return Hap ID matrix from `HaplotypeGraph` objects
+#
+# @param phgObj A PHG `HaplotypeGraph` object
+hapIdsFromGraphObj <- function(phgObject) {
+
+    # Pull hap ID matrix from phg object
+    hapids <- rJava::J(
+        TASSEL_API$R_METHODS,
+        "hapidTableAsMatrix",
+        phgObject
+    )
+    hapidMatrix <- hapids$matrix
+
+    # Get row and column names (if available)
+    if(!rJava::is.jnull(hapids$rowNames)) {
+        rownames(hapidMatrix) <- hapids$rowNames
+    }
+    if(!rJava::is.jnull(hapids$columnNames)) {
+        colnames(hapidMatrix) <- hapids$columnNames
+    }
+
+    # Return the matrix
+    return(hapidMatrix)
+}
+
+

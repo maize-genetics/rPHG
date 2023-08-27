@@ -1,8 +1,8 @@
 ## ----
 #' @title A PHGMethod Class
 #'
-#' @description 
-#' Class \code{PHGMethod} defines a \code{rPHG} Class for storing 
+#' @description
+#' Class \code{PHGMethod} defines a \code{rPHG} Class for storing
 #' a "committed" PHG method to return data against.
 #'
 #' @slot methodID A PHG method identifier.
@@ -36,7 +36,7 @@ setClass(
 #' @importFrom curl has_internet
 setValidity("PHGMethod", function(object) {
     errors <- character()
-    
+
     methodIDs <- showPHGMethods(
         object = phgConObj(object),
         showAdvancedMethods = TRUE
@@ -46,7 +46,7 @@ setValidity("PHGMethod", function(object) {
         msg <- "Method ID not found in database."
         errors <- c(errors, msg)
     }
-    
+
     if (length(errors) == 0) TRUE else errors
 })
 
@@ -54,7 +54,7 @@ setValidity("PHGMethod", function(object) {
 ## ----
 #' @title Helper function to construct PHGMethod object
 #'
-#' @description 
+#' @description
 #' Creates a \code{\linkS4class{PHGMethod}} object to be used to read and
 #' filter data from a given PHG connection object using a verified PHG method.
 #'
@@ -96,19 +96,19 @@ setMethod(
     signature = "PHGMethod",
     definition = function(object) {
         conType <- phgType(phgConObj(object))
-        
+
         conMsg <- switch (conType,
             "server" = cli::style_bold(cli::col_green("PHGServerCon")),
             "local"  = cli::style_bold(cli::col_green("PHGLocalCon"))
         )
-        
+
         methodId <- cli::style_bold(cli::col_blue(phgMethodId(object)))
-        
+
         msg <- c(
             paste0("A ", cli::style_bold("PHGMethod"), " promise object:"),
             paste0("  <", conMsg, "> --- <", methodId, ">")
         )
-        
+
         cat(msg, sep = "\n")
     }
 )
@@ -151,7 +151,7 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
-        
+
         if (conType == "local") {
             refRangesFromLocal(conObj, conMethod)
         } else if (conType == "server") {
@@ -171,7 +171,7 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
-        
+
         if (conType == "local") {
             samplesFromLocal(conObj, conMethod)
         } else if (conType == "server") {
@@ -191,7 +191,7 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
-        
+
         if (conType == "local") {
             hapIdsFromLocal(conObj, conMethod)
         } else if (conType == "server") {
@@ -211,7 +211,7 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
-        
+
         if (conType == "local") {
             phgDataSetFromLocal(conObj, conMethod, verbose)
         } else if (conType == "server") {

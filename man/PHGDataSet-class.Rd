@@ -3,8 +3,8 @@
 \docType{class}
 \name{PHGDataSet-class}
 \alias{PHGDataSet-class}
-\title{phgDataSet}
+\title{A PHGDataSet class}
 \description{
-A class to represent a practical haplotype graph which is
+A class to represent practical haplotype graph data which is
   wrapped in a \code{RangedSummarizedExperiment} class.
 }

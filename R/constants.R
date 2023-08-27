@@ -12,7 +12,7 @@ BRAPI_ENDPOINTS <- list(
 ## ----
 # Commonly used BrAPI parameters
 BRAPI_PARAMS <- list(
-    "PAGE_SIZE" =  "pageSize=%i"
+    "PAGE_SIZE" = "pageSize=%i"
 )
 
 
@@ -27,5 +27,8 @@ TASSEL_API <- list(
     "METHOD_TABLE_REPORT"     = "net/maizegenetics/pangenome/api/MethodTableReportPlugin",
     "PARAMETER_CACHE"         = "net/maizegenetics/plugindef/ParameterCache",
     "R_METHODS"               = "net/maizegenetics/pangenome/api/RMethods",
-    "RESULT_SET"              = "java/sql/ResultSet"
+    "RESULT_SET"              = "java/sql/ResultSet",
+    "VECTOR"                  = "java/util/Vector"
 )
+
+

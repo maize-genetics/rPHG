@@ -11,19 +11,19 @@ phgDataSetFromLocal <- function(conObj, conMethod, verbose) {
         paste0(bullet, " Getting haplotype matrix data..."),
         paste0(bullet, " Constructing PHGDataSet...")
     )
-    
+
     if (verbose) message(verbInfo[1])
     gr <- refRangesFromLocal(conObj, conMethod)
-    
+
     if (verbose) message(verbInfo[2])
     hm <- hapIdsFromLocal(conObj, conMethod)
-    
+
     if (verbose) message(verbInfo[3])
     phgSE <- SummarizedExperiment::SummarizedExperiment(
         assays    = list(pathMatrix = t(hm)),
         rowRanges = gr
     )
-    
+
     return(methods::new(Class = "PHGDataSet", phgSE))
 }
 
@@ -41,14 +41,45 @@ phgDataSetFromServer <- function(conObj, conMethod, verbose) {
         paste0(bullet, cli::style_bold(" (WIP)"), " Getting haplotype matrix data..."),
         paste0(bullet, cli::style_bold(" (WIP)"), " Constructing PHGDataSet...")
     )
-    
+
     if (verbose) message(verbInfo[1])
-    
+    # TODO
+
     if (verbose) message(verbInfo[2])
-    
+    # TODO
+
     if (verbose) message(verbInfo[3])
-    
+    # TODO
+
     return(NULL)
+}
+
+
+## ----
+# Get PHGDataSet from `HaplotypeGraph` objects
+#
+# @param phgObj A PHG `HaplotypeGraph` object
+phgDataSetFromGraphObj <- function(phgObj, verbose) {
+    bullet <- cli::col_grey(cli::symbol$info)
+    verbInfo <- c(
+        paste0(bullet, " Getting reference range data..."),
+        paste0(bullet, " Getting haplotype matrix data..."),
+        paste0(bullet, " Constructing PHGDataSet...")
+    )
+
+    if (verbose) message(verbInfo[1])
+    gr <- refRangesFromGraphObj(phgObj)
+
+    if (verbose) message(verbInfo[2])
+    hm <- hapIdsFromGraphObj(phgObj)
+
+    if (verbose) message(verbInfo[3])
+    phgSE <- SummarizedExperiment::SummarizedExperiment(
+        assays    = list(pathMatrix = t(hm)),
+        rowRanges = gr
+    )
+
+    return(methods::new(Class = "PHGDataSet", phgSE))
 }
 
 

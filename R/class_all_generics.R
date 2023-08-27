@@ -27,6 +27,25 @@ setGeneric("brapiVersion", function(object, ...) standardGeneric("brapiVersion")
 
 
 ## ----
+#' @title Calculate mutual information for a given PHG data set
+#'
+#' @description
+#' Calculates mutual information from an rPHG data set object containing
+#' haplotype id and reference range information. Mutual information quantifies
+#' the "amount of information" obtained about one random variable through
+#' observing the other random variable. This will calcuate the the mutual
+#' information across all pairs of reference ranges.
+#'
+#' @param object an \code{rPHG} dataset containing haplotype and reference
+#'    range information
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname calcMutualInfo
+#' @export
+setGeneric("calcMutualInfo", function(object, ...) standardGeneric("calcMutualInfo"))
+
+
+## ----
 #' @title Return file path of configuration file
 #'
 #' @description
@@ -97,6 +116,106 @@ setGeneric("httProtocol", function(object, ...) standardGeneric("httProtocol"))
 
 
 ## ----
+#' @title Return \code{rJava} reference object
+#'
+#' @description
+#' Returns the \code{rJava} memory reference for a given \code{rPHG} object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname javaMemoryAddress
+#' @export
+setGeneric("javaMemoryAddress", function(object, ...) standardGeneric("javaMemoryAddress"))
+
+
+## ----
+#' @title Return \code{rJava} reference object
+#'
+#' @description
+#' Returns the \code{rJava} memory reference for a given \code{rPHG} object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname javaRefObj
+#' @export
+setGeneric("javaRefObj", function(object, ...) standardGeneric("javaRefObj"))
+
+
+## ----
+#' @title Return number of chromosomes
+#'
+#' @description
+#' Returns the number of chromosomes for a given object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname numberOfChromosomes
+#' @export
+setGeneric("numberOfChromosomes", function(object, ...) standardGeneric("numberOfChromosomes"))
+
+
+## ----
+#' @title Return number of nodes
+#'
+#' @description
+#' Returns the number of nodes for a given object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname numberOfNodes
+#' @export
+setGeneric("numberOfNodes", function(object, ...) standardGeneric("numberOfNodes"))
+
+
+## ----
+#' @title Return number of reference ranges
+#'
+#' @description
+#' Returns the number of reference ranges for a given object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname numberOfRefRanges
+#' @export
+setGeneric("numberOfRefRanges", function(object, ...) standardGeneric("numberOfRefRanges"))
+
+
+## ----
+#' @title Return number of taxa
+#'
+#' @description
+#' Returns the number of taxa for a given object
+#'
+#' @param object an \code{rPHG} local or server connection object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname numberOfTaxa
+#' @export
+setGeneric("numberOfTaxa", function(object, ...) standardGeneric("numberOfTaxa"))
+
+
+## ----
+#' @title Return number of haplotypes per reference range
+#'
+#' @description
+#' Returns the number of unique haplotype IDs per reference range in an rPHG
+#' dataset
+#'
+#' @param object an \code{rPHG} dataset containing haplotype and reference
+#'    range information
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname numHaploPerRefRange
+#' @export
+setGeneric("numHaploPerRefRange", function(object, ...) standardGeneric("numHaploPerRefRange"))
+
+
+## ----
 #' @title Return a PHG connection object
 #'
 #' @description
@@ -122,6 +241,20 @@ setGeneric("phgConObj", function(object, ...) standardGeneric("phgConObj"))
 #' @rdname phgMethodId
 #' @export
 setGeneric("phgMethodId", function(object, ...) standardGeneric("phgMethodId"))
+
+
+## ----
+#' @title Return method ID type
+#'
+#' @description
+#' Returns a method ID type for a given \code{rPHG} method class
+#'
+#' @param object an \code{rPHG} method object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname phgMethodType
+#' @export
+setGeneric("phgMethodType", function(object, ...) standardGeneric("phgMethodType"))
 
 
 ## ----
@@ -175,7 +308,7 @@ setGeneric("readHaplotypeIds", function(object, ...) standardGeneric("readHaplot
 #' haplotype IDs).
 #'
 #' @param object an \code{rPHG} local or server connection object
-#' @param verbose should retrieval information be printed? Defaults to 
+#' @param verbose should retrieval information be printed? Defaults to
 #'    \code{FALSE}
 #' @param ... Additional arguments, for use in specific methods
 #'

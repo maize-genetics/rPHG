@@ -137,13 +137,13 @@ getProperty <- function(configLines, x) {
 tableReportToDF <- function(x) {
     rJC <- rJava::J("net/maizegenetics/plugindef/GenerateRCode")
     tabRep <- rJC$tableReportToVectors(x)
-    
+
     tabRepCols <- lapply(tabRep$dataVector, rJava::.jevalArray)
-    
+
     tabRepCols <- do.call("data.frame", c(tabRepCols, stringsAsFactors = FALSE))
     colnames(tabRepCols) <- tabRep$columnNames
     colnames(tabRepCols) <- gsub(" ", "_", colnames(tabRepCols))
-    
+
     return(tibble::as_tibble(tabRepCols))
 }
 
@@ -157,14 +157,41 @@ descriptionStringToList <- function(s) {
         X = strsplit(unlist(strsplit(s, "\",\"")), "\":\""),
         FUN = function(i) gsub("\"}|\\{\"", "", x = i)
     )
-    
+
     names(sList) <- unlist(lapply(sList, function(i) i[1]))
     sList <- lapply(sList, function(i) i[2])
-    
+
     return(sList)
 }
 
 
+## ----
+# Convert PHG HashMap to tibble
+#
+# @param x HashMap to R list
+tnHashMapToTibble <- function(x) {
+    rrNames <- names(x)
+    hapNames <- lapply(x, names)
 
+    rrNamesVec <- lapply(seq_along(hapNames), function(i) {
+        rep(rrNames[i], length(hapNames[[i]]))
+    }) |> unlist()
+
+    hapNamesVec <- unlist(hapNames)
+    taxaIdVec <- lapply(seq_along(hapNames), function(i) {
+        tmpCache <- x[[i]]
+        lapply(seq_along(tmpCache), function(j) {
+            tmpCache[[j]]
+        })
+    })
+
+    return(
+        tibble::tibble(
+            ref_range_id = rrNamesVec,
+            hap_id = hapNamesVec,
+            taxa_id = taxaIdVec |> unlist(recursive = FALSE)
+        )
+    )
+}
 
 
