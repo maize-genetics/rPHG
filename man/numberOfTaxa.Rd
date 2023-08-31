@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{numberOfTaxa}
 \alias{numberOfTaxa}
-\alias{numberOfTaxa,PHGraph-method}
+\alias{numberOfTaxa,HaplotypeGraph-method}
 \title{Return number of taxa}
 \usage{
 numberOfTaxa(object, ...)
 
-\S4method{numberOfTaxa}{PHGraph}(object)
+\S4method{numberOfTaxa}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

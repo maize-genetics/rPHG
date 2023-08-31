@@ -3,13 +3,13 @@
 %   R/class_phg_method.R
 \name{phgMethodId}
 \alias{phgMethodId}
-\alias{phgMethodId,PHGraph-method}
+\alias{phgMethodId,HaplotypeGraph-method}
 \alias{phgMethodId,PHGMethod-method}
 \title{Return method ID}
 \usage{
 phgMethodId(object, ...)
 
-\S4method{phgMethodId}{PHGraph}(object)
+\S4method{phgMethodId}{HaplotypeGraph}(object)
 
 \S4method{phgMethodId}{PHGMethod}(object)
 }

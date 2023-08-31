@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{numberOfChromosomes}
 \alias{numberOfChromosomes}
-\alias{numberOfChromosomes,PHGraph-method}
+\alias{numberOfChromosomes,HaplotypeGraph-method}
 \title{Return number of chromosomes}
 \usage{
 numberOfChromosomes(object, ...)
 
-\S4method{numberOfChromosomes}{PHGraph}(object)
+\S4method{numberOfChromosomes}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

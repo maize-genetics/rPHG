@@ -3,13 +3,13 @@
 %   R/class_phg_method.R
 \name{readHaplotypeIds}
 \alias{readHaplotypeIds}
-\alias{readHaplotypeIds,PHGraph-method}
+\alias{readHaplotypeIds,HaplotypeGraph-method}
 \alias{readHaplotypeIds,PHGMethod-method}
 \title{Return haplotype IDs}
 \usage{
 readHaplotypeIds(object, ...)
 
-\S4method{readHaplotypeIds}{PHGraph}(object)
+\S4method{readHaplotypeIds}{HaplotypeGraph}(object)
 
 \S4method{readHaplotypeIds}{PHGMethod}(object)
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{javaRefObj}
 \alias{javaRefObj}
-\alias{javaRefObj,PHGraph-method}
+\alias{javaRefObj,HaplotypeGraph-method}
 \title{Return \code{rJava} reference object}
 \usage{
 javaRefObj(object, ...)
 
-\S4method{javaRefObj}{PHGraph}(object)
+\S4method{javaRefObj}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

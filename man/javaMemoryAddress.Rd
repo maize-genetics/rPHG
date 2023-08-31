@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{javaMemoryAddress}
 \alias{javaMemoryAddress}
-\alias{javaMemoryAddress,PHGraph-method}
+\alias{javaMemoryAddress,HaplotypeGraph-method}
 \title{Return \code{rJava} reference object}
 \usage{
 javaMemoryAddress(object, ...)
 
-\S4method{javaMemoryAddress}{PHGraph}(object)
+\S4method{javaMemoryAddress}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

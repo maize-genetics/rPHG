@@ -1,8 +1,8 @@
 ## ----
-#' @title A PHGraph Class
+#' @title A HaplotypeGraph Class
 #'
 #' @description
-#' Class \code{PHGraph} defines a \code{rPHG} Class for storing
+#' Class \code{HaplotypeGraph} defines a \code{rPHG} Class for storing
 #' a \code{HaplotypeGraph} object defined in the PHG API
 #'
 #' @slot methodID A \code{\linkS4class{PHGMethod}} object
@@ -14,11 +14,11 @@
 #'    \code{HaplotypeGraph} class in the PHG API
 #' @slot jMemAddress An identifier string to the JVM memory space
 #'
-#' @name PHGraph-class
-#' @rdname PHGraph-class
-#' @exportClass PHGraph
+#' @name HaplotypeGraph-class
+#' @rdname HaplotypeGraph-class
+#' @exportClass HaplotypeGraph
 setClass(
-    Class = "PHGraph",
+    Class = "HaplotypeGraph",
     slots = c(
         methodID    = "character",
         methodType  = "character",
@@ -43,16 +43,16 @@ setClass(
 
 
 ## ----
-#' @title PHGraph validation
+#' @title HaplotypeGraph validation
 #'
-#' @name PHGraph-validity
+#' @name HaplotypeGraph-validity
 #'
-#' @description Checks if \code{PHGraph} class objects are valid.
+#' @description Checks if \code{HaplotypeGraph} class objects are valid.
 #'
-#' @param object A \code{PHGraph} object.
+#' @param object A \code{HaplotypeGraph} object.
 #'
 #' @importFrom curl has_internet
-setValidity("PHGraph", function(object) {
+setValidity("HaplotypeGraph", function(object) {
     errors <- character()
 
     jObjRef <- javaRefObj(object)
@@ -73,10 +73,10 @@ setValidity("PHGraph", function(object) {
 
 
 ## ----
-#' @title Helper function to build PHGraph object
+#' @title Helper function to build HaplotypeGraph object
 #'
 #' @description
-#' Creates a \code{\linkS4class{PHGraph}} object to be used to build and store
+#' Creates a \code{\linkS4class{HaplotypeGraph}} object to be used to build and store
 #' an \code{rJava} reference object pointing to a \code{HaplotypeGraph} object
 #' from the PHG API.
 #'
@@ -92,7 +92,7 @@ setValidity("PHGraph", function(object) {
 #'   increase memory consumption!
 #'
 #' @export
-buildPHGraph <- function(
+buildHaplotypeGraph <- function(
     phgMethodObj,
     chrom = NULL,
     includeSequence = FALSE,
@@ -131,7 +131,7 @@ buildPHGraph <- function(
     pointer <- gsub(".*@", "", rJava::.jstrVal(phgObj))
 
     methods::new(
-        Class       = "PHGraph",
+        Class       = "HaplotypeGraph",
         methodID    = conMethod,
         methodType  = methodType,
         nChrom      = phgObj$numberOfChromosomes(),
@@ -148,26 +148,26 @@ buildPHGraph <- function(
 # /// Methods (show) ////////////////////////////////////////////////
 
 ## ----
-#' @title Show methods for PHGraph objects
+#' @title Show methods for HaplotypeGraph objects
 #'
 #' @description
-#' Prints out information regarding properties from the \code{PHGraph}
+#' Prints out information regarding properties from the \code{HaplotypeGraph}
 #' class to the console
 #'
-#' @param object A \code{\linkS4class{PHGraph}} object
+#' @param object A \code{\linkS4class{HaplotypeGraph}} object
 #'
 #' @docType methods
-#' @rdname PHGraph-class
-#' @aliases show,PHGraph-method
+#' @rdname HaplotypeGraph-class
+#' @aliases show,HaplotypeGraph-method
 setMethod(
     f = "show",
-    signature = "PHGraph",
+    signature = "HaplotypeGraph",
     definition = function(object) {
         pointerSymbol <- cli::col_green(cli::symbol$pointer)
 
         msg <- c(
             paste0(
-                "A ", cli::style_bold("PHGraph"), " object @ ",
+                "A ", cli::style_bold("HaplotypeGraph"), " object @ ",
                 cli::style_bold(cli::col_blue(javaMemoryAddress(object)))
             ),
             paste0(" ", pointerSymbol, " Method.............: ", cli::style_bold(phgMethodId(object))),
@@ -190,7 +190,7 @@ setMethod(
 #' @export
 setMethod(
     f = "javaMemoryAddress",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@jMemAddress)
     }
@@ -202,7 +202,7 @@ setMethod(
 #' @export
 setMethod(
     f = "javaRefObj",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@jHapGraph)
     }
@@ -214,7 +214,7 @@ setMethod(
 #' @export
 setMethod(
     f = "numberOfChromosomes",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@nChrom)
     }
@@ -226,7 +226,7 @@ setMethod(
 #' @export
 setMethod(
     f = "numberOfNodes",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@nNodes)
     }
@@ -238,7 +238,7 @@ setMethod(
 #' @export
 setMethod(
     f = "numberOfRefRanges",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@nRefRanges)
     }
@@ -250,7 +250,7 @@ setMethod(
 #' @export
 setMethod(
     f = "numberOfTaxa",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@nTaxa)
     }
@@ -262,7 +262,7 @@ setMethod(
 #' @export
 setMethod(
     f = "phgMethodId",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@methodID)
     }
@@ -274,7 +274,7 @@ setMethod(
 #' @export
 setMethod(
     f = "phgMethodType",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(object@methodType)
     }
@@ -286,7 +286,7 @@ setMethod(
 #' @export
 setMethod(
     f = "readHaplotypeIds",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(hapIdsFromGraphObj(javaRefObj(object)))
     }
@@ -298,7 +298,7 @@ setMethod(
 #' @export
 setMethod(
     f = "readPHGDataSet",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(phgDataSetFromGraphObj(javaRefObj(object), verbose = TRUE))
     }
@@ -310,7 +310,7 @@ setMethod(
 #' @export
 setMethod(
     f = "readRefRanges",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(refRangesFromGraphObj(javaRefObj(object)))
     }
@@ -322,7 +322,7 @@ setMethod(
 #' @export
 setMethod(
     f = "readSamples",
-    signature = signature(object = "PHGraph"),
+    signature = signature(object = "HaplotypeGraph"),
     definition = function(object) {
         return(samplesFromGraphObj(javaRefObj(object)))
     }

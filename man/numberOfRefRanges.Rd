@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{numberOfRefRanges}
 \alias{numberOfRefRanges}
-\alias{numberOfRefRanges,PHGraph-method}
+\alias{numberOfRefRanges,HaplotypeGraph-method}
 \title{Return number of reference ranges}
 \usage{
 numberOfRefRanges(object, ...)
 
-\S4method{numberOfRefRanges}{PHGraph}(object)
+\S4method{numberOfRefRanges}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

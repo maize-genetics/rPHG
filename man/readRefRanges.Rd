@@ -3,13 +3,13 @@
 %   R/class_phg_method.R
 \name{readRefRanges}
 \alias{readRefRanges}
-\alias{readRefRanges,PHGraph-method}
+\alias{readRefRanges,HaplotypeGraph-method}
 \alias{readRefRanges,PHGMethod-method}
 \title{Return reference ranges}
 \usage{
 readRefRanges(object, ...)
 
-\S4method{readRefRanges}{PHGraph}(object)
+\S4method{readRefRanges}{HaplotypeGraph}(object)
 
 \S4method{readRefRanges}{PHGMethod}(object)
 }

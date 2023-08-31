@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{numberOfNodes}
 \alias{numberOfNodes}
-\alias{numberOfNodes,PHGraph-method}
+\alias{numberOfNodes,HaplotypeGraph-method}
 \title{Return number of nodes}
 \usage{
 numberOfNodes(object, ...)
 
-\S4method{numberOfNodes}{PHGraph}(object)
+\S4method{numberOfNodes}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} local or server connection object}

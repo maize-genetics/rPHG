@@ -3,13 +3,13 @@
 %   R/class_phg_method.R
 \name{readPHGDataSet}
 \alias{readPHGDataSet}
-\alias{readPHGDataSet,PHGraph-method}
+\alias{readPHGDataSet,HaplotypeGraph-method}
 \alias{readPHGDataSet,PHGMethod-method}
 \title{Return a PHGDataSet}
 \usage{
 readPHGDataSet(object, verbose = FALSE, ...)
 
-\S4method{readPHGDataSet}{PHGraph}(object)
+\S4method{readPHGDataSet}{HaplotypeGraph}(object)
 
 \S4method{readPHGDataSet}{PHGMethod}(object, verbose = TRUE)
 }

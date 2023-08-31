@@ -15,25 +15,25 @@ methodTableFromLocal <- function(configFile, showAdvancedMethods) {
     )
     tabRep <- ds$getDataSet()$get(0L)$getData()
     tabRepDf <- tableReportToDF(tabRep)
-    
+
     # Convert description field to column of parsed lists (key = value)
     tabRepDf$description <- lapply(
-        X   = tabRepDf$description, 
+        X   = tabRepDf$description,
         FUN = descriptionStringToList
     )
-    
+
     # Remove method table DB ids (not relevant to user)
     tabRepDf$num_refranges <- NA
     tabRepDf$num_samples <- NA
     colsToKeep <- c(
-        "type_name", 
-        "method_name", 
-        "num_refranges", 
-        "num_samples", 
+        "type_name",
+        "method_name",
+        # "num_refranges",
+        # "num_samples",
         "description"
     )
     tabRepDf <- tabRepDf[, colsToKeep]
-    
+
     # Return only PATHS or all data
     if (showAdvancedMethods) {
         return(tabRepDf)
@@ -53,14 +53,14 @@ methodTableFromServer <- function(url, showAdvancedMethods) {
     tableUrl <- file.path(url, BRAPI_ENDPOINTS$METHOD_TABLE)
     jsonObj  <- parseJSON(tableUrl)
     methodDf <- jsonObj$result$data
-    
+
     # Make consistent names with local method table call
     methodDf$type_name <- NA
     idOrderAndMapping <- c(
         "type_name"        = "type_name",
         "variantTableDbId" = "method_name",
-        "numVariants"      = "num_refranges",
-        "numSamples"       = "num_samples",
+        # "numVariants"      = "num_refranges",
+        # "numSamples"       = "num_samples",
         "additionalInfo"   = "description"
     )
     for (oldName in names(methodDf)) {
@@ -70,7 +70,7 @@ methodTableFromServer <- function(url, showAdvancedMethods) {
         }
     }
     methodDf <- methodDf[, idOrderAndMapping]
-    
+
     # @TODO - fix arbitrary method return (will be fixed with add. info)
     if (showAdvancedMethods) {
         return(tibble::as_tibble(methodDf))

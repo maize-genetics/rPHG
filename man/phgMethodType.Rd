@@ -2,12 +2,12 @@
 % Please edit documentation in R/class_all_generics.R, R/class_phg_graph.R
 \name{phgMethodType}
 \alias{phgMethodType}
-\alias{phgMethodType,PHGraph-method}
+\alias{phgMethodType,HaplotypeGraph-method}
 \title{Return method ID type}
 \usage{
 phgMethodType(object, ...)
 
-\S4method{phgMethodType}{PHGraph}(object)
+\S4method{phgMethodType}{HaplotypeGraph}(object)
 }
 \arguments{
 \item{object}{an \code{rPHG} method object}
