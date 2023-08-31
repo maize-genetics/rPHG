@@ -1,6 +1,11 @@
 ## ----
-# Calculate the mutual information across a pair of ranges
+# Calculate the mutual information across a pair of reference ranges
 # I(X;Y) = Sum p(x, y)log{p(x, y) / [p(x)p(y)]}
+#
+# NOTE: above equation is from:
+#   * Shannon and Weaver (1949)
+#   * Cover and Thomas (1991)
+# NOTE: hap IDs are treated as categorical data (model.matrix)
 #
 # @param phgHapIDMat A haplotype ID matrix
 # @param twoRanges A vector of length 2 containg two ref range elements
@@ -24,16 +29,19 @@ mutualInfoPair <- function(phgHapIDMat, twoRanges) {
     nHap1 <- length(unique(hapID[, 1]))
     nHap2 <- length(unique(hapID[, 2]))
 
+    # Sum p(x, y)
     mmi <- matrix(
         data = colMeans(model.matrix( ~ -1 + hapID[, 1]:hapID[, 2])),
         nrow = nHap1,
         ncol = nHap2
     )
 
+    # p(x)p(y)
     mm1 <- colMeans(model.matrix( ~ -1 + hapID[, 1]))
     mm2 <- colMeans(model.matrix( ~ -1 + hapID[, 2]))
     mmm <- tcrossprod(mm1, mm2)
 
+    # Sum p(x, y) log{p(x, y) / [p(x)p(y)]}
     # Some of these will be `NaN` (removed by `na.rm = TRUE`)
     mi  <- mmi * log2(mmi / mmm)
     return(sum(mi, na.rm = TRUE))
