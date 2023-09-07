@@ -57,11 +57,6 @@ setValidity("PHGServerCon", function(object) {
         errors <- c(errors, msg)
     }
 
-    if (!(port %in% 1:65535)) {
-        msg <- "Not a valid port number."
-        errors <- c(errors, msg)
-    }
-
     if (!(protocol %in% c("http", "https"))) {
         msg <- "Protocols can only be 'http' or 'https'."
         errors <- c(errors, msg)
@@ -121,17 +116,14 @@ PHGServerCon <- function(
     if (is.null(port) && protocol == "http") port <- 80
     if (is.null(port) && protocol == "https") port <- 443
 
-    if (port %% 1 != 0) {
-        stop("Invalid port number. Must be a whole number.", call. = FALSE)
+    if (!(port %in% 1:65535)) {
+        stop("Not a valid port number", call. = FALSE)
     }
 
     url <- sprintf("%s://%s:%d/brapi/%s", protocol, host, port, version)
 
     if (!brapiEndpointExists(url)) {
-        stop(
-            "Cannot resolve mandatory endpoint: {serverinfo}",
-            call. = FALSE
-        )
+        stop("Cannot resolve mandatory endpoint: {serverinfo}", call. = FALSE)
     }
 
     new(

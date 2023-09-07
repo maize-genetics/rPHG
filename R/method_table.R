@@ -75,7 +75,7 @@ methodTableFromServer <- function(url, showAdvancedMethods) {
     if (showAdvancedMethods) {
         return(tibble::as_tibble(methodDf))
     } else {
-        return(tibble::as_tibble(methodDf[methodDf$num_samples > 50, ]))
+        return(tibble::as_tibble(methodDf[grepl("_PATH$|_PATHS$", methodDf$method_name), ]))
     }
 }
 
