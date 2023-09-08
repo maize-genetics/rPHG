@@ -40,3 +40,45 @@ setMethod(
 )
 
 
+## ----
+#' @param object A \code{PHGDataSet} object
+#' @param samples Samples/taxa to include in plot
+#' @param sampleHighlight Sample path to highlight
+#' @param seqnames A sequence (e.g. chromosome) ID
+#' @param start Start position for ref ranges
+#' @param end End position for ref ranges
+#' @param colMajor Highlight path color
+#' @param colMinor Muted path color
+#' @param ... Additional parameters to pass for ref range inclusion
+#'
+#' @rdname plotGraph
+#' @export
+setMethod(
+    f = "plotGraph",
+    signature = signature(object = "PHGDataSet"),
+    definition = function(
+        object,
+        samples = NULL,
+        sampleHighlight = NULL,
+        seqnames = NULL,
+        start = NULL,
+        end = NULL,
+        colMajor = "maroon",
+        colMinor = "lightgrey"
+    ) {
+        return(
+            plotGraphCore(
+                object,
+                samples,
+                sampleHighlight,
+                seqnames,
+                start,
+                end,
+                colMajor,
+                colMinor
+            )
+        )
+    }
+)
+
+

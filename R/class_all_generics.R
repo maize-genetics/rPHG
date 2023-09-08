@@ -272,6 +272,20 @@ setGeneric("phgType", function(object, ...) standardGeneric("phgType"))
 
 
 ## ----
+#' @title Plot a graph object
+#'
+#' @description
+#' Generates a visualization of a recapitulated graph object
+#'
+#' @param object an \code{rPHG} data set object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname plotGraph
+#' @export
+setGeneric("plotGraph", function(object, ...) standardGeneric("plotGraph"))
+
+
+## ----
 #' @title Return port value
 #'
 #' @description

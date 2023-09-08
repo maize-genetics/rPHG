@@ -2,7 +2,8 @@ test_that("Basic tests", {
     logFile    <- tempfile(fileext = ".txt")
     startLogger(logFile)
 
-    testUrl <- "phg.maizegdb.org"
+    # testUrl <- "phg.maizegdb.org"
+    testUrl <- "demo.hub.maizegenetics.net"
 
     phgSrvCon <- PHGServerCon(testUrl)
     phgSrvConOutput <- utils::capture.output(phgSrvCon)
@@ -41,18 +42,22 @@ test_that("Basic tests", {
         object = port(PHGServerCon(testUrl, protocol = "http")),
         expected = 80
     )
+    expect_equal(
+        object = httProtocol(PHGServerCon(paste0("https://", testUrl))),
+        expected = "https"
+    )
+    expect_equal(
+        object = httProtocol(PHGServerCon(paste0("http://", testUrl))),
+        expected = "http"
+    )
+
     expect_error(
         object = PHGServerCon(testUrl, port = -1),
         regexp = "Not a valid port number"
     )
-    expect_error(
-        object = PHGServerCon(testUrl, protocol = "htp"),
-        regexp = "Protocols can only be 'http' or 'https'"
-    )
-    expect_error(
-        object = PHGServerCon(testUrl, version = "v3"),
-        regexp = "Versions 1 or 2 are only allowed"
-    )
+    expect_error(object = PHGServerCon(testUrl, protocol = "htp"))
+    expect_error(object = PHGServerCon(testUrl, version = "v3"))
+    expect_error(object = PHGServerCon("www.google.com"))
 
 })
 

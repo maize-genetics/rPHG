@@ -232,363 +232,398 @@
 
 
 
-## Function to say if haplotypes same, discarding comparisons with -1
-# gamHapIDs and targetHapIDs are both vectors of haplotype IDs.
-# The output is the fraction of hapIDs that are different
-# With ranges that contain -1 not included in the fraction
-calcDiff <- function(gamHapIDs, targetHapIDs) {
-  keep <- which(gamHapIDs != -1 & targetHapIDs != -1)
-  if (length(keep) == 0) {
-    return(Inf)
-  }
-  return(sum(gamHapIDs[keep] != targetHapIDs[keep]) / length(keep))
-}
+## ## Function to say if haplotypes same, discarding comparisons with -1
+## # gamHapIDs and targetHapIDs are both vectors of haplotype IDs.
+## # The output is the fraction of hapIDs that are different
+## # With ranges that contain -1 not included in the fraction
+## calcDiff <- function(gamHapIDs, targetHapIDs) {
+##   keep <- which(gamHapIDs != -1 & targetHapIDs != -1)
+##   if (length(keep) == 0) {
+##     return(Inf)
+##   }
+##   return(sum(gamHapIDs[keep] != targetHapIDs[keep]) / length(keep))
+## }
 
 
 
-#' @title Search for similar gamets
-#'
-#' @description Search for inbred lines (gametes) that are similar to a
-#'   specified gamete in specified reference ranges. Supply either a haplotype
-#'   ID matrix or a phgObject from which to extract it. Specify a gamete name
-#'   and reference ranges. The difference between haplotypes is either 0 (same)
-#'   or 1 (different). Fraction of ranges that are different has to be lower or
-#'   equal to fractionDiff. Ranges with unknown haplotypes (-1) do not count in
-#'   the fraction. If all pairwise range comparisons have -1 the lines are
-#'   considered dissimilar.
-#'
-#' @param gameteName A specified gamete name
-#' @param phgHapIDMat The output of the \code{hapIDMatrix()} function. If
-#'   \code{NULL}, A hap ID matrix will be generated (if you have supplied a
-#'   PHG object).
-#' @param phgObject A PHG object.
-#' @param refRanges Specifed reference ranges.
-#' @param fractionDiff The difference between haplotypes (either 0 or 1). See
-#'   description for further details.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom S4Vectors metadata
-#'
-#' @export
-searchSimilarGametes <- function(phgObject = NULL,
-                                 refRanges,
-                                 gameteName,
-                                 fractionDiff = 0,
-                                 phgHapIDMat = NULL) {
-    if (is.null(phgHapIDMat)) {
-        if (is.null(phgObject)) {
-            stop("Must supply phgHapIDMat or phgObject")
-        }
-        phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
-    }
-
-    # The row the target gamete is in
-    gameteRow <- which(rownames(phgHapIDMat) == gameteName)
-    if (length(gameteRow) == 0) {
-        stop(paste0("Gamete ", gameteName, " not in the PHG"))
-    }
-
-    # Only deal with specified reference ranges
-    phgHapIDMat <- phgHapIDMat[, refRanges, drop = FALSE]
-    targetHapIDs <- phgHapIDMat[gameteRow, , drop = FALSE]
-
-    # Calculate differences across all gametes in the table
-    fracDiffs <- apply(phgHapIDMat, 1, calcDiff, targetHapIDs = targetHapIDs)
-    areSimilar <- which(fracDiffs <= fractionDiff) %>% setdiff(gameteRow)
-
-    # Return names of gametes that are similar to the target
-    return(rownames(phgHapIDMat)[areSimilar])
-}
-
-
-
-#' @title Search for recombination
-#'
-#' @description Search for inbred lines (gametes) that are the same in one
-#'   range but different in another. Such lines have experienced recombination
-#'   in the past relative to each other. Must specify a gamete name and
-#'   reference ranges.
-#'
-#' @param gameteName A specified gamete name
-#' @param phgHapIDMat The output of the \code{hapIDMatrix()} function. If
-#'   \code{NULL}, A hap ID matrix will be generated (if you have supplied a
-#'   PHG object).
-#' @param phgObject A PHG object.
-#' @param refRangeSame See description for further details.
-#' @param refRangeDiff See description for further details.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom S4Vectors metadata
-#'
-#' @export
-searchRecombination <- function(phgObject = NULL,
-                                gameteName,
-                                refRangeSame,
-                                refRangeDiff,
-                                phgHapIDMat = NULL) {
-    if (is.null(phgHapIDMat)) {
-        if (is.null(phgObject)) {
-            stop("Must supply phgHapIDMat or phgObject")
-        }
-        phgHapIDMat <- hapIDMatrix(phgObject = phgObject)
-    }
-
-    gametesSame <- searchSimilarGametes(
-        gameteName,
-        phgHapIDMat,
-        refRanges = refRangeSame
-    ) %>%
-        setdiff(gameteName)
-
-    targetDiff <- phgHapIDMat[gameteName, refRangeDiff]
-
-    gametesDiff <- sapply(
-        phgHapIDMat[gametesSame, refRangeDiff],
-        calcDiff,
-        targetHapIDs = targetDiff
-    )
-
-    return(gametesSame[gametesDiff == 1])
-}
+## #' @title Search for similar gamets
+## #'
+## #' @description Search for inbred lines (gametes) that are similar to a
+## #'   specified gamete in specified reference ranges. Supply either a haplotype
+## #'   ID matrix or a phgObject from which to extract it. Specify a gamete name
+## #'   and reference ranges. The difference between haplotypes is either 0 (same)
+## #'   or 1 (different). Fraction of ranges that are different has to be lower or
+## #'   equal to fractionDiff. Ranges with unknown haplotypes (-1) do not count in
+## #'   the fraction. If all pairwise range comparisons have -1 the lines are
+## #'   considered dissimilar.
+## #'
+## #' @param gameteName A specified gamete name
+## #' @param phgHapIDMat The output of the \code{hapIDMatrix()} function. If
+## #'   \code{NULL}, A hap ID matrix will be generated (if you have supplied a
+## #'   PHG object).
+## #' @param phgObject A PHG object.
+## #' @param refRanges Specifed reference ranges.
+## #' @param fractionDiff The difference between haplotypes (either 0 or 1). See
+## #'   description for further details.
+## #'
+## #' @importFrom magrittr %>%
+## #' @importFrom S4Vectors metadata
+## #'
+## #' @export
+## searchSimilarGametes <- function(phgObject = NULL,
+##                                  refRanges,
+##                                  gameteName,
+##                                  fractionDiff = 0,
+##                                  phgHapIDMat = NULL) {
+##     if (is.null(phgHapIDMat)) {
+##         if (is.null(phgObject)) {
+##             stop("Must supply phgHapIDMat or phgObject")
+##         }
+##         phgHapIDMat <- hapIDMatrix(phgObject = S4Vectors::metadata(phgObject)$jObj)
+##     }
+##
+##     # The row the target gamete is in
+##     gameteRow <- which(rownames(phgHapIDMat) == gameteName)
+##     if (length(gameteRow) == 0) {
+##         stop(paste0("Gamete ", gameteName, " not in the PHG"))
+##     }
+##
+##     # Only deal with specified reference ranges
+##     phgHapIDMat <- phgHapIDMat[, refRanges, drop = FALSE]
+##     targetHapIDs <- phgHapIDMat[gameteRow, , drop = FALSE]
+##
+##     # Calculate differences across all gametes in the table
+##     fracDiffs <- apply(phgHapIDMat, 1, calcDiff, targetHapIDs = targetHapIDs)
+##     areSimilar <- which(fracDiffs <= fractionDiff) %>% setdiff(gameteRow)
+##
+##     # Return names of gametes that are similar to the target
+##     return(rownames(phgHapIDMat)[areSimilar])
+## }
 
 
-# ----
-#' @title Visualize Graph Data
-#'
-#' @description
-#' Generates an interactive network plot for a given set of reference ranges
-#' and a set of taxa.
-#'
-#' @param x A \code{PHGDataSet} object
-#' @param samples Samples/taxa to include in plot
-#' @param sampleHighlight Sample path to highlight
-#' @param seqnames A sequence (e.g. chromosome) ID
-#' @param start Start position for ref ranges
-#' @param end End position for ref ranges
-#' @param colMajor Highlight path color
-#' @param colMinor Muted path color
-#' @param ... Additional parameters to pass for ref range inclusion
-#'
-#' @importFrom IRanges subsetByOverlaps
-#' @importFrom GenomicRanges GRanges
-#' @importFrom SummarizedExperiment assay
-#' @importFrom visNetwork visEdges
-#' @importFrom visNetwork visHierarchicalLayout
-#' @importFrom visNetwork visNetwork
-#'
-#' @export
-plotGraph <- function(
-    x,
-    samples = NULL,
-    sampleHighlight = NULL,
-    seqnames = NULL,
-    start = NULL,
-    end = NULL,
-    colMajor = "maroon",
-    colMinor = "lightgrey",
-    ...
-) {
-    # # Testing
-    # start <- 100
-    # end   <- 1000000
-    # seqnames <- "1"
-    # # samples <- c("Z001E0001", "Z001E0028", "Z001E0080")
-    # # samples <- NULL
-    # set.seed(123)
-    # samples <- sample(colnames(x), 100)
-    # # sampleHighlight <- c("Z001E0001")
-    # sampleHighlight <- sample(samples, 1)
 
-    # Filter by taxa and ref ranges
-    if (is.null(samples)) samples <- colnames(x)
-    hapTableMini <- x[, colnames(x) %in% samples]
-    hapTableMini <- IRanges::subsetByOverlaps(
-        hapTableMini,
-        GenomicRanges::GRanges(seqnames = seqnames, ranges = start:end)
-    )
-
-    # Get hap ID matrix
-    currentMatrix <- t(SummarizedExperiment::assay(hapTableMini))
-    currentMatrix[is.na(currentMatrix)] <- -128
-    colnames(currentMatrix) <- gsub("R", "", colnames(currentMatrix)) |>
-        as.numeric()
-
-    # Get ref range data frame
-    refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
-
-    # Group taxa by hap ID and ref range
-    taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {
-        split(rownames(currentMatrix), currentMatrix[, i])
-    })
-
-    # Generate distinct IDs (hap ID + ref range ID)
-    hapIds     <- currentMatrix |> apply(2, unique, simplify = FALSE)
-    hapLevels  <- rep(names(hapIds), vapply(hapIds, length, integer(1))) |> as.numeric()
-    fullHapIds <- paste0(
-        lapply(hapIds, function(i) i[order(i)]) |> unlist(),
-        "_", hapLevels
-    )
-
-    # HTML tooltip processing
-    taxaToHtml <- function(x) {
-        vapply(x, function(i) {
-            paste0("<b>Taxa: </b>", paste(i, collapse = ", "), "</p>")
-        }, character(1))
-    }
-    tooltipVec <- lapply(taxaGroups, taxaToHtml) |> unlist()
-
-    refRangeHtml <- lapply(hapLevels, function(i) {
-        paste0(
-            "<p><b>Chr: </b>",
-            refRangeDataMini[i, ]$seqnames,
-            "<br>",
-            "<b>Range: </b>",
-            refRangeDataMini[i, ]$start,
-            " - ",
-            refRangeDataMini[i, ]$end,
-            "<br>"
-        )
-    }) |> unlist()
-
-    # Final graph data (nodes)
-    nodes <- data.frame(
-        id    = seq_along(fullHapIds),
-        label = fullHapIds,
-        level = hapLevels,
-        title = paste0(refRangeHtml, tooltipVec)
-    )
-
-    if (!is.null(sampleHighlight)) {
-        for (i in sampleHighlight) {
-            nodes$group <- ifelse(grepl(i, nodes$title), i, NA)
-            nodes$color <- ifelse(grepl(i, nodes$title), colMajor, colMinor)
-        }
-        nodes$title <- gsub(i, paste0("<b>", i, "</b>"), nodes$title)
-    } else {
-        nodes$color <- colMajor
-    }
-
-    # Final graph data (edges)
-    lne <- c()
-    rne <- c()
-    for (i in seq_len(ncol(currentMatrix) - 1)) {
-        ln <- paste0(currentMatrix[, i], "_", i)
-        rn <- paste0(currentMatrix[, i + 1], "_", i + 1)
-
-        cnxn <- paste0(ln, "+", rn) |> unique()
-
-        for (c in cnxn) {
-            splits <- strsplit(c, "\\+") |> unlist()
-            f <- which(fullHapIds == splits[1])
-            t <- which(fullHapIds == splits[2])
-            lne <- c(lne, f)
-            rne <- c(rne, t)
-        }
-    }
-
-    edges <- data.frame(
-        from = lne,
-        to = rne
-    )
-
-    # Return vis.js object
-    visNetwork::visNetwork(nodes, edges) |>
-        visNetwork::visEdges(arrows = "to") |>
-        visNetwork::visHierarchicalLayout(direction = "LR")
-}
+## #' @title Search for recombination
+## #'
+## #' @description Search for inbred lines (gametes) that are the same in one
+## #'   range but different in another. Such lines have experienced recombination
+## #'   in the past relative to each other. Must specify a gamete name and
+## #'   reference ranges.
+## #'
+## #' @param gameteName A specified gamete name
+## #' @param phgHapIDMat The output of the \code{hapIDMatrix()} function. If
+## #'   \code{NULL}, A hap ID matrix will be generated (if you have supplied a
+## #'   PHG object).
+## #' @param phgObject A PHG object.
+## #' @param refRangeSame See description for further details.
+## #' @param refRangeDiff See description for further details.
+## #'
+## #' @importFrom magrittr %>%
+## #' @importFrom S4Vectors metadata
+## #'
+## #' @export
+## searchRecombination <- function(phgObject = NULL,
+##                                 gameteName,
+##                                 refRangeSame,
+##                                 refRangeDiff,
+##                                 phgHapIDMat = NULL) {
+##     if (is.null(phgHapIDMat)) {
+##         if (is.null(phgObject)) {
+##             stop("Must supply phgHapIDMat or phgObject")
+##         }
+##         phgHapIDMat <- hapIDMatrix(phgObject = phgObject)
+##     }
+##
+##     gametesSame <- searchSimilarGametes(
+##         gameteName,
+##         phgHapIDMat,
+##         refRanges = refRangeSame
+##     ) %>%
+##         setdiff(gameteName)
+##
+##     targetDiff <- phgHapIDMat[gameteName, refRangeDiff]
+##
+##     gametesDiff <- sapply(
+##         phgHapIDMat[gametesSame, refRangeDiff],
+##         calcDiff,
+##         targetHapIDs = targetDiff
+##     )
+##
+##     return(gametesSame[gametesDiff == 1])
+## }
 
 
-## ----
-#' @title Retrieve read mapping information from PHG database.
-#'
-#' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
-#'   mapping information for a given line (i.e. taxon).
-#'
-#' @author Brandon Monier
-#' @author Peter Bradbury
-#'
-#' @param configFile Path to a configuration file for your graph database.
-#' @param lineName The name of the line (taxon) for which the read mapping
-#'   information is to be retrieved. If there are multiple read mappings with
-#'   different \code{file_group_names}, they will be combined.
-#' @param readMappingMethodName The method name for the read mappings
-#'   (only takes a single method).
-#' @param haplotypeMethodName The haplotype method name.
-#' @param fileGroup the name of the file group for the line from the database.
-#'   This parameter is only necessary if the line (taxon) has more than one
-#'   file group and only the reads for a specific file group are wanted.
-#'
-#' @importFrom rJava J
-#' @importFrom S4Vectors DataFrame
-#'
-#' @export
-readMappingsForLineName <- function(configFile,
-                                    lineName,
-                                    readMappingMethodName,
-                                    haplotypeMethodName,
-                                    fileGroup = NULL) {
+## # ----
+## #' @title Visualize Graph Data
+## #'
+## #' @description
+## #' Generates an interactive network plot for a given set of reference ranges
+## #' and a set of taxa.
+## #'
+## #' @param x A \code{PHGDataSet} object
+## #' @param samples Samples/taxa to include in plot
+## #' @param sampleHighlight Sample path to highlight
+## #' @param seqnames A sequence (e.g. chromosome) ID
+## #' @param start Start position for ref ranges
+## #' @param end End position for ref ranges
+## #' @param colMajor Highlight path color
+## #' @param colMinor Muted path color
+## #' @param ... Additional parameters to pass for ref range inclusion
+## #'
+## #' @importFrom IRanges subsetByOverlaps
+## #' @importFrom GenomicRanges GRanges
+## #' @importFrom SummarizedExperiment assay
+## #' @importFrom visNetwork visEdges
+## #' @importFrom visNetwork visHierarchicalLayout
+## #' @importFrom visNetwork visNetwork
+## #'
+## #' @export
+## plotGraph <- function(
+##     x,
+##     samples = NULL,
+##     sampleHighlight = NULL,
+##     seqnames = NULL,
+##     start = NULL,
+##     end = NULL,
+##     colMajor = "maroon",
+##     colMinor = "lightgrey",
+##     ...
+## ) {
+##     # # Testing
+##     # start <- 100
+##     # end   <- 1000000
+##     # seqnames <- "1"
+##     # # samples <- c("Z001E0001", "Z001E0028", "Z001E0080")
+##     # # samples <- NULL
+##     # set.seed(123)
+##     # samples <- sample(colnames(x), 100)
+##     # # sampleHighlight <- c("Z001E0001")
+##     # sampleHighlight <- sample(samples, 1)
+##
+##     # Filter by taxa and ref ranges
+##     if (is.null(samples)) samples <- colnames(x)
+##     hapTableMini <- x[, colnames(x) %in% samples]
+##     hapTableMini <- IRanges::subsetByOverlaps(
+##         hapTableMini,
+##         GenomicRanges::GRanges(seqnames = seqnames, ranges = start:end)
+##     )
+##
+##     # Get hap ID matrix
+##     currentMatrix <- t(SummarizedExperiment::assay(hapTableMini))
+##     currentMatrix[is.na(currentMatrix)] <- -128
+##     colnames(currentMatrix) <- gsub("R", "", colnames(currentMatrix)) |>
+##         as.numeric()
+##
+##     # Get ref range data frame
+##     refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
+##
+##     # Group taxa by hap ID and ref range
+##     taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {
+##         split(rownames(currentMatrix), currentMatrix[, i])
+##     })
+##
+##     # Generate distinct IDs (hap ID + ref range ID)
+##     hapIds     <- currentMatrix |> apply(2, unique, simplify = FALSE)
+##     hapLevels  <- rep(names(hapIds), vapply(hapIds, length, integer(1))) |> as.numeric()
+##     fullHapIds <- paste0(
+##         lapply(hapIds, function(i) i[order(i)]) |> unlist(),
+##         "_", hapLevels
+##     )
+##
+##     # HTML tooltip processing
+##     taxaToHtml <- function(x) {
+##         vapply(x, function(i) {
+##             paste0("<b>Taxa: </b>", paste(i, collapse = ", "), "</p>")
+##         }, character(1))
+##     }
+##     tooltipVec <- lapply(taxaGroups, taxaToHtml) |> unlist()
+##
+##     refRangeHtml <- lapply(hapLevels, function(i) {
+##         paste0(
+##             "<p><b>Chr: </b>",
+##             refRangeDataMini[i, ]$seqnames,
+##             "<br>",
+##             "<b>Range: </b>",
+##             refRangeDataMini[i, ]$start,
+##             " - ",
+##             refRangeDataMini[i, ]$end,
+##             "<br>"
+##         )
+##     }) |> unlist()
+##
+##     # Final graph data (nodes)
+##     nodes <- data.frame(
+##         id    = seq_along(fullHapIds),
+##         label = fullHapIds,
+##         level = hapLevels,
+##         title = paste0(refRangeHtml, tooltipVec)
+##     )
+##
+##     if (!is.null(sampleHighlight)) {
+##         for (i in sampleHighlight) {
+##             nodes$group <- ifelse(grepl(i, nodes$title), i, NA)
+##             nodes$color <- ifelse(grepl(i, nodes$title), colMajor, colMinor)
+##         }
+##         nodes$title <- gsub(i, paste0("<b>", i, "</b>"), nodes$title)
+##     } else {
+##         nodes$color <- colMajor
+##     }
+##
+##     # Final graph data (edges)
+##     lne <- c()
+##     rne <- c()
+##     for (i in seq_len(ncol(currentMatrix) - 1)) {
+##         ln <- paste0(currentMatrix[, i], "_", i)
+##         rn <- paste0(currentMatrix[, i + 1], "_", i + 1)
+##
+##         cnxn <- paste0(ln, "+", rn) |> unique()
+##
+##         for (c in cnxn) {
+##             splits <- strsplit(c, "\\+") |> unlist()
+##             f <- which(fullHapIds == splits[1])
+##             t <- which(fullHapIds == splits[2])
+##             lne <- c(lne, f)
+##             rne <- c(rne, t)
+##         }
+##     }
+##
+##     edges <- data.frame(
+##         from = lne,
+##         to = rne
+##     )
+##
+##     # Return vis.js object
+##     visNetwork::visNetwork(nodes, edges) |>
+##         visNetwork::visEdges(arrows = "to") |>
+##         visNetwork::visHierarchicalLayout(direction = "LR")
+## }
 
-  configCatcher(configFile)
 
-  # Retrieve Java data vector object(s)
-  rmObj <- rJava::J(
-    "net.maizegenetics.pangenome.api/RMethods",
-    "readMappingsForLineName",
-    configFile,
-    lineName,
-    readMappingMethodName,
-    haplotypeMethodName,
-    fileGroup
-  )
+## ## ----
+## #' @title Retrieve read mapping information from PHG database.
+## #'
+## #' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
+## #'   mapping information for a given line (i.e. taxon).
+## #'
+## #' @author Brandon Monier
+## #' @author Peter Bradbury
+## #'
+## #' @param configFile Path to a configuration file for your graph database.
+## #' @param lineName The name of the line (taxon) for which the read mapping
+## #'   information is to be retrieved. If there are multiple read mappings with
+## #'   different \code{file_group_names}, they will be combined.
+## #' @param readMappingMethodName The method name for the read mappings
+## #'   (only takes a single method).
+## #' @param haplotypeMethodName The haplotype method name.
+## #' @param fileGroup the name of the file group for the line from the database.
+## #'   This parameter is only necessary if the line (taxon) has more than one
+## #'   file group and only the reads for a specific file group are wanted.
+## #'
+## #' @importFrom rJava J
+## #' @importFrom S4Vectors DataFrame
+## #'
+## #' @export
+## readMappingsForLineName <- function(configFile,
+##                                     lineName,
+##                                     readMappingMethodName,
+##                                     haplotypeMethodName,
+##                                     fileGroup = NULL) {
+##
+##   configCatcher(configFile)
+##
+##   # Retrieve Java data vector object(s)
+##   rmObj <- rJava::J(
+##     "net.maizegenetics.pangenome.api/RMethods",
+##     "readMappingsForLineName",
+##     configFile,
+##     lineName,
+##     readMappingMethodName,
+##     haplotypeMethodName,
+##     fileGroup
+##   )
+##
+##   # Configure for R
+##   colNum <- rmObj$dataVectors$size()
+##   rmDF <- lapply(seq_len(colNum), function(i) {
+##     rmObj$dataVectors$get(as.integer(i - 1))
+##   })
+##   rmDF <- data.frame(rmDF)
+##   colnames(rmDF) <- rmObj$columnNames
+##
+##   # Return
+##   return(S4Vectors::DataFrame(rmDF))
+## }
 
-  # Configure for R
-  colNum <- rmObj$dataVectors$size()
-  rmDF <- lapply(seq_len(colNum), function(i) {
-    rmObj$dataVectors$get(as.integer(i - 1))
-  })
-  rmDF <- data.frame(rmDF)
-  colnames(rmDF) <- rmObj$columnNames
 
-  # Return
-  return(S4Vectors::DataFrame(rmDF))
-}
+## ## ----
+## #' @title Retrieve read mapping records from PHG database.
+## #'
+## #' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
+## #'   mapping record information without \code{read_mapping} data.
+## #'
+## #' @author Brandon Monier
+## #' @author Peter Bradbury
+## #'
+## #' @param configFile Path to a configuration file for your graph database.
+## #'
+## #' @importFrom rJava J
+## #' @importFrom S4Vectors DataFrame
+## #'
+## #' @export
+## readMappingTableInfo <- function(configFile) {
+##
+##   # Catch potential errors
+##   configCatcher(configFile)
+##
+##   # Retrieve Java data vector object(s)
+##   rmObj <- rJava::J(
+##     "net.maizegenetics.pangenome.api/RMethods",
+##     "readMappingTableInfo",
+##     configFile
+##   )
+##
+##   # Configure for R
+##   colNum <- rmObj$dataVectors$size()
+##   rmDF <- lapply(seq_len(colNum), function(i) {
+##     rmObj$dataVectors$get(as.integer(i - 1))
+##   })
+##   rmDF <- data.frame(rmDF)
+##   colnames(rmDF) <- rmObj$columnNames
+##
+##   # Return
+##   return(tibble::as_tibble(rmDF))
+## }
 
 
-## ----
-#' @title Retrieve read mapping records from PHG database.
-#'
-#' @description Returns an \code{S4Vectors} \code{DataFrame} object of read
-#'   mapping record information without \code{read_mapping} data.
-#'
-#' @author Brandon Monier
-#' @author Peter Bradbury
-#'
-#' @param configFile Path to a configuration file for your graph database.
-#'
-#' @importFrom rJava J
-#' @importFrom S4Vectors DataFrame
-#'
-#' @export
-readMappingTableInfo <- function(configFile) {
-
-  # Catch potential errors
-  configCatcher(configFile)
-
-  # Retrieve Java data vector object(s)
-  rmObj <- rJava::J(
-    "net.maizegenetics.pangenome.api/RMethods",
-    "readMappingTableInfo",
-    configFile
-  )
-
-  # Configure for R
-  colNum <- rmObj$dataVectors$size()
-  rmDF <- lapply(seq_len(colNum), function(i) {
-    rmObj$dataVectors$get(as.integer(i - 1))
-  })
-  rmDF <- data.frame(rmDF)
-  colnames(rmDF) <- rmObj$columnNames
-
-  # Return
-  return(tibble::as_tibble(rmDF))
-}
+## # === Methods to export to Flapjack format (DEPRECATED) =============
+##
+## #' @title Export a PHG object to Flapjack file formats.
+## #'
+## #' @description This function will take a PHG object and export specified
+## #'   ranges to a Flapjack file format. Take note that in order for output to
+## #'   be generated, you will have to build your PHG with a the parameter
+## #'   \code{includeVariant} to \code{TRUE}.
+## #'
+## #' @param phgObject A PHG object.
+## #' @param outputName A specified output name for your Flapjack files. Defaults
+## #'   to \code{NULL}. If \code{NULL} file name will be \code{phg_output}
+## #'
+## #' @importFrom rJava J
+## #'
+## #' @export
+## flapjackExport <- function(phgObject, outputName = NULL) {
+##     ## Logic
+##     if (class(phgObject) != "PHGDataSet") {
+##         stop("Function needs a object of class 'PHGDataSet' to work.")
+##     }
+##     if (is.null(outputName)) {
+##         outputName <- "phg_output"
+##     }
+##     ## Get exporter and create Flapjack files
+##     rJava::J(
+##         "net.maizegenetics.pangenome.api/RMethods",
+##         "exportPHGToFlapjack",
+##         S4Vectors::metadata(phgObject)$jObj,
+##         outputName
+##     )
+##     message("Flapjack files exported")
+## }

@@ -24,6 +24,7 @@ TASSEL_API <- list(
     "DB_LOADING_UTILS"        = "net/maizegenetics/pangenome/db_loading/DBLoadingUtils",
     "FRAME"                   = "java/awt/Frame",
     "HAPLOTYPE_GRAPH_BUILDER" = "net/maizegenetics/pangenome/api/HaplotypeGraphBuilderPlugin",
+    "LOGGING_UTILS"           = "net/maizegenetics/util/LoggingUtils",
     "METHOD_TABLE_REPORT"     = "net/maizegenetics/pangenome/api/MethodTableReportPlugin",
     "PARAMETER_CACHE"         = "net/maizegenetics/plugindef/ParameterCache",
     "R_METHODS"               = "net/maizegenetics/pangenome/api/RMethods",

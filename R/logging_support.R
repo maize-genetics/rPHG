@@ -1,5 +1,3 @@
-# === Logging Support ===============================================
-
 ## ----
 #' @title Start PHG logging information
 #'
@@ -8,31 +6,23 @@
 #'
 #' @param path full working path of log file location. If \code{NULL},
 #'    logging file will be added to current working directory.
+#' @param verbose Print messages to console? Defaults \code{FALSE}.
 #'
 #' @export
-startLogger <- function(path = NULL) {
+startLogger <- function(path = NULL, verbose = TRUE) {
     if (is.null(path)) {
         path <- "rPHG_log"
     }
 
-    if (grepl(pattern = "^~", x = path)) {
-        stop(
-            paste0(
-                "It seems that you are using a '~' instead of your full",
-                " home directory path.\n",
-                "  Consider using: ", Sys.getenv("HOME")
-            )
-        )
+    path <- suppressWarnings(normalizePath(path))
+
+    rJava::.jcall(TASSEL_API$LOGGING_UTILS, "V", "setupLogfile", path)
+
+    if (verbose) {
+        bullet <- cli::col_grey(cli::symbol$info)
+        msg <- paste0(bullet, " PHG logging file created at: ", path)
+        message(msg)
     }
-
-    rJava::.jcall(
-        "net.maizegenetics/util/LoggingUtils",
-        "V",
-        "setupLogfile",
-        path
-    )
-
-    message("PHG logging file created at: ", path)
 }
 
 

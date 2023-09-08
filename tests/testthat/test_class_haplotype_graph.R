@@ -5,8 +5,11 @@ test_that("Basic tests", {
     startLogger(logFile)
     createConfigFile(configFile)
 
+    # testUrl <- "phg.maizegdb.org"
+    testUrl <- "demo.hub.maizegenetics.net"
+
     phgLocCon <- PHGLocalCon(configFile)
-    phgSrvCon <- PHGServerCon("phg.maizegdb.org")
+    phgSrvCon <- PHGServerCon(testUrl)
 
     phgMethod1 <- PHGMethod(phgLocCon, "CONSENSUS")
     phgMethod2 <- PHGMethod(phgLocCon, "PATH_METHOD")
