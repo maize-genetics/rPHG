@@ -15,11 +15,13 @@ setClass(
     Class = "PHGMethod",
     slots = c(
         methodID  = "character",
-        phgConObj = "PHGCon"
+        phgConObj = "PHGCon",
+        isDemo    = "logical"
     ),
     prototype = list(
-        methodID = "test",
-        phgConObj = new("PHGCon", phgType = "local", host = "localHost")
+        methodID  = "test",
+        phgConObj = new("PHGCon", phgType = "local", host = "localHost"),
+        isDemo    = FALSE
     )
 )
 
@@ -37,13 +39,19 @@ setClass(
 setValidity("PHGMethod", function(object) {
     errors <- character()
 
-    methodIDs <- showPHGMethods(
+    methodIds <- showPHGMethods(
         object = phgConObj(object),
         showAdvancedMethods = TRUE
     )$method_name
-    methodID  <- phgMethodId(object)
-    if (!methodID %in% methodIDs) {
+    methodId  <- phgMethodId(object)
+
+    if (!methodId %in% methodIds && !isDemo(object)) {
         msg <- "Method ID not found in database."
+        errors <- c(errors, msg)
+    }
+
+    if (phgType(phgConObj(object)) != "server" && isDemo(object)) {
+        msg <- "DEMO method can only be used for server connections"
         errors <- c(errors, msg)
     }
 
@@ -62,15 +70,22 @@ setValidity("PHGMethod", function(object) {
 #' @param methodID A PHG method identifier.
 #'
 #' @export
-PHGMethod <- function(phgConObj, methodID) {
+PHGMethod <- function(phgConObj, methodId) {
 
-    # # For demo purposes only! (useful for workshops)
-    # if (methodID == "DEMO") methodID <- "NAM_GBS_Alignments_PATHS"
+    demoMethodId <- "DEMO"
+
+    # For demo purposes only! (useful for workshops)
+    trueMethodId <- ifelse(
+        test = methodId == demoMethodId,
+        yes  = "NAM_GBS_Alignments_PATHS",
+        no   = methodId
+    )
 
     methods::new(
         Class     = "PHGMethod",
-        methodID  = methodID,
-        phgConObj = phgConObj
+        methodID  = trueMethodId,
+        phgConObj = phgConObj,
+        isDemo    = methodId == demoMethodId
     )
 }
 
@@ -102,7 +117,11 @@ setMethod(
             "local"  = cli::style_bold(cli::col_green("PHGLocalCon"))
         )
 
-        methodId <- cli::style_bold(cli::col_blue(phgMethodId(object)))
+        methodId <- cli::style_bold(
+            cli::col_blue(
+                if (isDemo(object)) "DEMO Method" else phgMethodId(object)
+            )
+        )
 
         msg <- c(
             paste0("A ", cli::style_bold("PHGMethod"), " promise object:"),
@@ -116,6 +135,18 @@ setMethod(
 
 
 # /// Methods (general) /////////////////////////////////////////////
+
+## ----
+#' @rdname isDemo
+#' @export
+setMethod(
+    f = "isDemo",
+    signature = signature(object = "PHGMethod"),
+    definition = function(object) {
+        return(object@isDemo)
+    }
+)
+
 
 ## ----
 #' @rdname phgConObj
@@ -151,11 +182,12 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
+        conDemo   <- isDemo(object)
 
         if (conType == "local") {
             refRangesFromLocal(conObj, conMethod)
         } else if (conType == "server") {
-            refRangesFromServer(conObj, conMethod)
+            refRangesFromServer(conObj, conMethod, conDemo)
         }
     }
 )
@@ -171,11 +203,12 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
+        conDemo   <- isDemo(object)
 
         if (conType == "local") {
             samplesFromLocal(conObj, conMethod)
         } else if (conType == "server") {
-            samplesFromServer(conObj, conMethod)
+            samplesFromServer(conObj, conMethod, conDemo)
         }
     }
 )
@@ -191,11 +224,12 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
+        conDemo   <- isDemo(object)
 
         if (conType == "local") {
             hapIdsFromLocal(conObj, conMethod)
         } else if (conType == "server") {
-            hapIdsFromSever(conObj, conMethod)
+            hapIdsFromSever(conObj, conMethod, conDemo)
         }
     }
 )
@@ -211,11 +245,12 @@ setMethod(
         conObj    <- phgConObj(object)
         conType   <- phgType(conObj)
         conMethod <- phgMethodId(object)
+        conDemo   <- isDemo(object)
 
         if (conType == "local") {
             phgDataSetFromLocal(conObj, conMethod, verbose)
         } else if (conType == "server") {
-            phgDataSetFromServer(conObj, conMethod, verbose)
+            phgDataSetFromServer(conObj, conMethod, verbose, conDemo)
         }
     }
 )

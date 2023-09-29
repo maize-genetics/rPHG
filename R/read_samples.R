@@ -1,4 +1,17 @@
 ## ----
+# Get samples from `HaplotypeGraph` objects
+#
+# @param phgObj A PHG `HaplotypeGraph` object
+samplesFromGraphObj <- function(phgObj) {
+    jArray <- rJava::.jevalArray(obj = phgObj$taxaInGraph()$toArray())
+
+    taxa <- unlist(lapply(jArray, function(x) x$getName()))
+
+    return(taxa)
+}
+
+
+## ----
 # Get samples from local connection
 #
 # @param conObj A PHG connection object
@@ -39,7 +52,8 @@ samplesFromLocal <- function(conObj, conMethod) {
 #
 # @param conObj A PHG connection object
 # @param conMethod A PHG database method ID
-samplesFromServer <- function(conObj, conMethod) {
+# @param conDemo Is this method of type 'DEMO'
+samplesFromServer <- function(conObj, conMethod, conDemo) {
     finalUrl <- file.path(
         brapiURL(conObj),
         BRAPI_ENDPOINTS$VARIANT_TABLES,
@@ -49,20 +63,11 @@ samplesFromServer <- function(conObj, conMethod) {
 
     taxaDf <- parseJSON(finalUrl)$result$data
 
-    return(taxaDf$sampleName)
-}
-
-
-## ----
-# Get samples from `HaplotypeGraph` objects
-#
-# @param phgObj A PHG `HaplotypeGraph` object
-samplesFromGraphObj <- function(phgObj) {
-    jArray <- rJava::.jevalArray(obj = phgObj$taxaInGraph()$toArray())
-
-    taxa <- unlist(lapply(jArray, function(x) x$getName()))
-
-    return(taxa)
+    if (conDemo) {
+        return(taxaDf$sampleName[seq_len(BRAPI_PARAMS$DEMO_N_SAMPLES)])
+    } else {
+        return(taxaDf$sampleName)
+    }
 }
 
 

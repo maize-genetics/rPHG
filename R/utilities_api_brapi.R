@@ -1,4 +1,49 @@
 ## ----
+# Build "alle matrix" URL strings
+#
+# @description
+# Builds URL strings for "alleleMatrix" (i.e. path method table) BrAPI
+# endpoints
+#
+# @param methodId
+# Method ID for given path/graph in PHG
+# @rrPageSize
+# Max allowed number of ref ranges for a given web page
+# @rrPage
+# Current page for ref range page collection
+# @samplePageSize
+# Max allowed number of samples for a given web page
+# @samplePage
+# Current page for samples page collection
+amUrlContextStringBuilder <- function(
+    methodId,
+    rrPageSize,
+    rrPage,
+    samplePageSize,
+    samplePage
+) {
+    amContextString <- sprintf(
+        paste0(
+            BRAPI_ENDPOINTS$METHOD_TABLE,    # allelematrix
+            BRAPI_PARAMS$REST_QUERY,         # ?
+            BRAPI_PARAMS$METHOD_ID_KEY,      # variantSetDbId=
+            BRAPI_PARAMS$REST_KV_SEP,
+            BRAPI_PARAMS$METHOD_RR_SIZE,
+            BRAPI_PARAMS$REST_KV_SEP,
+            BRAPI_PARAMS$METHOD_SAMPLE_SIZE,
+            BRAPI_PARAMS$REST_KV_SEP,
+            BRAPI_PARAMS$METHOD_RR_PAGE,
+            BRAPI_PARAMS$REST_KV_SEP,
+            BRAPI_PARAMS$METHOD_SAMPLE_PAGE
+        ),
+        methodId, rrPageSize, samplePageSize, rrPage, samplePage
+    )
+
+    return(amContextString)
+}
+
+
+## ----
 # Check if BrAPI `serverinfo` endpoint exists
 #
 # @description
@@ -16,7 +61,7 @@ brapiEndpointExists <- function(url, endpoint = BRAPI_ENDPOINTS$SERVER_INFO) {
         },
         error = function(cond) NA
     )
-    
+
     # NOTE: test currently negates `httResp` check for all status codes. Will
     #       keep in codebase for possible future debugging tests
     ifelse(
@@ -35,7 +80,7 @@ brapiEndpointExists <- function(url, endpoint = BRAPI_ENDPOINTS$SERVER_INFO) {
 # NOTE: `url` needs `brapi/v2` or `brapi/v1` suffix.
 #
 # @param url Host URL for PHG server
-# @param endpoint What endpoint to append to URL? Can be `""` for non BrAPI 
+# @param endpoint What endpoint to append to URL? Can be `""` for non BrAPI
 #                 tests.
 httpResp <- function(url, endpoint = BRAPI_ENDPOINTS$SERVER_INFO) {
 
@@ -107,45 +152,6 @@ json2tibble <- function(object, ep, returnCall = "data") {
     #     return(tibble::as_tibble(endPoint[["result"]][[returnCall]]))
     # }
 }
-
-
-## (DEFUNCT) ----
-# # @title Parse graph data
-# #
-# # @description Parses graph information from JSON structures
-# #
-# # @param object A \code{BrapiCon} object.
-# # @param dbID A PHG method.
-# #
-# # @importFrom httr content
-# # @importFrom igraph graph_from_data_frame
-# json2igraph <- function(object, dbID) {
-#     if (missing(dbID)) stop("PHG method required", call. = FALSE)
-#
-#     endPoint <- paste0(brapiURL(object), "/graphs/", dbID)
-#     res <- parseJSON(endPoint)
-#
-#     nodes <- res$result$nodes
-#     edges <- res$result$edges
-#     taxaList <- nodes$additionalInfo$taxaList
-#     taxaList <- unlist(lapply(taxaList, paste, collapse = "; "))
-#
-#     edges <- data.frame(
-#         from = edges$leftNodeDbId,
-#         to = edges$rightNodeDbId,
-#         weight = edges$weight
-#     )
-#     nodes <- data.frame(
-#         id = nodes$nodeDbId,
-#         label = taxaList
-#     )
-#
-#     igraph::graph_from_data_frame(
-#         d = edges,
-#         vertices = nodes,
-#         directed = TRUE
-#     )
-# }
 
 
 ## ----

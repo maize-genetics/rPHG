@@ -116,6 +116,20 @@ setGeneric("httProtocol", function(object, ...) standardGeneric("httProtocol"))
 
 
 ## ----
+#' @title Return demo state
+#'
+#' @description
+#' Returns logical of demo state for \code{rPHG} objects
+#'
+#' @param object an \code{rPHG} method object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname isDemo
+#' @export
+setGeneric("isDemo", function(object, ...) standardGeneric("isDemo"))
+
+
+## ----
 #' @title Return \code{rJava} reference object
 #'
 #' @description

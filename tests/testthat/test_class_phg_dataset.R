@@ -30,5 +30,7 @@ test_that("Basic tests.", {
         expected = c(10, 6)
     )
 
+    plotRes <- plotGraph(testPDS, start = 1, end = 350000, seqnames = "1")
+    expect_true(is(plotRes, "visNetwork"))
 })
 

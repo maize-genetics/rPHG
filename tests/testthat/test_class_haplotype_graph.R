@@ -5,8 +5,8 @@ test_that("Basic tests", {
     startLogger(logFile)
     createConfigFile(configFile)
 
-    # testUrl <- "phg.maizegdb.org"
-    testUrl <- "demo.hub.maizegenetics.net"
+    testUrl <- "phg.maizegdb.org"
+    # testUrl <- "demo.hub.maizegenetics.net"
 
     phgLocCon <- PHGLocalCon(configFile)
     phgSrvCon <- PHGServerCon(testUrl)

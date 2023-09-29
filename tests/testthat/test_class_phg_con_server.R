@@ -2,8 +2,8 @@ test_that("Basic tests", {
     logFile    <- tempfile(fileext = ".txt")
     startLogger(logFile)
 
-    # testUrl <- "phg.maizegdb.org"
-    testUrl <- "demo.hub.maizegenetics.net"
+    testUrl <- "phg.maizegdb.org"
+    # testUrl <- "demo.hub.maizegenetics.net"
 
     phgSrvCon <- PHGServerCon(testUrl)
     phgSrvConOutput <- utils::capture.output(phgSrvCon)

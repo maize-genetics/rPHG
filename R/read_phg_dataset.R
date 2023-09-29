@@ -34,7 +34,7 @@ phgDataSetFromLocal <- function(conObj, conMethod, verbose) {
 # @param conObj A PHG connection object
 # @param conMethod A PHG database method ID
 # @param verbose Show console log info
-phgDataSetFromServer <- function(conObj, conMethod, verbose) {
+phgDataSetFromServer <- function(conObj, conMethod, conDemo, verbose) {
     bullet <- cli::col_red(cli::symbol$warning)
     verbInfo <- c(
         paste0(bullet, cli::style_bold(" (WIP)"), " Getting reference range data..."),
@@ -43,15 +43,18 @@ phgDataSetFromServer <- function(conObj, conMethod, verbose) {
     )
 
     if (verbose) message(verbInfo[1])
-    # TODO
+    gr <- refRangesFromServer(conObj, conMethod, conDemo)
 
     if (verbose) message(verbInfo[2])
-    # TODO
+    hm <- hapIdsFromSever(conObj, conMethod, conDemo)
 
     if (verbose) message(verbInfo[3])
-    # TODO
+    phgSE <- SummarizedExperiment::SummarizedExperiment(
+        assays    = list(pathMatrix = t(hm)),
+        rowRanges = gr
+    )
 
-    return(NULL)
+    return(methods::new(Class = "PHGDataSet", phgSE))
 }
 
 

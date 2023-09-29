@@ -16,8 +16,95 @@ hapIdsFromLocal <- function(conObj, conMethod) {
 #
 # @param conObj A PHG connection object
 # @param conMethod A PHG database method ID
-hapIdsFromSever <- function(conObj, conMethod) {
-    print("WIP for `hapIdsFromServer`")
+# @param conDemo Is this method of type 'DEMO'
+hapIdsFromSever <- function(conObj, conMethod, conDemo) {
+    bullet <- cli::col_grey(cli::symbol$info)
+    verbInfo <- c(
+        paste0("  ", bullet, " Determining page size..."),
+        paste0("  ", bullet, " Retrieving data..."),
+        paste0("  ", bullet, " Cleaning up data...")
+    )
+
+    brapiUrl <- brapiURL(conObj)
+
+    maxRRSize <- ifelse(
+        test = conDemo,
+        yes  = BRAPI_PARAMS$DEMO_N_RR_SIZE,
+        no   = BRAPI_PARAMS$MAX_N_RR_SIZE
+    )
+    maxSampleSize <- ifelse(
+        test = conDemo,
+        yes  = BRAPI_PARAMS$DEMO_N_SAMPLES,
+        no   = BRAPI_PARAMS$MAX_N_SAMPLES
+    )
+
+    initRespUrl <- file.path(
+        brapiUrl,
+        amUrlContextStringBuilder(
+            methodId       = conMethod,
+            rrPageSize     = maxRRSize,
+            rrPage         = 0,
+            samplePageSize = maxSampleSize,
+            samplePage     = 0
+        )
+    )
+
+    message(verbInfo[1])
+    initResp <- rPHG:::parseJSON(initRespUrl)
+    pageSizeDf <- initResp$result$pagination
+
+    totalPages <- ifelse(
+        test = conDemo,
+        yes  = BRAPI_PARAMS$DEMO_N_RR_TOTAL / BRAPI_PARAMS$DEMO_N_RR_SIZE,
+        no   = pageSizeDf[pageSizeDf$dimension == "VARIANTS", "totalPages"]
+    )
+
+    respVector <- vector("list", length = totalPages)
+    respVector[[1]] <- initResp
+
+    respUrls <- file.path(
+        brapiUrl,
+        amUrlContextStringBuilder(
+            methodId       = conMethod,
+            rrPageSize     = maxRRSize,
+            rrPage         = seq(2, totalPages) - 1,
+            samplePageSize = maxSampleSize,
+            samplePage     = 0
+        )
+    )
+
+    message(verbInfo[2])
+    pb <- txtProgressBar(
+        min     = 0,
+        max     = totalPages,
+        initial = 1,
+        width   = 30,
+        char    = "=",
+        style   = 3
+    )
+    i <- 2
+    for (url in respUrls) {
+        respVector[[i]] <- rPHG:::parseJSON(url)
+        setTxtProgressBar(pb, i)
+        i <- i + 1
+    }
+    close(pb)
+
+    message(verbInfo[3])
+    fullResp <- do.call(
+        what = "cbind",
+        args = lapply(
+            X   = respVector,
+            FUN = function(x) {
+                x$result$dataMatrices$dataMatrix[[1]]
+            }
+        )
+    )
+
+    colnames(fullResp) <- paste0("R", seq_len(ncol(fullResp)))
+    rownames(fullResp) <- rPHG:::samplesFromServer(conObj, conMethod, conDemo)
+
+    return(fullResp)
 }
 
 

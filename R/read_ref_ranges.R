@@ -15,12 +15,24 @@ refRangesFromLocal <- function(conObj, conMethod) {
 #
 # @param conObj A PHG connection object
 # @param conMethod A PHG database method ID
-refRangesFromServer <- function(conObj, conMethod) {
+# @param conDemo Is this method of type 'DEMO'
+refRangesFromServer <- function(conObj, conMethod, conDemo) {
     finalUrl <- file.path(
         brapiURL(conObj),
         BRAPI_ENDPOINTS$VARIANT_TABLES,
         conMethod,
-        sprintf("%s?pageSize=%i", BRAPI_ENDPOINTS$VARIANTS, 150000)
+        sprintf(
+            "%s?%s",
+            BRAPI_ENDPOINTS$VARIANTS,
+            sprintf(
+                BRAPI_PARAMS$PAGE_SIZE,
+                if (conDemo) {
+                    BRAPI_PARAMS$DEMO_N_RR_TOTAL
+                } else {
+                    BRAPI_PARAMS$MAX_N_RR_SIZE
+                }
+            )
+        )
     )
 
     rrDf <- parseJSON(finalUrl)$result$data

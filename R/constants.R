@@ -12,7 +12,20 @@ BRAPI_ENDPOINTS <- list(
 ## ----
 # Commonly used BrAPI parameters
 BRAPI_PARAMS <- list(
-    "PAGE_SIZE" = "pageSize=%i"
+    "DEMO_N_RR_SIZE"     = 5,
+    "DEMO_N_RR_TOTAL"    = 25,
+    "DEMO_N_SAMPLES"     = 5,
+    "MAX_N_RR_SIZE"      = 5000,
+    "MAX_N_RR_TOTAL"     = 150000,
+    "MAX_N_SAMPLES"      = 10000,
+    "PAGE_SIZE"          = "pageSize=%i",
+    "REST_QUERY"         = "?",
+    "REST_KV_SEP"        = "&",
+    "METHOD_ID_KEY"      = "variantSetDbId=%s",
+    "METHOD_RR_SIZE"     = "dimensionCallSetPageSize=%i",
+    "METHOD_RR_PAGE"     = "dimensionCallSetPage=%i",
+    "METHOD_SAMPLE_SIZE" = "dimensionVariantPageSize=%i",
+    "METHOD_SAMPLE_PAGE" = "dimensionVariantPagePage=%i"
 )
 
 
