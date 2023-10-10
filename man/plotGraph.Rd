@@ -9,14 +9,13 @@ plotGraph(object, ...)
 
 \S4method{plotGraph}{PHGDataSet}(
   object,
-  samples,
-  sampleHighlight,
-  seqnames,
-  start,
-  end,
-  colMajor,
-  colMinor,
-  ...
+  samples = NULL,
+  sampleHighlight = NULL,
+  seqnames = NULL,
+  start = NULL,
+  end = NULL,
+  colMajor = "maroon",
+  colMinor = "lightgrey"
 )
 }
 \arguments{

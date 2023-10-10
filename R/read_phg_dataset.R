@@ -35,11 +35,11 @@ phgDataSetFromLocal <- function(conObj, conMethod, verbose) {
 # @param conMethod A PHG database method ID
 # @param verbose Show console log info
 phgDataSetFromServer <- function(conObj, conMethod, conDemo, verbose) {
-    bullet <- cli::col_red(cli::symbol$warning)
+    bullet <- cli::style_bold(cli::symbol$tick)
     verbInfo <- c(
-        paste0(bullet, cli::style_bold(" (WIP)"), " Getting reference range data..."),
-        paste0(bullet, cli::style_bold(" (WIP)"), " Getting haplotype matrix data..."),
-        paste0(bullet, cli::style_bold(" (WIP)"), " Constructing PHGDataSet...")
+        paste0(bullet, " Getting reference range data..."),
+        paste0(bullet, " Getting haplotype matrix data..."),
+        paste0(bullet, " Constructing PHGDataSet...")
     )
 
     if (verbose) message(verbInfo[1])

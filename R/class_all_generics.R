@@ -377,7 +377,7 @@ setGeneric("readSamples", function(object, ...) standardGeneric("readSamples"))
 #' @title Return server information
 #'
 #' @description
-#' Get avaiable BrAPI calls from BrAPI compliant PHG server
+#' Get available BrAPI calls from BrAPI compliant PHG server
 #'
 #' @param object an \code{rPHG} local or server connection object
 #' @param ... Additional arguments, for use in specific methods
@@ -401,5 +401,32 @@ setGeneric("serverInfo", function(object, ...) standardGeneric("serverInfo"))
 #' @rdname showPHGMethods
 #' @export
 setGeneric("showPHGMethods", function(object, showAdvancedMethods = FALSE, ...) standardGeneric("showPHGMethods"))
+
+
+## ----
+#' @title Return taxa info for haplotype IDs
+#'
+#' @description
+#' Returns taxa (e.g. sample) information for a select set of reference ranges.
+#' Reference ranges are identified by a user defined genomic range consisting
+#' of a sequence (e.g. chromosome) ID, and start and stop positions.
+#'
+#' @param object an \code{rPHG} dataset
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname taxaByNode
+#' @export
+setGeneric("taxaByNode", function(object, ...) standardGeneric("taxaByNode"))
+
+
+
+
+
+
+
+
+
+
+
 
 

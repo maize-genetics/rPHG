@@ -15,5 +15,5 @@ serverInfo(object, ...)
 \item{...}{Additional arguments, for use in specific methods}
 }
 \description{
-Get avaiable BrAPI calls from BrAPI compliant PHG server
+Get available BrAPI calls from BrAPI compliant PHG server
 }

@@ -82,3 +82,35 @@ setMethod(
 )
 
 
+## ----
+#' @param object A \code{PHGDataSet} object
+#' @param samples Samples/taxa to include in plot
+#' @param seqnames A sequence (e.g. chromosome) ID
+#' @param start Start position for ref ranges
+#' @param end End position for ref ranges
+#'
+#' @rdname taxaByNode
+#' @export
+setMethod(
+    f = "taxaByNode",
+    signature = signature(object = "PHGDataSet"),
+    definition = function(
+        object,
+        samples = NULL,
+        seqnames,
+        start,
+        end
+    ) {
+        return(
+            taxaByNodeCore(
+                object,
+                samples,
+                seqnames,
+                start,
+                end
+            )
+        )
+    }
+)
+
+

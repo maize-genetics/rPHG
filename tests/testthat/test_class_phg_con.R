@@ -21,3 +21,5 @@ test_that("Basic tests", {
     expect_equal(phgType(testPhgCon), "local")
 })
 
+
+

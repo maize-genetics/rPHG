@@ -1,110 +1,46 @@
 ## ----
-#' @title Get taxa data for selected reference ranges
-#'
-#' @description
-#' Base code to get assembly information from haplotype node objects
-#'
-#' @param phgObj An object of class \code{PHGDataSet}.
-#' @param start Start position (bp) for reference range filtering.
-#' @param end End position (bp) for reference range filtering.
-#' @param seqnames Sequence name (e.g. chromosome ID) for reference range
-#'    filtering.
-#' @param rrSet A collection of reference range IDs. Defaults to \code{NULL}
-#'    if specified with an integer vector, \code{start}, \code{end}, and
-#'    \code{seqnames} parameters will be ignored.
-#'
-#' @importFrom IRanges IRanges
-#' @importFrom IRanges subsetByOverlaps
-#' @importFrom GenomicRanges GRanges
-#' @importFrom rJava J
-#' @importFrom rJava .jnew
-#' @importFrom rJava .jcall
-#' @importFrom S4Vectors metadata
-#' @importFrom SummarizedExperiment rowRanges
-#'
-#' @export
-taxaByNode <- function(
-    phgObj,
-    start = NULL,
-    end = NULL,
-    seqnames = NULL,
-    rrSet = NULL
+# @title Get taxa data for selected reference ranges
+#
+# @description
+# Returns taxa (e.g. sample) information for a select set of reference ranges.
+# Reference ranges are identified by a user defined genomic range consisting
+# of a sequence (e.g. chromosome) ID, and start and stop positions.
+#
+# @param x A \code{PHGDataSet} object
+# @param samples Samples/taxa to include in plot
+# @param seqnames A sequence (e.g. chromosome) ID
+# @param start Start position for ref ranges
+# @param end End position for ref ranges
+taxaByNodeCore <- function(
+    x,
+    samples = NULL,
+    seqnames,
+    start,
+    end
 ) {
-    # Get valid ref ranges from PHGDataSet
-    if (is.null(rrSet)) {
-        if (is.null(start)) {
-            stop("Genomic range parameters are needed")
-        }
-        if (is.null(end)) {
-            stop("Genomic range parameters are needed")
-        }
-        if (is.null(seqnames)) {
-            stop("Genomic range parameters are needed")
-        }
-        q <- GenomicRanges::GRanges(
-            seqnames = seqnames,
-            ranges = IRanges::IRanges(
-                start = start,
-                end = end
-            )
-        )
-
-        rrSet <- gsub(
-            pattern = "R",
-            replacement = "",
-            x = IRanges::subsetByOverlaps(
-                SummarizedExperiment::rowRanges(phgObj),
-                q
-            )$refRange_id
-        )
-    }
-
-    jGObj <- S4Vectors::metadata(phgObj)$jObj
-    taxaBNDriver <- rJava::.jnew(
-        rJava::J("net.maizegenetics.pangenome.utils.TaxaByNodeByRangePlugin"),
-        rJava::.jnull("java/awt/Frame"),
-        FALSE
+    # Filter by taxa and ref ranges
+    if (is.null(samples)) samples <- colnames(x)
+    hapTableMini <- x[, colnames(x) %in% samples]
+    hapTableMini <- IRanges::subsetByOverlaps(
+        hapTableMini,
+        GenomicRanges::GRanges(seqnames = seqnames, ranges = start:end)
     )
 
-    dataSet <- rJava::J("net.maizegenetics.plugindef.DataSet")
+    # Get hap ID matrix
+    currentMatrix <- t(SummarizedExperiment::assay(hapTableMini))
+    currentMatrix[is.na(currentMatrix)] <- -128
+    colnames(currentMatrix) <- gsub("R", "", colnames(currentMatrix)) |>
+        as.numeric()
 
-    sortSet <- .jnew("java.util.TreeSet")
-    for (rr in rrSet) {
-        sortSet$add(.jnew("java.lang.Integer", as.integer(rr)))
-    }
+    # Get ref range data frame
+    refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
 
-    taxaBNDriver$rangeIds(sortSet)
-    res <- taxaBNDriver$performFunction(dataSet$getDataSet(jGObj))$
-        getData(0L)$
-        getData()
-
-    rrIds <- .jcall(res$keySet(), "[Ljava/lang/Object;", "toArray") |>
-        lapply(function(i) i$toString()) |>
-        unlist()
-
-    rootValArr <- .jcall(res$values(), "[Ljava/lang/Object;", "toArray")
-    assemblies <- lapply(rootValArr, function(i) {
-        tmp <- .jcall(i$values(), "[Ljava/lang/Object;", "toArray")
-        lapply(tmp, function(j) {
-            j$toArray() |>
-                lapply(function(k) k$toString()) |>
-                unlist()
-        })
-    })
-    nodeIds <- lapply(rootValArr, function(i) {
-        i$keySet() |>
-            .jcall("[Ljava/lang/Object;", "toArray") |>
-            lapply(function(j) j$toString()) |>
-            unlist()
+    # Group taxa by hap ID and ref range
+    taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {
+        split(rownames(currentMatrix), currentMatrix[, i])
     })
 
-    for (i in seq_along(assemblies)) {
-        names(assemblies[[i]]) <- nodeIds[[i]]
-    }
-
-    names(assemblies) <- rrIds
-
-    return(tnHashMapToTibble(assemblies))
+    return(taxaGroups)
 }
 
 

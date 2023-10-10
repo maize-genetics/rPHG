@@ -34,3 +34,4 @@ test_that("Basic tests.", {
     expect_true(is(plotRes, "visNetwork"))
 })
 
+

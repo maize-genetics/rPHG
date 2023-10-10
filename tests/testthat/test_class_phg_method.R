@@ -40,6 +40,6 @@ test_that("Basic tests.", {
     expect_equal(phgMethodId(phgMethod1), "CONSENSUS")
     expect_equal(phgMethodId(phgMethod2), "PATH_METHOD")
     expect_equal(phgMethodId(phgMethod3), "NAM_GBS_Alignments_PATHS")
-
-
 })
+
+
