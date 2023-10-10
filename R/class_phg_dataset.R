@@ -84,6 +84,24 @@ setMethod(
 
 ## ----
 #' @param object A \code{PHGDataSet} object
+#'
+#' @rdname plotMutualInfo
+#' @export
+setMethod(
+    f = "plotMutualInfo",
+    signature = signature(object = "PHGDataSet"),
+    definition = function(object) {
+        return(
+            plotMutualInfoFromPHGDataSet(object)
+        )
+    }
+)
+
+
+
+
+## ----
+#' @param object A \code{PHGDataSet} object
 #' @param samples Samples/taxa to include in plot
 #' @param seqnames A sequence (e.g. chromosome) ID
 #' @param start Start position for ref ranges

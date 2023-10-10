@@ -300,6 +300,21 @@ setGeneric("plotGraph", function(object, ...) standardGeneric("plotGraph"))
 
 
 ## ----
+#' @title Plot mutual information
+#'
+#' @description
+#' Generates a visualization of calculated mutual information for a
+#' given set of reference ranges
+#'
+#' @param object an \code{rPHG} data set object
+#' @param ... Additional arguments, for use in specific methods
+#'
+#' @rdname plotMutualInfo
+#' @export
+setGeneric("plotMutualInfo", function(object, ...) standardGeneric("plotMutualInfo"))
+
+
+## ----
 #' @title Return port value
 #'
 #' @description
