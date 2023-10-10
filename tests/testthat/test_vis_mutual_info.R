@@ -17,3 +17,4 @@ test_that("Basic tests", {
     expect_true(is(plotResults, "gg"))
 })
 
+
