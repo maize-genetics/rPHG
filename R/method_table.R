@@ -52,30 +52,53 @@ methodTableFromLocal <- function(configFile, showAdvancedMethods) {
 methodTableFromServer <- function(url, showAdvancedMethods) {
     tableUrl <- file.path(url, BRAPI_ENDPOINTS$METHOD_TABLE)
     jsonObj  <- parseJSON(tableUrl)
-    methodDf <- jsonObj$result$data
+    methodDf <- jsonObj$result$data$additionalInfo
 
-    # Make consistent names with local method table call
-    methodDf$type_name <- NA
-    idOrderAndMapping <- c(
-        "type_name"        = "type_name",
-        "variantTableDbId" = "method_name",
-        # "numVariants"      = "num_refranges",
-        # "numSamples"       = "num_samples",
-        "additionalInfo"   = "description"
-    )
+    # Bandage before public PHG is updated...
+    if (any(is.na(methodDf))) {
+        methodDf <- jsonObj$result$data
+        methodDf$description <- NA
+        methodDf$type_name <- NA
+
+        # Make consistent names with local method table call
+        idOrderAndMapping <- c(
+            "type_name"        = "type_name",
+            "variantTableDbId" = "method_name",
+            "additionalInfo"   = "description"
+        )
+    } else {
+        idOrderAndMapping <- c(
+            "type_name"      = "type_name",
+            "variantSetDbId" = "method_name",
+            "description"    = "description"
+        )
+    }
+
+    # Process column names
     for (oldName in names(methodDf)) {
         if (oldName %in% names(idOrderAndMapping)) {
             newName <- idOrderAndMapping[oldName]
             names(methodDf)[names(methodDf) == oldName] <- newName
         }
     }
-    methodDf <- methodDf[, idOrderAndMapping]
+    methodDf <- tibble::as_tibble(methodDf[, idOrderAndMapping])
 
-    # @TODO - fix arbitrary method return (will be fixed with add. info)
+    # Convert description field to column of parsed lists (key = value)
+    if (!any(is.na(jsonObj$result$data$additionalInfo))) {
+        methodDf$description <- lapply(
+            X   = methodDf$description,
+            FUN = descriptionStringToList
+        )
+    }
+
     if (showAdvancedMethods) {
-        return(tibble::as_tibble(methodDf))
+        return(methodDf)
     } else {
-        return(tibble::as_tibble(methodDf[grepl("_PATH$|_PATHS$", methodDf$method_name), ]))
+        if (!any(is.na(jsonObj$result$data$additionalInfo))) {
+            return(methodDf[methodDf$type_name == "PATHS", ])
+        } else {
+            return(methodDf[grepl("_PATH$|_PATHS$", methodDf$method_name), ])
+        }
     }
 }
 
