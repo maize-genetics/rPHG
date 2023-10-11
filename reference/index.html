@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rPHG</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/rphg_walkthrough.html">Getting Started with rPHG</a>
+    <a class="dropdown-item" href="../articles/rphg_walkthrough.html">Introduction to rPHG</a>
+    <a class="dropdown-item" href="../articles/rphg_installation.html">Installing and setting up rPHG and rJava</a>
+    <a class="dropdown-item" href="../articles/rphg_config_files.html">Overview of configuration files</a>
   </div>
 </li>
 <li class="nav-item">
@@ -33,7 +35,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/maize-genetics/rPHG/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -56,84 +64,134 @@
 
       <dl><dt>
           
-          <code><a href="BrapiCon-class.html">BrapiCon-class</a></code> 
+          <code><a href="HaplotypeGraph-class.html">show(<i>&lt;HaplotypeGraph&gt;</i>)</a></code> 
         </dt>
-        <dd>An S4 BrapiCon Class</dd>
+        <dd>A HaplotypeGraph Class</dd>
       </dl><dl><dt>
           
-          <code><a href="BrapiCon-validity.html">BrapiCon-validity</a></code> 
+          <code><a href="HaplotypeGraph-validity.html">HaplotypeGraph-validity</a></code> 
         </dt>
-        <dd>BrAPI connection validation</dd>
+        <dd>HaplotypeGraph validation</dd>
       </dl><dl><dt>
           
-          <code><a href="BrapiCon.html">BrapiCon()</a></code> 
+          <code><a href="PHGCon-class.html">PHGCon-class</a></code> 
         </dt>
-        <dd>BrapiCon object and constructors</dd>
+        <dd>A PHGCon Class</dd>
       </dl><dl><dt>
           
-          <code><a href="BrapiConPHG-class.html">BrapiConPHG-class</a></code> 
+          <code><a href="PHGCon-validity.html">PHGCon-validity</a></code> 
         </dt>
-        <dd>An S4 BrapiConPHG Class</dd>
+        <dd>PHGCon validation</dd>
       </dl><dl><dt>
           
           <code><a href="PHGDataSet-class.html">PHGDataSet-class</a></code> 
         </dt>
-        <dd>phgDataSet</dd>
+        <dd>A PHGDataSet class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGLocalCon-class.html">show(<i>&lt;PHGLocalCon&gt;</i>)</a></code> 
+        </dt>
+        <dd>A PHGLocalCon Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGLocalCon-validity.html">PHGLocalCon-validity</a></code> 
+        </dt>
+        <dd>PHGLocalCon validation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGLocalCon.html">PHGLocalCon()</a></code> 
+        </dt>
+        <dd>Helper function to construct a <code>PHGLocalCon</code> object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGMethod-class.html">PHGMethod-class</a></code> 
+        </dt>
+        <dd>A PHGMethod Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGMethod-validity.html">PHGMethod-validity</a></code> 
+        </dt>
+        <dd>PHGMethod validation</dd>
       </dl><dl><dt>
           
           <code><a href="PHGMethod.html">PHGMethod()</a></code> 
         </dt>
-        <dd>Helper function to construct BrapiConPHG object</dd>
+        <dd>Helper function to construct PHGMethod object</dd>
       </dl><dl><dt>
           
-          <code><a href="availablePHGMethods.html">availablePHGMethods()</a></code> 
+          <code><a href="PHGServerCon-class.html">show(<i>&lt;PHGServerCon&gt;</i>)</a></code> 
         </dt>
-        <dd>Retrieve available PHG method data from BrAPI connection</dd>
+        <dd>An PHGServerCon Class</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGServerCon-validity.html">PHGServerCon-validity</a></code> 
+        </dt>
+        <dd>BrAPI connection validation</dd>
+      </dl><dl><dt>
+          
+          <code><a href="PHGServerCon.html">PHGServerCon()</a></code> 
+        </dt>
+        <dd>PHGServerCon object constructor</dd>
       </dl><dl><dt>
           
           <code><a href="brapiURL.html">brapiURL()</a></code> 
         </dt>
-        <dd>The URL of a <code>BrapiCon</code> object</dd>
+        <dd>Return URL path</dd>
+      </dl><dl><dt>
+          
+          <code><a href="brapiVersion.html">brapiVersion()</a></code> 
+        </dt>
+        <dd>Return BrAPI version ID</dd>
+      </dl><dl><dt>
+          
+          <code><a href="buildHaplotypeGraph.html">buildHaplotypeGraph()</a></code> 
+        </dt>
+        <dd>Helper function to build HaplotypeGraph object</dd>
       </dl><dl><dt>
           
           <code><a href="calcMutualInfo.html">calcMutualInfo()</a></code> 
         </dt>
-        <dd>Calculate the mutual information between a set of reference ranges</dd>
+        <dd>Calculate mutual information for a given PHG data set</dd>
       </dl><dl><dt>
           
-          <code><a href="configCatcher.html">configCatcher()</a></code> <code><a href="configCatcher.html">configCatcher()</a></code> 
+          <code><a href="configFilePath.html">configFilePath()</a></code> 
         </dt>
-        <dd>Logic support for config files</dd>
+        <dd>Return file path of configuration file</dd>
       </dl><dl><dt>
           
-          <code><a href="createConfigFile.html">createConfigFile()</a></code> 
+          <code><a href="dbName.html">dbName()</a></code> 
         </dt>
-        <dd>Create mock config file</dd>
+        <dd>Return name of DB</dd>
       </dl><dl><dt>
           
-          <code><a href="filterRefRanges.html">filterRefRanges()</a></code> 
+          <code><a href="dbType.html">dbType()</a></code> 
         </dt>
-        <dd>Filter reference ranges from given PHG method</dd>
+        <dd>Return type of DB</dd>
       </dl><dl><dt>
           
-          <code><a href="filterSamples.html">filterSamples()</a></code> 
+          <code><a href="host.html">host()</a></code> 
         </dt>
-        <dd>Filter samples from given PHG method</dd>
+        <dd>Return host data</dd>
       </dl><dl><dt>
           
-          <code><a href="getVTList.html">getVTList()</a></code> 
+          <code><a href="httProtocol.html">httProtocol()</a></code> 
         </dt>
-        <dd>Retrieve variant table BrAPI URLs</dd>
+        <dd>Return protocol value</dd>
       </dl><dl><dt>
           
-          <code><a href="graphBuilder.html">graphBuilder()</a></code> 
+          <code><a href="isDemo.html">isDemo()</a></code> 
         </dt>
-        <dd>Test PHG builder function</dd>
+        <dd>Return demo state</dd>
       </dl><dl><dt>
           
-          <code><a href="hapIDMatrix.html">hapIDMatrix()</a></code> 
+          <code><a href="javaMemoryAddress.html">javaMemoryAddress()</a></code> 
         </dt>
-        <dd>Generate a haplotype ID matrix</dd>
+        <dd>Return <code>rJava</code> reference object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="javaRefObj.html">javaRefObj()</a></code> 
+        </dt>
+        <dd>Return <code>rJava</code> reference object</dd>
       </dl><dl><dt>
           
           <code><a href="json2tibble.html">json2tibble()</a></code> 
@@ -141,104 +199,99 @@
         <dd>JSON to tibble converter</dd>
       </dl><dl><dt>
           
-          <code><a href="numHaploPerRange.html">numHaploPerRange()</a></code> 
+          <code><a href="numHaploPerRefRange.html">numHaploPerRefRange()</a></code> 
         </dt>
-        <dd>Get the number of haplotypes per range in physical position segment</dd>
+        <dd>Return number of haplotypes per reference range</dd>
       </dl><dl><dt>
           
-          <code><a href="parseJSON.html">parseJSON()</a></code> 
+          <code><a href="numberOfChromosomes.html">numberOfChromosomes()</a></code> 
         </dt>
-        <dd>URL checker</dd>
+        <dd>Return number of chromosomes</dd>
       </dl><dl><dt>
           
-          <code><a href="pathsForMethod.html">pathsForMethod()</a></code> 
+          <code><a href="numberOfNodes.html">numberOfNodes()</a></code> 
         </dt>
-        <dd>Generate a matrix for all the paths for <code>pathMethod</code></dd>
+        <dd>Return number of nodes</dd>
+      </dl><dl><dt>
+          
+          <code><a href="numberOfRefRanges.html">numberOfRefRanges()</a></code> 
+        </dt>
+        <dd>Return number of reference ranges</dd>
+      </dl><dl><dt>
+          
+          <code><a href="numberOfTaxa.html">numberOfTaxa()</a></code> 
+        </dt>
+        <dd>Return number of taxa</dd>
+      </dl><dl><dt>
+          
+          <code><a href="phgConObj.html">phgConObj()</a></code> 
+        </dt>
+        <dd>Return a PHG connection object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="phgMethodId.html">phgMethodId()</a></code> 
+        </dt>
+        <dd>Return method ID</dd>
+      </dl><dl><dt>
+          
+          <code><a href="phgMethodType.html">phgMethodType()</a></code> 
+        </dt>
+        <dd>Return method ID type</dd>
+      </dl><dl><dt>
+          
+          <code><a href="phgType.html">phgType()</a></code> 
+        </dt>
+        <dd>Return type of PHG connection</dd>
       </dl><dl><dt>
           
           <code><a href="plotGraph.html">plotGraph()</a></code> 
         </dt>
-        <dd>Visualize Graph Data</dd>
+        <dd>Plot a graph object</dd>
       </dl><dl><dt>
           
           <code><a href="plotMutualInfo.html">plotMutualInfo()</a></code> 
         </dt>
-        <dd>Calculate and plot mutual information between a set of reference ranges</dd>
+        <dd>Plot mutual information</dd>
       </dl><dl><dt>
           
-          <code><a href="plotNumHaplo.html">plotNumHaplo()</a></code> 
+          <code><a href="port.html">port()</a></code> 
         </dt>
-        <dd>Plot the number of haplotypes</dd>
+        <dd>Return port value</dd>
       </dl><dl><dt>
           
-          <code><a href="readMappingTableInfo.html">readMappingTableInfo()</a></code> 
+          <code><a href="readHaplotypeIds.html">readHaplotypeIds()</a></code> 
         </dt>
-        <dd>Retrieve read mapping records from PHG database.</dd>
+        <dd>Return haplotype IDs</dd>
       </dl><dl><dt>
           
-          <code><a href="readMappingsForLineName.html">readMappingsForLineName()</a></code> 
+          <code><a href="readPHGDataSet.html">readPHGDataSet()</a></code> 
         </dt>
-        <dd>Retrieve read mapping information from PHG database.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="readPHGDatasetFromBrapi.html">readPHGDatasetFromBrapi()</a></code> 
-        </dt>
-        <dd>Read PHGDataset object from BrAPI PHG method</dd>
+        <dd>Return a PHGDataSet</dd>
       </dl><dl><dt>
           
           <code><a href="readRefRanges.html">readRefRanges()</a></code> 
         </dt>
-        <dd>Retrieve available ref range data from a given PHG method</dd>
+        <dd>Return reference ranges</dd>
       </dl><dl><dt>
           
           <code><a href="readSamples.html">readSamples()</a></code> 
         </dt>
-        <dd>Retrieve available sample data from a given PHG method</dd>
-      </dl><dl><dt>
-          
-          <code><a href="readTable.html">readTable()</a></code> <code><a href="readTable.html">readPHGDatasetFromBrapi(<i>&lt;BrapiConPHG&gt;</i>)</a></code> 
-        </dt>
-        <dd>Retrieve available table data from a given PHG method</dd>
-      </dl><dl><dt>
-          
-          <code><a href="refRangeTable.html">refRangeTable()</a></code> 
-        </dt>
-        <dd>Generate a reference range table</dd>
-      </dl><dl><dt>
-          
-          <code><a href="referenceSets.html">referenceSets()</a></code> 
-        </dt>
-        <dd>Retrieve reference set data from BrAPI connection</dd>
-      </dl><dl><dt>
-          
-          <code><a href="references.html">references()</a></code> 
-        </dt>
-        <dd>Retrieve reference data from BrAPI connection</dd>
-      </dl><dl><dt>
-          
-          <code><a href="searchRecombination.html">searchRecombination()</a></code> 
-        </dt>
-        <dd>Search for recombination</dd>
-      </dl><dl><dt>
-          
-          <code><a href="searchSimilarGametes.html">searchSimilarGametes()</a></code> 
-        </dt>
-        <dd>Search for similar gamets</dd>
+        <dd>Return samples IDs</dd>
       </dl><dl><dt>
           
           <code><a href="serverInfo.html">serverInfo()</a></code> 
         </dt>
-        <dd>Retrieve server info data from BrAPI connection</dd>
+        <dd>Return server information</dd>
       </dl><dl><dt>
           
-          <code><a href="show.html">show(<i>&lt;BrapiCon&gt;</i>)</a></code> <code><a href="show.html">show(<i>&lt;BrapiConPHG&gt;</i>)</a></code> 
+          <code><a href="show.html">show(<i>&lt;PHGMethod&gt;</i>)</a></code> 
         </dt>
-        <dd>Show method for BrapiCon objects</dd>
+        <dd>Show method for PHGMethod objects</dd>
       </dl><dl><dt>
           
           <code><a href="showPHGMethods.html">showPHGMethods()</a></code> 
         </dt>
-        <dd>Get DB PHG methods for graph building</dd>
+        <dd>Return available PHG methods</dd>
       </dl><dl><dt>
           
           <code><a href="startLogger.html">startLogger()</a></code> 
@@ -248,12 +301,7 @@
           
           <code><a href="taxaByNode.html">taxaByNode()</a></code> 
         </dt>
-        <dd>Get taxa data for selected reference ranges</dd>
-      </dl><dl><dt>
-          
-          <code><a href="tnHashMapToTibble.html">tnHashMapToTibble()</a></code> 
-        </dt>
-        <dd>Convert PHG HashMap to tibble (house-keeping)</dd>
+        <dd>Return taxa info for haplotype IDs</dd>
       </dl></div>
   </main></div>
 

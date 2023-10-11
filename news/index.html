@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rPHG</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.18</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/rphg_walkthrough.html">Getting Started with rPHG</a>
+    <a class="dropdown-item" href="../articles/rphg_walkthrough.html">Introduction to rPHG</a>
+    <a class="dropdown-item" href="../articles/rphg_installation.html">Installing and setting up rPHG and rJava</a>
+    <a class="dropdown-item" href="../articles/rphg_config_files.html">Overview of configuration files</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -33,7 +35,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/maize-genetics/rPHG/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -41,12 +49,39 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      
+      <small>Source: <a href="https://github.com/maize-genetics/rPHG/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="rphg-020">rPHG 0.2.0<a class="anchor" aria-label="anchor" href="#rphg-020"></a></h2>
+<ul><li>Unified workflow for both local and server instances</li>
+<li>Added new class, <code>PHGServerCon</code>
+<ul><li>New object for connecting to remote public PHG servers using BrAPI endpoints</li>
+</ul></li>
+<li>Added new class, <code>PHGLocalCon</code>
+<ul><li>New object for connecting to local SQLite or PostgreSQL database instances</li>
+</ul></li>
+<li>Added new class, <code>HaplotypeGraph</code>
+<ul><li>Wrapper for PHG API Java graph object</li>
+</ul></li>
+<li>Prior objects now use method dispatch for singular set of methods to return relevant PHG data:
+<ul><li><code><a href="../reference/PHGMethod.html">PHGMethod()</a></code></li>
+<li><code><a href="../reference/showPHGMethods.html">showPHGMethods()</a></code></li>
+<li><code><a href="../reference/readSamples.html">readSamples()</a></code></li>
+<li><code><a href="../reference/readRefRanges.html">readRefRanges()</a></code></li>
+<li><code><a href="../reference/readHaplotypeIds.html">readHaplotypeIds()</a></code></li>
+<li><code><a href="../reference/readPHGDataSet.html">readPHGDataSet()</a></code></li>
+</ul></li>
+<li>Updated summary methods:
+<ul><li><code><a href="../reference/numHaploPerRefRange.html">numHaploPerRefRange()</a></code></li>
+<li><code><a href="../reference/calcMutualInfo.html">calcMutualInfo()</a></code></li>
+<li><code><a href="../reference/plotGraph.html">plotGraph()</a></code></li>
+<li><code><a href="../reference/plotMutualInfo.html">plotMutualInfo()</a></code></li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.18" id="rphg-0118">rPHG 0.1.18<a class="anchor" aria-label="anchor" href="#rphg-0118"></a></h2>
-<ul><li>Modified <code><a href="../reference/availablePHGMethods.html">availablePHGMethods()</a></code>:
+<ul><li>Modified <code>availablePHGMethods()</code>:
 <ul><li>Now returns only method IDs for graphs with more than 100 samples in the data</li>
 <li>This prevents publicly available testing methods to be displayed for new PHG users.</li>
 </ul></li>
@@ -91,15 +126,15 @@
 <li><code>BrapiConPHG</code></li>
 <li><code><a href="../reference/readRefRanges.html">readRefRanges()</a></code></li>
 <li><code><a href="../reference/readSamples.html">readSamples()</a></code></li>
-<li><code><a href="../reference/readTable.html">readTable()</a></code></li>
-<li><code><a href="../reference/readPHGDatasetFromBrapi.html">readPHGDatasetFromBrapi()</a></code></li>
-<li><code><a href="../reference/filterRefRanges.html">filterRefRanges()</a></code></li>
-<li><code><a href="../reference/filterSamples.html">filterSamples()</a></code></li>
+<li><code>readTable()</code></li>
+<li><code>readPHGDatasetFromBrapi()</code></li>
+<li><code>filterRefRanges()</code></li>
+<li><code>filterSamples()</code></li>
 <li><code><a href="../reference/serverInfo.html">serverInfo()</a></code></li>
-<li><code><a href="../reference/availablePHGMethods.html">availablePHGMethods()</a></code></li>
+<li><code>availablePHGMethods()</code></li>
 </ul></li>
 <li>Added Kotlin methods for improved data parsing speeds.</li>
-<li>Added new parameters in <code><a href="../reference/graphBuilder.html">graphBuilder()</a></code>
+<li>Added new parameters in <code>graphBuilder()</code>
 <ul><li>
 <code>buildType</code> - do you want the graph built from paths or haplotypes?</li>
 </ul></li>
@@ -108,7 +143,7 @@
 <h2 class="pkg-version" data-toc-text="0.1.11" id="rphg-0111">rPHG 0.1.11<a class="anchor" aria-label="anchor" href="#rphg-0111"></a></h2>
 <ul><li>Added NEWS file for tracking version updates.</li>
 <li>Added error checks for catching C stack usage errors for configuration file checks in functions that require configuration file path parameters.</li>
-<li>Fixed edge cases in <code><a href="../reference/plotNumHaplo.html">plotNumHaplo()</a></code> and <code><a href="../reference/plotMutualInfo.html">plotMutualInfo()</a></code>.</li>
+<li>Fixed edge cases in <code>plotNumHaplo()</code> and <code><a href="../reference/plotMutualInfo.html">plotMutualInfo()</a></code>.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

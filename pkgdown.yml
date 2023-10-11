@@ -2,8 +2,10 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  rphg_config_files: rphg_config_files.html
+  rphg_installation: rphg_installation.html
   rphg_walkthrough: rphg_walkthrough.html
-last_built: 2023-09-22T12:17Z
+last_built: 2023-10-11T13:28Z
 urls:
   reference: https://rphg.maizegenetics.net/reference
   article: https://rphg.maizegenetics.net/articles
