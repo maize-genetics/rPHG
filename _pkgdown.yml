@@ -18,3 +18,5 @@ articles:
   navbar: ~
   contents:
   - rphg_walkthrough
+  - rphg_installation
+  - rphg_config_files
