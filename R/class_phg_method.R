@@ -7,6 +7,7 @@
 #'
 #' @slot methodID A PHG method identifier.
 #' @slot phgConObj A \code{\linkS4class{PHGCon}} object
+#' @slot isDemo A logical indicating if this method is for demoing
 #'
 #' @name PHGMethod-class
 #' @rdname PHGMethod-class
@@ -20,7 +21,7 @@ setClass(
     ),
     prototype = list(
         methodID  = "test",
-        phgConObj = new("PHGCon", phgType = "local", host = "localHost"),
+        phgConObj = methods::new("PHGCon", phgType = "local", host = "localHost"),
         isDemo    = FALSE
     )
 )
@@ -70,22 +71,22 @@ setValidity("PHGMethod", function(object) {
 #' @param methodID A PHG method identifier.
 #'
 #' @export
-PHGMethod <- function(phgConObj, methodId) {
+PHGMethod <- function(phgConObj, methodID) {
 
     demoMethodId <- "DEMO"
 
     # For demo purposes only! (useful for workshops)
     trueMethodId <- ifelse(
-        test = methodId == demoMethodId,
+        test = methodID == demoMethodId,
         yes  = "NAM_GBS_Alignments_PATHS",
-        no   = methodId
+        no   = methodID
     )
 
     methods::new(
         Class     = "PHGMethod",
         methodID  = trueMethodId,
         phgConObj = phgConObj,
-        isDemo    = methodId == demoMethodId
+        isDemo    = methodID == demoMethodId
     )
 }
 

@@ -51,20 +51,15 @@ URL: https://github.com/maize-genetics/rPHG,
     https://rphg.maizegenetics.net/
 Imports:
     cli,
-    corrplot,
     curl,
-    GenomeInfoDb,
     GenomicRanges,
     ggplot2,
     httr,
     IRanges,
     jsonlite,
-    magrittr,
     methods,
-    parallel,
     rJava,
     rlang,
-    S4Vectors,
     tibble,
     visNetwork
 Depends:

@@ -3,7 +3,7 @@
 #
 # @param phgObj A `PHGDataSet` object
 calcMutualInfoFromPHGDataSet <- function(phgObj) {
-    phgHapIDMat     <- t(assay(phgObj))
+    phgHapIDMat     <- t(SummarizedExperiment::assay(phgObj))
     refRanges       <- colnames(phgHapIDMat)
     nRanges         <- length(refRanges)
     miMat           <- matrix(NA, nrow = nRanges, ncol = nRanges)

@@ -46,7 +46,7 @@ plotGraphCore <- function(
     colnames(currentMatrix) <- as.numeric(gsub("R", "", colnames(currentMatrix)))
 
     # Get ref range data frame
-    refRangeDataMini <- as.data.frame(rowRanges(hapTableMini))
+    refRangeDataMini <- as.data.frame(SummarizedExperiment::rowRanges(hapTableMini))
 
     # Group taxa by hap ID and ref range
     taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {

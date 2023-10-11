@@ -12,6 +12,8 @@ PHGServerCon(
 )
 }
 \arguments{
+\item{host}{A user defined URL}
+
 \item{port}{The host port. If \code{NULL}, a default port (e.g. \code{80} or
 \code{443}) will be used depending on protocol.}
 

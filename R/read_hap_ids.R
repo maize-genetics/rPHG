@@ -50,7 +50,7 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
     )
 
     message(verbInfo[1])
-    initResp <- rPHG:::parseJSON(initRespUrl)
+    initResp <- parseJSON(initRespUrl)
     pageSizeDf <- initResp$result$pagination
 
     totalPages <- ifelse(
@@ -74,7 +74,7 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
     )
 
     message(verbInfo[2])
-    pb <- txtProgressBar(
+    pb <- utils::txtProgressBar(
         min     = 0,
         max     = totalPages,
         initial = 1,
@@ -84,8 +84,8 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
     )
     i <- 2
     for (url in respUrls) {
-        respVector[[i]] <- rPHG:::parseJSON(url)
-        setTxtProgressBar(pb, i)
+        respVector[[i]] <- parseJSON(url)
+        utils::setTxtProgressBar(pb, i)
         i <- i + 1
     }
     close(pb)
@@ -102,7 +102,7 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
     )
 
     colnames(fullResp) <- paste0("R", seq_len(ncol(fullResp)))
-    rownames(fullResp) <- rPHG:::samplesFromServer(conObj, conMethod, conDemo)
+    rownames(fullResp) <- samplesFromServer(conObj, conMethod, conDemo)
 
     return(fullResp)
 }

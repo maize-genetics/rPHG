@@ -10,7 +10,7 @@ plotMutualInfoFromPHGDataSet <- function(phgObj) {
     mDf$X2 <- as.factor(as.numeric(gsub("R", "", mDf$X2)))
 
     p <- ggplot2::ggplot(mDf) +
-        ggplot2::aes(x = X1, y = X2, fill = mut) +
+        ggplot2::aes(x = rlang::.data$X1, y = rlang::.data$X2, fill = rlang::.data$mut) +
         ggplot2::geom_tile(
             color = "white",
             lwd = 0.5,

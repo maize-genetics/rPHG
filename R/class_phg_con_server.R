@@ -77,6 +77,7 @@ setValidity("PHGServerCon", function(object) {
 #' @description \code{PHGServerCon} is the primary container for housing BrAPI
 #'    connection information.
 #'
+#' @param host A user defined URL
 #' @param port The host port. If \code{NULL}, a default port (e.g. \code{80} or
 #'    \code{443}) will be used depending on protocol.
 #' @param protocol Which protocol must be used to fetch the desired data? Must
@@ -126,7 +127,7 @@ PHGServerCon <- function(
         stop("Cannot resolve mandatory endpoint: {serverinfo}", call. = FALSE)
     }
 
-    new(
+    methods::new(
         Class    = "PHGServerCon",
         phgType  = "server",
         host     = host,

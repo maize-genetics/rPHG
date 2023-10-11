@@ -4,7 +4,7 @@
 \alias{PHGMethod}
 \title{Helper function to construct PHGMethod object}
 \usage{
-PHGMethod(phgConObj, methodId)
+PHGMethod(phgConObj, methodID)
 }
 \arguments{
 \item{phgConObj}{A \code{\linkS4class{PHGCon}} object.}

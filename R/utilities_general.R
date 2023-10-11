@@ -111,7 +111,7 @@ parseConfigFile <- function(file) {
 
     properties <- vapply(FIELDS, \(x) getProperty(conLines, x), character(1))
 
-    return(setNames(as.list(properties), FIELDS))
+    return(stats::setNames(as.list(properties), FIELDS))
 }
 
 

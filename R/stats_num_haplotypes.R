@@ -9,7 +9,7 @@ nHaploPerRefRangeFromPHGDataSet <- function(phgObj) {
         X      = SummarizedExperiment::assay(phgObj),
         MARGIN = 1,
         FUN    = function(x) {
-            length(unique(na.omit(x)))
+            length(unique(stats::na.omit(x)))
         }
     )
     nHapDf <- data.frame(

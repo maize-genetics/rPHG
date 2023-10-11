@@ -7,7 +7,7 @@ output:
     toc_float: true
     number_sections: false
 vignette: >
-  %\VignetteIndexEntry{Getting Start with rPHG}
+  %\VignetteIndexEntry{Installing and setting up rPHG and rJava}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}

@@ -33,7 +33,7 @@ taxaByNodeCore <- function(
         as.numeric()
 
     # Get ref range data frame
-    refRangeDataMini <- rowRanges(hapTableMini) |> as.data.frame()
+    refRangeDataMini <- SummarizedExperiment::rowRanges(hapTableMini) |> as.data.frame()
 
     # Group taxa by hap ID and ref range
     taxaGroups <- lapply(seq_len(ncol(currentMatrix)), function(i) {

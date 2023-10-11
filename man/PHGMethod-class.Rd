@@ -14,5 +14,7 @@ a "committed" PHG method to return data against.
 \item{\code{methodID}}{A PHG method identifier.}
 
 \item{\code{phgConObj}}{A \code{\linkS4class{PHGCon}} object}
+
+\item{\code{isDemo}}{A logical indicating if this method is for demoing}
 }}
 

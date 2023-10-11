@@ -31,14 +31,14 @@ mutualInfoPair <- function(phgHapIDMat, twoRanges) {
 
     # Sum p(x, y)
     mmi <- matrix(
-        data = colMeans(model.matrix( ~ -1 + hapID[, 1]:hapID[, 2])),
+        data = colMeans(stats::model.matrix( ~ -1 + hapID[, 1]:hapID[, 2])),
         nrow = nHap1,
         ncol = nHap2
     )
 
     # p(x)p(y)
-    mm1 <- colMeans(model.matrix( ~ -1 + hapID[, 1]))
-    mm2 <- colMeans(model.matrix( ~ -1 + hapID[, 2]))
+    mm1 <- colMeans(stats::model.matrix( ~ -1 + hapID[, 1]))
+    mm2 <- colMeans(stats::model.matrix( ~ -1 + hapID[, 2]))
     mmm <- tcrossprod(mm1, mm2)
 
     # Sum p(x, y) log{p(x, y) / [p(x)p(y)]}

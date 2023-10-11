@@ -7,7 +7,7 @@ output:
     toc_float: true
     number_sections: false
 vignette: >
-  %\VignetteIndexEntry{Getting Start with rPHG}
+  %\VignetteIndexEntry{Introduction to rPHG}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
@@ -144,20 +144,4 @@ configFile |>
     readPHGDataSet()
 ```
 
-## Analyzing and visualizing data
 
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
