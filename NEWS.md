@@ -1,3 +1,28 @@
+## rPHG 0.2.0
+* Unified workflow for both local and server instances
+* Added new class, `PHGServerCon`
+  + New object for connecting to remote public PHG servers using BrAPI 
+    endpoints
+* Added new class, `PHGLocalCon`
+  + New object for connecting to local SQLite or PostgreSQL database
+    instances
+* Added new class, `HaplotypeGraph`
+  + Wrapper for PHG API Java graph object
+* Prior objects now use method dispatch for singular set of methods to return
+  relevant PHG data:
+  + `PHGMethod()`
+  + `showPHGMethods()`
+  + `readSamples()`
+  + `readRefRanges()`
+  + `readHaplotypeIds()`
+  + `readPHGDataSet()`
+* Updated summary methods:
+  + `numHaploPerRefRange()`
+  + `calcMutualInfo()`
+  + `plotGraph()`
+  + `plotMutualInfo()`
+
+
 ## rPHG 0.1.18
 * Modified `availablePHGMethods()`:
   + Now returns only method IDs for graphs with more than 100 samples in the
