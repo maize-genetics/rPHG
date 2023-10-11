@@ -98,8 +98,6 @@ setMethod(
 )
 
 
-
-
 ## ----
 #' @param object A \code{PHGDataSet} object
 #' @param samples Samples/taxa to include in plot

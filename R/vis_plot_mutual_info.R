@@ -17,6 +17,7 @@ plotMutualInfoFromPHGDataSet <- function(phgObj) {
             linetype = 1
         ) +
         ggplot2::labs(fill = "Mutuality") +
+        ggplot2::scale_fill_viridis_c() +
         ggplot2::theme(axis.title = ggplot2::element_blank()) +
         ggplot2::coord_equal()
 
