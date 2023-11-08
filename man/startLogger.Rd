@@ -4,11 +4,13 @@
 \alias{startLogger}
 \title{Start PHG logging information}
 \usage{
-startLogger(path = NULL)
+startLogger(path = NULL, verbose = TRUE)
 }
 \arguments{
 \item{path}{full working path of log file location. If \code{NULL},
 logging file will be added to current working directory.}
+
+\item{verbose}{Print messages to console? Defaults \code{FALSE}.}
 }
 \description{
 This function will create a file for storing logging output

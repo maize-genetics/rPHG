@@ -1,8 +1,5 @@
-# === Tests for initializer methods =================================
-
-test_that("onLoad function is called without error", {
+test_that("Basic tests.", {
     expect_silent(
         .onLoad(pkgname = "rPHG", libname = system.file(package = "rPHG"))
     )
 })
-

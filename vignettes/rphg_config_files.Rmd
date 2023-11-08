@@ -1,0 +1,77 @@
+---
+title: "Overview of configuration files"
+output:
+  BiocStyle::html_document:
+    toc: false
+    fig_caption: true
+    toc_float: true
+    number_sections: false
+vignette: >
+  %\VignetteIndexEntry{Overview of configuration files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\usepackage[utf8]{inputenc}
+  %\usepackage{float}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  fig.path = "figure/graphics-",
+  cache.path = "cache/graphics-",
+  fig.align = "center",
+  external = TRUE,
+  echo = TRUE,
+  warning = FALSE
+)
+```
+
+The idea behind the PHG is that in a given breeding program, all parental
+genotypes can be sequenced at high coverage and loaded as parental haplotypes
+in a relational database. Progeny can then be sequenced at low coverage and
+used to infer which parental haplotypes/genotypes from the database are the most
+likely present in a given progeny.
+
+In the following sections, we will give an overview of how to set up
+configuration files to connect to local databases.
+
+
+## Database types
+Currently, the PHG can use SQLite or PostgreSQL to store data for the 
+pan-genomic graph. For more information about how data is stored within the
+database schema, please refer to the 
+[PHG Wiki](https://bitbucket.org/bucklerlab/practicalhaplotypegraph/wiki/Home).
+
+
+## Configuration files
+Access to the PHG database, regardless of database type, requires a 
+configuration file. This file contains various metadata needed to access 
+relevant PHG data and/or calculate optimal graph paths:
+
+| **Field**  | **Description**                        |
+|:-----------|:---------------------------------------|
+| `host`     | database host and/or port number       |
+| `user`     | username                               |
+| `password` | password                               |
+| `DB`       | path to database                       |
+| `DBtype`   | database type (`sqlite` or `postgres`) |
+
+An example database configuration can be found below:
+
+**SQLite example**
+```
+host=localHost
+user=user
+password=password
+DB=/tempFileDir/outputDir/phgTestDB_mapq48.db
+DBtype=sqlite
+```
+
+**PostgreSQL example**
+```
+host=184.32.99.233:5422
+user=user
+password=password
+DB=phgdb
+DBtype=postgres
+```
+
