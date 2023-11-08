@@ -1,3 +1,10 @@
+## CHANGES IN VERSION 0.2.1
+* Added new function, `plotDot()`
+  + Creates dot plots from `.anchorspro` files
+* Added new function, `gvcfMetrics()`
+  + Creates summary metrics for a directory of gVCF files
+
+
 ## CHANGES IN VERSION 0.2.0
 * Unified workflow for both local and server instances
 * Added new class, `PHGServerCon`
