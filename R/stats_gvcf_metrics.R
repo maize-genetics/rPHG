@@ -1,10 +1,10 @@
 ## ----
-#' @title 
+#' @title
 #' Generate metrics for GVCF data
 #'
-#' @param gvcfDir 
+#' @param gvcfDir
 #' Directory containing GVCF file(s) to process.
-#' @param indelReport 
+#' @param indelReport
 #' Do you want to generate an indel size report? Defaults to \code{FALSE}.
 #'
 #' @importFrom rJava .jnew
@@ -25,10 +25,10 @@ gvcfMetrics <- function(gvcfDir, indelReport = FALSE) {
 
     rJC$run()
 
-    vcfStatsDf <- read.table(myVcfStatFile, header = TRUE)
+    vcfStatsDf <- utils::read.table(myVcfStatFile, header = TRUE)
 
     if (indelReport) {
-        indelStatsDf <- read.table(myIndelStatFile, header = FALSE, fill = TRUE)
+        indelStatsDf <- utils::read.table(myIndelStatFile, header = FALSE, fill = TRUE)
     }
 
     if (indelReport) {

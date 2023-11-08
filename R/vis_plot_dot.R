@@ -12,7 +12,7 @@
 #' Path to anchor file.
 #' @param querySeqId
 #' Vector of sequence IDs (query).
-#' @param refSeqid
+#' @param refSeqId
 #' Vector of sequence IDs (reference).
 #' @param queryLab
 #' Optional label for query axis.
@@ -32,13 +32,13 @@
 #' @importFrom ggplot2 ylab
 #'
 #' @export
-anchorDotPlot <- function(
-        anchorPath,
-        querySeqId = NULL,
-        refSeqId = NULL,
-        queryLab = NULL,
-        refLab = NULL,
-        colorId = c("strand", "score")
+plotDot <- function(
+    anchorPath,
+    querySeqId = NULL,
+    refSeqId = NULL,
+    queryLab = NULL,
+    refLab = NULL,
+    colorId = c("strand", "score")
 ) {
 
     if (is.null(queryLab)) queryLab <- "Query"
@@ -54,9 +54,11 @@ anchorDotPlot <- function(
                 "-" = "#0D6A82"
             )
         )
+    } else {
+        scaleUnit <- NULL
     }
 
-    tmpData <- read.table(file = anchorPath, head = TRUE)
+    tmpData <- utils::read.table(file = anchorPath, head = TRUE)
 
     if (!is.null(refSeqId)) tmpData <- tmpData[which(tmpData$refChr   %in% refSeqId), ]
     if (!is.null(querySeqId)) tmpData <- tmpData[which(tmpData$queryChr %in% querySeqId), ]
@@ -64,13 +66,17 @@ anchorDotPlot <- function(
     toMb <- function(x) x / 1e6
 
     p <- ggplot2::ggplot(data = tmpData) +
-        ggplot2::aes(x = queryStart, y = referenceStart, color = rlang::.data[[colorId]]) +
+        ggplot2::aes(
+            x = rlang::.data[["queryStart"]],
+            y = rlang::.data[["referenceStart"]],
+            color = rlang::.data[[colorId]]
+        ) +
         ggplot2::geom_point(size = 0.3) +
         ggplot2::scale_y_continuous(labels = toMb) +
         ggplot2::scale_x_continuous(labels = toMb) +
         ggplot2::facet_grid(
-            rows   = ggplot2::vars(refChr),
-            col    = ggplot2::vars(queryChr),
+            rows   = ggplot2::vars(rlang::.data[["refChr"]]),
+            col    = ggplot2::vars(rlang::.data[["queryChr"]]),
             scales = "free",
             space  = "free"
         ) +
