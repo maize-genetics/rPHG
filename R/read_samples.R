@@ -70,4 +70,15 @@ samplesFromServer <- function(conObj, conMethod, conDemo) {
     }
 }
 
+samplesFromV2Server <- function(conObj) {
+    finalUrl <- file.path(
+        brapiURL(conObj),
+        BRAPI_ENDPOINTS$SAMPLES
+    )
+
+    taxaDf <- parseJSON(finalUrl)$result$data
+
+    return(taxaDf$sampleName)
+}
+
 

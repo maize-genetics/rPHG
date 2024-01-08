@@ -250,3 +250,18 @@ setMethod(
 )
 
 
+## ----
+#' @rdname readSamples
+#' @export
+setMethod(
+    f = "readSamples",
+    signature = signature(object = "PHGServerCon"),
+    definition = function(object, readSamples) {
+        samplesFromV2Server(object)
+    }
+)
+
+
+
+
+
