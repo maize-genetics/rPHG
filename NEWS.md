@@ -1,3 +1,8 @@
+## rPHG 0.2.2
+* Fixed issue with `DEMO` method endpoint returning incorrect dimensional data
+  for specific Maize PHGv1 methods
+
+
 ## rPHG 0.2.1
 * Added new function, `plotDot()`
   + Creates dot plots from `.anchorspro` files
