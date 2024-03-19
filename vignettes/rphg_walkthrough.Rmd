@@ -85,7 +85,7 @@ If you would like to use a PHG web service, we can use the following
 similar method:
 
 ```{r, echo=TRUE, eval=TRUE}
-"demo.hub.maizegenetics.net" |> PHGServerCon()
+"phg.maizegdb.org" |> PHGServerCon()
 ```
 
 Here, a URL pointing to a PHG web service is supplied to the

@@ -73,6 +73,7 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
         )
     )
 
+
     message(verbInfo[2])
     pb <- utils::txtProgressBar(
         min     = 0,
@@ -92,7 +93,7 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
 
     message(verbInfo[3])
     fullResp <- do.call(
-        what = "cbind",
+        what = "rbind",
         args = lapply(
             X   = respVector,
             FUN = function(x) {
@@ -101,10 +102,10 @@ hapIdsFromSever <- function(conObj, conMethod, conDemo) {
         )
     )
 
-    colnames(fullResp) <- paste0("R", seq_len(ncol(fullResp)))
-    rownames(fullResp) <- samplesFromServer(conObj, conMethod, conDemo)
+    rownames(fullResp) <- paste0("R", seq_len(nrow(fullResp)))
+    colnames(fullResp) <- samplesFromServer(conObj, conMethod, conDemo)
 
-    return(fullResp)
+    return(t(fullResp))
 }
 
 

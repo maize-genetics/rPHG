@@ -25,7 +25,7 @@ BRAPI_PARAMS <- list(
     "METHOD_RR_SIZE"     = "dimensionCallSetPageSize=%i",
     "METHOD_RR_PAGE"     = "dimensionCallSetPage=%i",
     "METHOD_SAMPLE_SIZE" = "dimensionVariantPageSize=%i",
-    "METHOD_SAMPLE_PAGE" = "dimensionVariantPagePage=%i"
+    "METHOD_SAMPLE_PAGE" = "dimensionVariantPage=%i"
 )
 
 

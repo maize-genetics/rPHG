@@ -36,7 +36,7 @@ amUrlContextStringBuilder <- function(
             BRAPI_PARAMS$REST_KV_SEP,
             BRAPI_PARAMS$METHOD_SAMPLE_PAGE
         ),
-        methodId, rrPageSize, samplePageSize, rrPage, samplePage
+        methodId, rrPageSize, samplePageSize, samplePage, rrPage
     )
 
     return(amContextString)
