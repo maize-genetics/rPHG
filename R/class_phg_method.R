@@ -251,7 +251,7 @@ setMethod(
         if (conType == "local") {
             phgDataSetFromLocal(conObj, conMethod, verbose)
         } else if (conType == "server") {
-            phgDataSetFromServer(conObj, conMethod, verbose, conDemo)
+            phgDataSetFromServer(conObj, conMethod, conDemo, verbose)
         }
     }
 )

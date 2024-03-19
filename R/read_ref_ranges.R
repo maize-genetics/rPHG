@@ -29,7 +29,7 @@ refRangesFromServer <- function(conObj, conMethod, conDemo) {
                 if (conDemo) {
                     BRAPI_PARAMS$DEMO_N_RR_TOTAL
                 } else {
-                    BRAPI_PARAMS$MAX_N_RR_SIZE
+                    BRAPI_PARAMS$MAX_N_RR_TOTAL
                 }
             )
         )
