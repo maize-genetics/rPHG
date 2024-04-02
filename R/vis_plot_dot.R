@@ -30,6 +30,8 @@
 #' @importFrom ggplot2 scale_y_continuous
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
+#' @importFrom rlang sym
+#' @importFrom utils read.table
 #'
 #' @export
 plotDot <- function(
@@ -67,16 +69,16 @@ plotDot <- function(
 
     p <- ggplot2::ggplot(data = tmpData) +
         ggplot2::aes(
-            x = rlang::.data[["queryStart"]],
-            y = rlang::.data[["referenceStart"]],
-            color = rlang::.data[[colorId]]
+            x = !!rlang::sym("queryStart"),
+            y = !!rlang::sym("referenceStart"),
+            color = !!rlang::sym(colorId)
         ) +
         ggplot2::geom_point(size = 0.3) +
         ggplot2::scale_y_continuous(labels = toMb) +
         ggplot2::scale_x_continuous(labels = toMb) +
         ggplot2::facet_grid(
-            rows   = ggplot2::vars(rlang::.data[["refChr"]]),
-            col    = ggplot2::vars(rlang::.data[["queryChr"]]),
+            rows   = ggplot2::vars(!!rlang::sym("refChr")),
+            col    = ggplot2::vars(!!rlang::sym("queryChr")),
             scales = "free",
             space  = "free"
         ) +
