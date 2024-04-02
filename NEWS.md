@@ -1,3 +1,7 @@
+## rPHG 0.2.3
+* Fixed issue with variable evaluation in the `plotDot()` function
+
+
 ## rPHG 0.2.2
 * Fixed issue with `DEMO` method endpoint returning incorrect dimensional data
   for specific Maize PHGv1 methods
