@@ -1,6 +1,9 @@
+> [!note]
+> With the release of [PHGv2](https://github.com/maize-genetics/phg_v2), this project is now **superseded**. Please use [rPHG2](https://github.com/maize-genetics/rPHG2/) instead.
+
 # rPHG <img src="man/figures/logo.png" align="right" width="120"/>
 
-[![Life Cycle Status](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![R-CMD-check](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml) [![codecov](https://codecov.io/gh/maize-genetics/rPHG/branch/master/graph/badge.svg?token=4D0JSKT0UC)](https://codecov.io/gh/maize-genetics/rPHG) [![DOI](https://img.shields.io/badge/Bioinformatics-10.1093%2Fbioinformatics%2Fbtac410-brightgreen)](https://doi.org/10.1093/bioinformatics/btac410)
+[![Life Cycle Status](https://img.shields.io/badge/lifecycle-superseded-red.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![R-CMD-check](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/maize-genetics/rPHG/actions/workflows/check-standard.yaml) [![codecov](https://codecov.io/gh/maize-genetics/rPHG/branch/master/graph/badge.svg?token=4D0JSKT0UC)](https://codecov.io/gh/maize-genetics/rPHG) [![DOI](https://img.shields.io/badge/Bioinformatics-10.1093%2Fbioinformatics%2Fbtac410-brightgreen)](https://doi.org/10.1093/bioinformatics/btac410)
 
 ## Objective
 
